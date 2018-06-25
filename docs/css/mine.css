@@ -195,12 +195,15 @@ img {
 }
 
 .ui-grid-c-github > .ui-block-span2 {
-  width: 66.6666%;
+  width: 25%;
 }
 .ui-grid-c-github > .ui-block-span3 {
-  width: 75%;
+  width: 50%;
+}
+.ui-grid-c-github > .ui-block-span4 {
+  width: 25%;
 }
 
-.ui-grid-c-github > .ui-block-a {
-    width: 300px;
-}
+/* .ui-grid-c-github > .ui-block-a { */
+/*     width: 300px; */
+/* } */

@@ -1,3 +1,4 @@
+# === ただいま準備中 ==========================
 # shogi33simple
 
 [３三将棋アプリ](https://play.google.com/store/apps/details?id=shogi33.io.github.happyclam)の「長考」「瞑想」モードを省いた簡易版です。  

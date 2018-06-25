@@ -193,3 +193,14 @@ img {
 .ui-grid-a-button .ui-block-b {
     width: 30%;
 }
+
+.ui-grid-c-github > .ui-block-span2 {
+  width: 66.6666%;
+}
+.ui-grid-c-github > .ui-block-span3 {
+  width: 75%;
+}
+
+.ui-grid-c-github > .ui-block-a {
+    width: 300px;
+}

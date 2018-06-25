@@ -5,4 +5,18 @@
 
 * [３三将棋 for Android](https://play.google.com/store/apps/details?id=shogi33.io.github.happyclam)
 * [３三将棋 for PC](https://happyclam.github.io/shogi33lite/)  
-　※ブラウザの設定や広告許可の有無によって実行できない環境もあるようです。
+※ブラウザの設定や広告許可の有無によって実行できない環境もあるようです。
+
+
+# CUI版実行方法
+```
+coffee game.coffee
+```
+
+# テストスクリプト
+```
+mocha test/
+```
+
+※簡易版に実装していないメソッドではエラーになります。
+

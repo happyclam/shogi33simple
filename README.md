@@ -5,7 +5,7 @@
 
 * [３三将棋 for Android](https://play.google.com/store/apps/details?id=shogi33.io.github.happyclam)
 * [３三将棋 for PC](https://happyclam.github.io/shogi33simple/)  
-※ブラウザの設定や広告許可の有無によって実行できない環境もあるようです。
+※駒が表示されない場合は、設定メニューから「ＡＩレベル」が選択されているか確認してください。
 
 # JavaScript生成（transpile）環境
 ```

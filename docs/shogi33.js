@@ -29158,7 +29158,7 @@ GameGUI = function () {
       value: function auto_battle(seq) {
         var _this2 = this;
 
-        var chk_sennitite, oppo, player, ret, src_posi, threshold, tumi2, tumi4;
+        var chk_sennitite, i, j, len, oppo, player, ref, ret, src_posi, temp, threshold;
         this.seq = seq;
         // console.log("auto_battle")
         this.auto_flg = true;
@@ -29171,11 +29171,22 @@ GameGUI = function () {
           oppo = this.first;
           threshold = Const.MIN_VALUE;
         }
+        temp = [];
         ret = [];
-        // if player.depth >= 6
-        //     ret = player.prepare(@board, oppo, player.depth, threshold)
-        // else
-        ret = player.think(this.board, oppo, player.depth, threshold);
+        ref = [1, 2, 4, player.depth].unique();
+        for (j = 0, len = ref.length; j < len; j++) {
+          i = ref[j];
+          temp = [];
+          temp = player.think(this.board, oppo, i, threshold);
+          if (temp[0] != null) {
+            ret = [].concat(temp);
+            if (temp[2] >= Const.MAX_VALUE || temp[2] <= Const.MIN_VALUE) {
+              break;
+            }
+          } else {
+            break;
+          }
+        }
         if (ret[0]) {
           // 一手前のハッシュ値ですでに千日手判定されていればreturn
           chk_sennitite = this.sennitite(this.md5hash);
@@ -29189,27 +29200,9 @@ GameGUI = function () {
           //     ret[1] = ret[4]["posi"]
           //     ret[2] = ret[4]["score"]
           //     ret[3] = ret[4]["status"]
-          // 一手詰み、三手詰みチェック（これがないと千日手を優先してしまうケースがある）
-          tumi2 = [];
-          tumi2 = player.think(this.board, oppo, 2, threshold);
-          tumi4 = [];
-          tumi4 = player.think(this.board, oppo, 4, threshold);
-          // 一手詰み、三手詰みがあれば差し替える
-          if (tumi2[0] && (tumi2[2] >= Const.MAX_VALUE || tumi2[2] <= Const.MIN_VALUE)) {
-            if (this.board.check_move(tumi2[0], tumi2[1])) {
-              src_posi = this.board.move_capture(tumi2[0], tumi2[1]);
-              tumi2[0].status = tumi2[3];
-            }
-          } else if (tumi4[0] && (tumi4[2] >= Const.MAX_VALUE || tumi4[2] <= Const.MIN_VALUE)) {
-            if (this.board.check_move(tumi4[0], tumi4[1])) {
-              src_posi = this.board.move_capture(tumi4[0], tumi4[1]);
-              tumi4[0].status = tumi4[3];
-            }
-          } else {
-            if (this.board.check_move(ret[0], ret[1])) {
-              src_posi = this.board.move_capture(ret[0], ret[1]);
-              ret[0].status = ret[3];
-            }
+          if (this.board.check_move(ret[0], ret[1])) {
+            src_posi = this.board.move_capture(ret[0], ret[1]);
+            ret[0].status = ret[3];
           }
           this.md5hash = crypto.createHash('md5').update(JSON.stringify(this.board.pieces)).digest("hex");
           this.seq += 1;

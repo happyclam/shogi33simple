@@ -148,11 +148,15 @@ class GameGUI
             player = @second
             oppo = @first
             threshold = Const.MIN_VALUE
-        ret = []
-        # if player.depth >= 6
-        #     ret = player.prepare(@board, oppo, player.depth, threshold)
-        # else
-        ret = player.think(@board, oppo, player.depth, threshold)
+        temp = []; ret = []
+        for i in [1,2,4,player.depth].unique()
+            temp = []
+            temp = player.think(@board, oppo, i, threshold)
+            if temp[0]?
+                ret = [].concat(temp)
+                break if (temp[2] >= Const.MAX_VALUE || temp[2] <= Const.MIN_VALUE)
+            else
+                break
         if ret[0]
             # 一手前のハッシュ値ですでに千日手判定されていればreturn
             chk_sennitite =  @sennitite(@md5hash)
@@ -165,24 +169,9 @@ class GameGUI
             #     ret[1] = ret[4]["posi"]
             #     ret[2] = ret[4]["score"]
             #     ret[3] = ret[4]["status"]
-            # 一手詰み、三手詰みチェック（これがないと千日手を優先してしまうケースがある）
-            tumi2 = []
-            tumi2 = player.think(@board, oppo, 2, threshold)
-            tumi4 = []
-            tumi4 = player.think(@board, oppo, 4, threshold)
-            # 一手詰み、三手詰みがあれば差し替える
-            if tumi2[0] && (tumi2[2] >= Const.MAX_VALUE || tumi2[2] <= Const.MIN_VALUE)
-                if @board.check_move(tumi2[0], tumi2[1])
-                    src_posi = @board.move_capture(tumi2[0], tumi2[1])
-                    tumi2[0].status = tumi2[3]
-            else if tumi4[0] && (tumi4[2] >= Const.MAX_VALUE || tumi4[2] <= Const.MIN_VALUE)
-                if @board.check_move(tumi4[0], tumi4[1])
-                    src_posi = @board.move_capture(tumi4[0], tumi4[1])
-                    tumi4[0].status = tumi4[3]
-            else
-                if @board.check_move(ret[0], ret[1])
-                    src_posi = @board.move_capture(ret[0], ret[1])
-                    ret[0].status = ret[3]
+            if @board.check_move(ret[0], ret[1])
+                src_posi = @board.move_capture(ret[0], ret[1])
+                ret[0].status = ret[3]
             @md5hash = crypto.createHash('md5').update(JSON.stringify(@board.pieces)).digest("hex")
             @seq += 1
             @addState(@md5hash)

@@ -44,55 +44,111 @@ img {
 }
 .ui-icon-fhi:after {
     background-image: url("./f_hi.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-fka:after {
     background-image: url("./f_ka.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-fki:after {
     background-image: url("./f_ki.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-fgi:after {
     background-image: url("./f_gi.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-fke:after {
     background-image: url("./f_ke.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-fky:after {
     background-image: url("./f_ky.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-ffu:after {
     background-image: url("./f_fu.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-shi:after {
     background-image: url("./s_hi.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-ska:after {
     background-image: url("./s_ka.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-ski:after {
     background-image: url("./s_ki.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-sgi:after {
     background-image: url("./s_gi.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-ske:after {
     background-image: url("./s_ke.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-sky:after {
     background-image: url("./s_ky.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 .ui-icon-sfu:after {
     background-image: url("./s_fu.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 
 .ui-bar-board {
     background: #FFFACD;
     border: 1px solid #000000;
-    padding-left:10px;
-    padding-right:10px;
-    padding-top:10px;
-    padding-bottom:10px;
-    overflow: auto;    
+    padding-left:5px;
+    padding-right:5px;
+    padding-top:5px;
+    padding-bottom:5px;
+    overflow: auto;
 }
 
 .ui-grid-c .ui-block-a {
@@ -194,6 +250,12 @@ img {
     width: 30%;
 }
 
+table {
+    table-layout: auto;
+    word-break: break-all;
+    wordwrap: break-word;
+}
+
 .ui-grid-c-github > .ui-block-span2 {
   width: 25%;
 }
@@ -204,6 +266,3 @@ img {
   width: 25%;
 }
 
-/* .ui-grid-c-github > .ui-block-a { */
-/*     width: 300px; */
-/* } */

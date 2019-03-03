@@ -361,16 +361,16 @@
         });
         // console.log("=== index.html");
         // console.log("=== lng = " + lng);
-        // $(function () {
-        //     jqueryI18next.init(i18next, $);
-        //     $('#home').localize();
-        //     $('#win_menu').localize();
-        //     $('#popupNari').localize();
-        //     $('#popupInterrupt').localize();
-        //     $('#popupCheckLeft').localize();
-        //     $('#btnStart').val(i18next.t('btn_start')).button('refresh');
-        //     $('#btnStop').val(i18next.t('btn_stop')).button('refresh');
-        // });
+        $(function () {
+            jqueryI18next.init(i18next, $);
+            $('#home').localize();
+            $('#win_menu').localize();
+            $('#popupNari').localize();
+            $('#popupInterrupt').localize();
+            $('#popupCheckLeft').localize();
+            $('#btnStart').val(i18next.t('btn_start')).button('refresh');
+            $('#btnStop').val(i18next.t('btn_stop')).button('refresh');
+        });
     </script>
     <script type="text/javascript" src="js/index.js"></script>
     <title>３三将棋（3x3 shogi）</title>

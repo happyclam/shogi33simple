@@ -40,17 +40,9 @@
       });
     </script>
     <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"> </script>
-    <!-- <script src="js/easeljs-0.8.2.min.js"></script> -->
-	<!-- <script src="js/lz-string.min.js"></script> -->
-    <!-- <script src="js/tweenjs-0.6.2.min.js"></script> -->
-    <!-- <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script> -->
     <script type="text/javascript" src="js/fastclick.js"> </script>
     <script type="text/javascript" src="shogi33.js"> </script>
     <script>
-    function twitterShare(){
-        var linkStr = "https://play.google.com/store/apps/details?id=shogi33.io.github.happyclam"
-        window.plugins.socialsharing.share('#３三将棋 ' + linkStr + ' \n\r', 'shogi33', null, null);
-    };
     function moveCheck(){
         if (document.getElementById("btnStart").disabled){
             $("#popupInterrupt").popup("open");
@@ -59,14 +51,335 @@
         }
     };
     </script>
+    <!-- <script type="text/javascript" src="cordova.js"></script> -->
+    <!-- <script type="text/javascript" src="js/SocialSharing.js"></script> -->
+    <script type="text/javascript" src="bower_components/i18next/i18next.min.js"></script>
+    <script type="text/javascript" src="bower_components/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery-i18next/jquery-i18next.min.js"></script>
+    <script>
+        var lng = '';
+        lng = localStorage.getItem("appLanguage");
+        if (!lng) {
+            lng = 'en';
+        }
+        i18next
+        .use(i18nextSprintfPostProcessor)
+        .init({
+            lng: lng,
+            fallbackLng: 'en',
+            debug: true,
+            resources: {
+                en: {
+                    translation: {
+                        title: '33 Shogi（3x3 shogi）',
+                        btn_first: 'Black',
+                        btn_second: 'White',
+                        btn_start: 'New Game',
+                        btn_stop: 'Interrupt',
+                        btn_search: 'Search',
+                        menu_title: 'Settings',
+                        menu_turn: 'Turn',
+                        menu_first: 'Black',
+                        menu_second: 'White',
+                        menu_person: 'Man',
+                        menu_ai: 'AI',
+                        menu_level: 'AI Level',
+                        menu_beginner: 'Novice',
+                        menu_average: 'Intermediate',
+                        menu_longtime: 'Senior',
+                        menu_meditation: 'Expert',
+                        menu_placement: 'Initial Placement',
+                        menu_about: 'About 33 Shogi',
+                        menu_search: 'Arrangement Search',
+                        menu_pieces: 'Select Pieces:',
+                        menu_movement: 'Movement of piece',
+                        menu_guide: 'Display movement guide of piece',
+                        menu_kifuinput: 'Input Record',
+                        menu_btninput: 'Reading',
+                        menu_kifudata: 'Please paste the record of CSA format (*.csa):',
+                        dlg_promote: 'Promote?',
+                        dlg_promote_yes: 'Promote',
+                        dlg_promote_no: 'Not promote',
+                        dlg_interrupt: 'Interrupt?',
+                        dlg_interrupt_yes: 'Interrupt',
+                        dlg_interrupt_no: 'Back',
+                        dlg_check: 'The king is in check!',
+                        dlg_utifudume: 'Utifudume!',
+                        msgBlack: 'Black',
+                        msgWhite: 'White',
+                        msgTurn: '%s turn ',
+                        msgEvaluate: '(Evaluation: %s)',
+                        msgWinner: '%s Win',
+                        msgRestart: 'Restart',
+                        msgInterrupt: 'Interrupt',
+                        msgFirstWin: 'Black Win',
+                        msgSecondWin: 'White Win',
+                        msgSennitite: 'Repetition Draw',
+                        msgThinking: 'thinking...',
+                        dlg2_exitTitle: 'Application Menu',
+                        dlg2_exitItemYes: 'Exit',
+                        dlg2_exitItemNo: 'Cancel',
+                        dlg2_exit: 'Exit Application ?',
+                        koma_front: '&emsp;Front&emsp;<br />Symbol',
+                        koma_front_moves: 'Moves',
+                        koma_back: 'Back(Promoted)<br />Symbol',
+                        koma_back_moves: 'Moves',
+                        koma_gyoku: '<img class="first" src="./img/f_ou.svg" alt=""><br />OU',
+                        koma_hisya: '<img class="first" src="./img/f_hi.svg" alt=""><br />HI',
+                        koma_ryu: '<img class="first" src="./img/f_ry.svg" alt=""><br />RY',
+                        koma_kaku: '<img class="first" src="./img/f_ka.svg" alt=""><br />KA',
+                        koma_uma: '<img class="first" src="./img/f_um.svg" alt=""><br />UM',
+                        koma_kin: '<img class="first" src="./img/f_ki.svg" alt=""><br />KI',
+                        koma_gin: '<img class="first" src="./img/f_gi.svg" alt=""><br />GI',
+                        koma_narigin: '<img class="first" src="./img/f_ng.svg" alt=""><br />NG',
+                        koma_keima: '<img class="first" src="./img/f_ke.svg" alt=""><br />KE',
+                        koma_narikei: '<img class="first" src="./img/f_nk.svg" alt=""><br />NK',
+                        koma_kyosya: '<img class="first" src="./img/f_ky.svg" alt=""><br />KY',
+                        koma_narikyo: '<img class="first" src="./img/f_ny.svg" alt=""><br />NY',
+                        koma_fu: '<img class="first" src="./img/f_fu.svg" alt=""><br />FU',
+                        koma_tokin: '<img class="first" src="./img/f_to.svg" alt=""><br />TO',
+                        menu_description_html: 'It is a mini Shogi playing on 3x3 board. Rules are also almost the same as Shogi.<br />&nbsp;I think that you can enjoy enough if you are a beginner in Shogi. You can also play with other people, so please try and enjoy Shogi`s various changes.<br />&nbsp;For detailed specifications please see <a href="https://happyclam.github.io/project/2018-01-01/33shogiapp"> blog post </a>.'
+                    }
+                },
+                es: {
+                    translation: {
+                        title: '33 Shogi（3x3 shogi）',
+                        btn_first: 'Negro',
+                        btn_second: 'Blanco',
+                        btn_start: 'Nuevo juego',
+                        btn_stop: 'Interrumpir',
+                        btn_search: 'Buscar',
+                        menu_title: 'Ajuste',
+                        menu_turn: 'Giro',
+                        menu_first: 'Negro',
+                        menu_second: 'Blanco',
+                        menu_person: 'Humano',
+                        menu_ai: 'AI',
+                        menu_level: 'Nivel AI',
+                        menu_beginner: 'Principiante',
+                        menu_average: 'Intermedio',
+                        menu_longtime: 'Mayor',
+                        menu_meditation: 'Experto',
+                        menu_placement: 'Colocación inicial',
+                        menu_about: 'Cerca de 33 Shogi',
+                        menu_search: 'Búsqueda de arreglos',
+                        menu_pieces: 'Seleccionar piezas:',
+                        menu_movement: 'Movimiento de pieza',
+                        menu_guide: 'Pantalla de guía de movimiento de pieza',
+                        menu_kifuinput: 'Registro de entrada',
+                        menu_btninput: 'Leyendo',
+                        menu_kifudata: 'Por favor, pegue el registro de formato CSA (* .csa):',
+                        dlg_promote: '¿Promover',
+                        dlg_promote_yes: 'Promover',
+                        dlg_promote_no: 'No promocionar',
+                        dlg_interrupt: '¿Interrumpir',
+                        dlg_interrupt_yes: 'Interrumpir',
+                        dlg_interrupt_no: 'Espalda',
+                        dlg_check: '¡El rey está en jaque',
+                        dlg_utifudume: '¡Utifudume',
+                        msgBlack: 'Negra',
+                        msgWhite: 'Blanca',
+                        msgTurn: 'Turno %s ',
+                        msgEvaluate: '(Evaluación: %s)',
+                        msgWinner: 'Victoria %s',
+                        msgRestart: 'Reinciar',
+                        msgInterrupt: 'Interrumpir',
+                        msgFirstWin: 'Victoria negra',
+                        msgSecondWin: 'Victoria blanca',
+                        msgSennitite: 'Dibujo de repetición',
+                        msgThinking: 'Pensando...',
+                        dlg2_exitTitle: 'Menú de aplicación',
+                        dlg2_exitItemYes: 'Salida',
+                        dlg2_exitItemNo: 'Cancelar',
+                        dlg2_exit: '¿Salir de la aplicación',
+                        koma_front: '&emsp;Frente&emsp;<br />Símbolo',
+                        koma_front_moves: 'Movimiento',
+                        koma_back: 'Atrás(Promovido)<br />Símbolo',
+                        koma_back_moves: 'Movimiento',
+                        koma_gyoku: '<img class="first" src="./img/f_ou.svg" alt=""><br />OU',
+                        koma_hisya: '<img class="first" src="./img/f_hi.svg" alt=""><br />HI',
+                        koma_ryu: '<img class="first" src="./img/f_ry.svg" alt=""><br />RY',
+                        koma_kaku: '<img class="first" src="./img/f_ka.svg" alt=""><br />KA',
+                        koma_uma: '<img class="first" src="./img/f_um.svg" alt=""><br />UM',
+                        koma_kin: '<img class="first" src="./img/f_ki.svg" alt=""><br />KI',
+                        koma_gin: '<img class="first" src="./img/f_gi.svg" alt=""><br />GI',
+                        koma_narigin: '<img class="first" src="./img/f_ng.svg" alt=""><br />NG',
+                        koma_keima: '<img class="first" src="./img/f_ke.svg" alt=""><br />KE',
+                        koma_narikei: '<img class="first" src="./img/f_nk.svg" alt=""><br />NK',
+                        koma_kyosya: '<img class="first" src="./img/f_ky.svg" alt=""><br />KY',
+                        koma_narikyo: '<img class="first" src="./img/f_ny.svg" alt=""><br />NY',
+                        koma_fu: '<img class="first" src="./img/f_fu.svg" alt=""><br />FU',
+                        koma_tokin: '<img class="first" src="./img/f_to.svg" alt=""><br />TO',
+                        menu_description_html: 'Es un mini shogi jugando en un tablero de 3x3. Las reglas también son casi las mismas que Shogi. <br /> &nbsp; Creo que puedes disfrutar lo suficiente si eres un principiante en Shogi. También puedes jugar con otras personas, así que prueba y disfruta los diversos cambios de Shogi. <br /> & nbsp; Para obtener especificaciones detalladas, consulta <a href = "https://happyclam.github.io/project/2018-01-01/33shogiapp"> publicación de blog </a>.'
+                    }
+                },
+                zh: {
+                    translation: {
+                        title: '三將棋（3x3 shogi）',
+                        btn_first: '先手',
+                        btn_second: '后手',
+                        btn_start: '新遊戲',
+                        btn_stop: '中斷',
+                        btn_search: '搜索',
+                        menu_title: '設置',
+                        menu_turn: '先手/后手',
+                        menu_first: '先手',
+                        menu_second: '后手',
+                        menu_person: '人',
+                        menu_ai: 'AI',
+                        menu_level: 'AI級別',
+                        menu_beginner: '新手',
+                        menu_average: '中間',
+                        menu_longtime: '高級',
+                        menu_meditation: '專家',
+                        menu_placement: '初始安置',
+                        menu_about: '關於三將棋',
+                        menu_search: '初始安置搜索',
+                        menu_pieces: '選擇棋子:',
+                        menu_movement: '片斷的運動',
+                        menu_guide: '顯示件的運動指南',
+                        menu_kifuinput: '輸入記錄',
+                        menu_btninput: '讀',
+                        menu_kifudata: '請粘貼CSA格式的記錄（* .csa）：',
+                        dlg_promote: '被翻过来？',
+                        dlg_promote_yes: '被翻',
+                        dlg_promote_no: '不被翻',
+                        dlg_interrupt: '你想中斷它嗎？',
+                        dlg_interrupt_yes: '中斷',
+                        dlg_interrupt_no: '回報',
+                        dlg_check: '將在檢查！',
+                        dlg_utifudume: '放下典當是犯規的！',
+                        msgBlack: '先手',
+                        msgWhite: '后手',
+                        msgTurn: '%s的順序',
+                        msgEvaluate: '（評估價值: %s）',
+                        msgWinner: '勝利是%s',
+                        msgRestart: '重新開始',
+                        msgInterrupt: '中断',
+                        msgFirstWin: '勝利是先手',
+                        msgSecondWin: '勝利是后手',
+                        msgSennitite: '和棋',
+                        msgThinking: '思維...',
+                        dlg2_exitTitle: '应用菜单子',
+                        dlg2_exitItemYes: '结束',
+                        dlg2_exitItemNo: '取消',
+                        dlg2_exit: '要结束应用？',
+                        koma_front: '&emsp;&emsp;面前&emsp;&emsp;<br />縮略語',
+                        koma_front_moves: '運動',
+                        koma_back: '背部（被翻）　<br />縮略語',
+                        koma_back_moves: '運動',
+                        koma_gyoku: '<img class="first" src="./img/f_ou.svg" alt=""><br />OU',
+                        koma_hisya: '<img class="first" src="./img/f_hi.svg" alt=""><br />HI',
+                        koma_ryu: '<img class="first" src="./img/f_ry.svg" alt=""><br />RY',
+                        koma_kaku: '<img class="first" src="./img/f_ka.svg" alt=""><br />KA',
+                        koma_uma: '<img class="first" src="./img/f_um.svg" alt=""><br />UM',
+                        koma_kin: '<img class="first" src="./img/f_ki.svg" alt=""><br />KI',
+                        koma_gin: '<img class="first" src="./img/f_gi.svg" alt=""><br />GI',
+                        koma_narigin: '<img class="first" src="./img/f_ng.svg" alt=""><br />NG',
+                        koma_keima: '<img class="first" src="./img/f_ke.svg" alt=""><br />KE',
+                        koma_narikei: '<img class="first" src="./img/f_nk.svg" alt=""><br />NK',
+                        koma_kyosya: '<img class="first" src="./img/f_ky.svg" alt=""><br />KY',
+                        koma_narikyo: '<img class="first" src="./img/f_ny.svg" alt=""><br />NY',
+                        koma_fu: '<img class="first" src="./img/f_fu.svg" alt=""><br />FU',
+                        koma_tokin: '<img class="first" src="./img/f_to.svg" alt=""><br />TO',
+                        menu_description_html: '這是一個在3x3板上玩的迷你日本象棋。 規則也與日本象棋幾乎相同。<br />我認為如果你是日本象棋的初學者，你可以享受足夠的樂趣。 您也可以和其他人一起玩，所以請嘗試享受日本象棋的各種變化。<br />&nbsp;有關詳細規格，請參閱<a href =“https://happyclam.github.io/project/2018-01-01/33shogiapp“>博客文章</a>。'
+                    }
+                },
+                ja: {
+                    translation: {
+                        title: '３三将棋（3x3 shogi）',
+                        btn_first: '先手',
+                        btn_second: '後手',
+                        btn_start: '新規対局',
+                        btn_stop: '中断',
+                        btn_search: '検索',
+                        menu_title: '設定',
+                        menu_turn: '先手・後手',
+                        menu_first: '先手',
+                        menu_second: '後手',
+                        menu_person: '人',
+                        menu_ai: 'ＡＩ',
+                        menu_level: 'ＡＩレベル',
+                        menu_beginner: '弱い',
+                        menu_average: '普通',
+                        menu_longtime: '長考',
+                        menu_meditation: '瞑想',
+                        menu_placement: '初期配置',
+                        menu_about: '「３三将棋」について',
+                        menu_search: '初期配置検索',
+                        menu_pieces: '使用されている駒を選択:',
+                        menu_movement: '駒の動き',
+                        menu_guide: '駒の移動ガイドを表示する',
+                        menu_kifuinput: '棋譜入力',
+                        menu_btninput: '棋譜読込',
+                        menu_kifudata: 'CSA形式(*.csa)の棋譜を貼り付けてください:',
+                        dlg_promote: '成りますか？',
+                        dlg_promote_yes: '成る',
+                        dlg_promote_no: '成らない',
+                        dlg_interrupt: '中断しますか？',
+                        dlg_interrupt_yes: '中断',
+                        dlg_interrupt_no: '戻る',
+                        dlg_check: '玉が取られてしまいます',
+                        dlg_utifudume: '打ち歩詰めです',
+                        msgBlack: '先手',
+                        msgWhite: '後手',
+                        msgTurn: '%sの番です',
+                        msgEvaluate: '（評価値: %s）',
+                        msgWinner: '%sの勝ちです',
+                        msgRestart: '再開',
+                        msgInterrupt: '中断',
+                        msgFirstWin: '先手の勝ちです',
+                        msgSecondWin: '後手の勝ちです',
+                        msgSennitite: '千日手です',
+                        msgThinking: '考え中...',
+                        dlg2_exitTitle: '終了メニュー',
+                        dlg2_exitItemYes: '終了',
+                        dlg2_exitItemNo: 'キャンセル',
+                        dlg2_exit: 'アプリを終了しますか？',
+                        koma_front: '&emsp;&emsp;表&emsp;&emsp;<br />略号',
+                        koma_front_moves: '動き',
+                        koma_back: '　裏（成駒）　<br />略号',
+                        koma_back_moves: '動き',
+                        koma_gyoku: '<img class="first" src="./img/f_ou.svg" alt=""><br />OU',
+                        koma_hisya: '<img class="first" src="./img/f_hi.svg" alt=""><br />HI',
+                        koma_ryu: '<img class="first" src="./img/f_ry.svg" alt=""><br />RY',
+                        koma_kaku: '<img class="first" src="./img/f_ka.svg" alt=""><br />KA',
+                        koma_uma: '<img class="first" src="./img/f_um.svg" alt=""><br />UM',
+                        koma_kin: '<img class="first" src="./img/f_ki.svg" alt=""><br />KI',
+                        koma_gin: '<img class="first" src="./img/f_gi.svg" alt=""><br />GI',
+                        koma_narigin: '<img class="first" src="./img/f_ng.svg" alt=""><br />NG',
+                        koma_keima: '<img class="first" src="./img/f_ke.svg" alt=""><br />KE',
+                        koma_narikei: '<img class="first" src="./img/f_nk.svg" alt=""><br />NK',
+                        koma_kyosya: '<img class="first" src="./img/f_ky.svg" alt=""><br />KY',
+                        koma_narikyo: '<img class="first" src="./img/f_ny.svg" alt=""><br />NY',
+                        koma_fu: '<img class="first" src="./img/f_fu.svg" alt=""><br />FU',
+                        koma_tokin: '<img class="first" src="./img/f_to.svg" alt=""><br />TO',
+                        menu_description_html: '　３×３の盤で遊ぶミニ将棋です。ルールも将棋とほぼ同じで二歩や打ち歩詰めの反則手は指せないようになっており千日手成立でゲームを中断するようにしています。通常の将棋では敵陣（３段目）に駒を移動した場合に駒を成ることが出来ますが、３三将棋では１段目（後手は３段目）に移動したり、１段目（後手は３段目）から移動する時に駒を成ることが出来ます。将棋のルールを知っている方であればすぐに遊ぶことができると思います。ネットの情報によると、本来の３三将棋は盤上に二つの玉を配置して先手・後手双方が銀と歩の持ち駒を一枚ずつ持って対戦するようですが、他にも初形パターンをいろいろ用意してみました。<br />　ＡＩは駒得重視の思考ルーチンでそれほど強くありませんが、将棋初心者の方なら十分楽しめると思います。人対人で遊ぶことも出来ますので是非いろいろな変化を楽しんでみてください。詳しい仕様については<a href="https://happyclam.github.io/project/2018-01-01/33shogiapp">ブログ記事</a>を参照してください。'
+                    }
+                }
+            }
+        });
+        // console.log("=== index.html");
+        // console.log("=== lng = " + lng);
+        // $(function () {
+        //     jqueryI18next.init(i18next, $);
+        //     $('#home').localize();
+        //     $('#win_menu').localize();
+        //     $('#popupNari').localize();
+        //     $('#popupInterrupt').localize();
+        //     $('#popupCheckLeft').localize();
+        //     $('#btnStart').val(i18next.t('btn_start')).button('refresh');
+        //     $('#btnStop').val(i18next.t('btn_stop')).button('refresh');
+        // });
+    </script>
+    <script type="text/javascript" src="js/index.js"></script>
     <title>３三将棋（3x3 shogi）</title>
 </head>
 <body>
 <div id="home" data-role="page" data-fullscreen="true">
-  <div data-role="header" data-position="fixed">
-    <h1 id="title">３三将棋（3x3 shogi）</h1>
-    <button class="ui-btn ui-icon-heart ui-btn-icon-notext ui-btn-left" data-role="button" onclick="javascript:twitterShare();">Twitter</button>
-    <!-- <a href="#win_menu" class="ui-btn ui-btn-inline ui-icon-gear ui-btn-right ui-btn-icon-notext">Setting</a> -->
+  <div data-role="header" data-position="fixed" data-tap-toggle="false">
+    <h1 id="title" data-i18n="title">３三将棋（3x3 shogi）</h1>
+    <button id="btnRecord1" class="ui-btn ui-icon-check ui-btn-icon-notext ui-btn-left" data-role="button">Game Record</button>
     <button class="ui-btn ui-btn-inline ui-icon-gear ui-btn-right ui-btn-icon-notext" data-role="button" onclick="javascript:moveCheck();">Setting</button>
   </div>
   <div data-role="content">
@@ -86,7 +399,7 @@
     <div class="ui-grid-solo-second">
       <div class="ui-block-a">
 	    <div data-role="controlgroup" data-type="horizontal">
-          <div id="btnSecond" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b>後手</b></div>
+          <div id="btnSecond" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b data-i18n="btn_second">後手</b></div>
           <div id="sHi" class="ui-btn ui-icon-shi ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
           <div id="sKa" class="ui-btn ui-icon-ska ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
           <div id="sKi" class="ui-btn ui-icon-ski ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
@@ -94,6 +407,8 @@
           <div id="sKe" class="ui-btn ui-icon-ske ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
           <div id="sKy" class="ui-btn ui-icon-sky ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
           <div id="sFu" class="ui-btn ui-icon-sfu ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="dummy" class="ui-btn ui-mini ui-state-disabled">No.</div>
+          <div id="patternNo" class="ui-btn ui-mini ui-corner-all ui-state-disabled"></div>
         </div>
       </div>
     </div>
@@ -125,7 +440,7 @@
     <div class="ui-grid-solo-first">
       <div class="ui-block-a">
 	    <div data-role="controlgroup" data-type="horizontal">
-          <div id="btnFirst" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b>先手</b></div>
+          <div id="btnFirst" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b data-i18n="btn_first">先手</b></div>
           <div id="fHi" class="ui-btn ui-icon-fhi ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
           <div id="fKa" class="ui-btn ui-icon-fka ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
           <div id="fKi" class="ui-btn ui-icon-fki ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
@@ -161,12 +476,12 @@
         </p>
         <div class="ui-block-a">
           <form>
-            <input id="btnStart" type="button" value="新規対局">
+            <input id="btnStart" name="btn_start" type="button" value="新規対局" />
           </form>
         </div>
         <div class="ui-block-b">
           <form>
-            <input id="btnStop" type="button" value="中断">
+            <input id="btnStop" name="btn_stop" type="button" value="中断" />
           </form>
         </div>
       </div>
@@ -179,25 +494,25 @@
   </div>
   <div data-role="popup" id="popupNari" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:400px;">
     <div data-role="header" data-theme="a">
-      <h1>成りますか？</h1>
+      <h1 data-i18n="dlg_promote">成りますか？</h1>
     </div>
     <div role="main" class="ui-content">
-      <a id="btnNari" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow" data-nari="1">成る</a>
-      <a id="btnNarazu" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow" data-nari="0">成らない</a>
+      <a id="btnNari" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow" data-nari="1" data-i18n="dlg_promote_yes">成る</a>
+      <a id="btnNarazu" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow" data-nari="0" data-i18n="dlg_promote_no">成らない</a>
     </div>
   </div>
   <div data-role="popup" id="popupInterrupt" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:400px;">
     <div data-role="header" data-theme="a">
-      <h1>中断しますか？</h1>
+      <h1 data-i18n="dlg_interrupt">中断しますか？</h1>
     </div>
     <div role="main" class="ui-content">
-      <a id="btnInterrupt" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow">中断</a>
-      <a id="btnReturn" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow">戻る</a>
+      <a id="btnInterrupt" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow" data-i18n="dlg_interrupt_yes">中断</a>
+      <a id="btnReturn" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow" data-i18n="dlg_interrupt_no">戻る</a>
     </div>
   </div>
   <div data-role="popup" id="popupCheckLeft" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:400px;">
     <div data-role="header" data-theme="a">
-      <h1 style="float: right;">玉が取られてしまいます</h1>
+      <h1 style="float: right;" data-i18n="dlg_check">玉が取られてしまいます</h1>
     </div>
     <div role="main" class="ui-content">
       <a id="btnCheckLeft" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="slidedown">O.K.</a>
@@ -205,7 +520,7 @@
   </div>
   <div data-role="popup" id="popupDropPawnMate" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:400px;">
     <div data-role="header" data-theme="a">
-      <h1 style="float: right;">打ち歩詰めです</h1>
+      <h1 style="float: right;" data-i18n="dlg_utifudume">打ち歩詰めです</h1>
     </div>
     <div role="main" class="ui-content">
       <a id="btnCheckLeft" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="slidedown">O.K.</a>
@@ -214,9 +529,9 @@
 </div>
 <div data-role="page" id="win_menu" data-fullscreen="true">
   <div id="menuHeader" data-role="header" data-position="fixed">
-    <h1 id="menuTitle">Menu</h1>
+    <h1 id="menuTitle" data-i18n="menu_title">Menu</h1>
     <a id="aReturn" href="#home" class="ui-btn ui-icon-arrow-u ui-btn-icon-notext ui-btn-right" data-role="button"></a>
-    <button class="ui-btn ui-icon-heart ui-btn-icon-notext ui-btn-left" data-role="button" onclick="javascript:twitterShare();">Twitter</button>
+    <button id="btnRecord2" class="ui-btn ui-icon-check ui-btn-icon-notext ui-btn-left" data-role="button">Game Record</button>
   </div>
     <div data-role="content" style="overflow: auto; -webkit-overflow-scrolling: touch;">
     <div class="ui-grid-c-github">
@@ -234,151 +549,752 @@
     <div class="ui-block-d ui-block-span3">
     <div id="menu_frame" data-role="collapsible-set">
       <div data-role="collapsible" data-collapsed="false" data-theme="b" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-        <H3>先手・後手</h3>
+        <H3 data-i18n="menu_turn">先手・後手</h3>
         <div class="ui-grid-a">
           <div class="ui-block-a">
-            <span>先手</span>
+            <span data-i18n="menu_first">先手</span>
             <select name="first_player" id="first_player" data-role="slider">
-              <option value="human">人</option>
-              <option value="ai">ＡＩ</option>
+              <option value="human" data-i18n="menu_person">人</option>
+              <option value="ai" data-i18n="menu_ai">ＡＩ</option>
             </select>
           </div>
           <div class="ui-block-b">
-            <span>後手</span>
+            <span data-i18n="menu_second">後手</span>
             <select name="second_player" id="second_player" data-role="slider">
-              <option value="human">人</option>
-              <option value="ai">ＡＩ</option>
+              <option value="human" data-i18n="menu_person">人</option>
+              <option value="ai" data-i18n="menu_ai">ＡＩ</option>
             </select>
           </div>
         </div>
       </div>
       <div data-role="collapsible" data-theme="b" data-collapsed="false" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-        <h3>ＡＩレベル</h3>
+        <h3 data-i18n="menu_level">ＡＩレベル</h3>
         <div>
           <fieldset data-role="controlgroup" data-type="horizontal" data-inline="true" data-mini="true">
             <input type="radio" name="radio-depth" id="radio-depth3" value="3" />
-            <label for="radio-depth3">弱い</label>
+            <label for="radio-depth3" data-i18n="menu_beginner">弱い</label>
             <input type="radio" name="radio-depth" id="radio-depth4" value="4" />
-            <label for="radio-depth4">普通</label>
+            <label for="radio-depth4" data-i18n="menu_average">普通</label>
             <input type="radio" name="radio-depth" id="radio-depth5" value="5" disabled />
-            <label for="radio-depth5">長考</label>
+            <label for="radio-depth5" data-i18n="menu_longtime">長考</label>
             <input type="radio" name="radio-depth" id="radio-depth6" value="6" disabled />
-            <label for="radio-depth6">瞑想</label>
+            <label for="radio-depth6" data-i18n="menu_meditation">瞑想</label>
           </fieldset>
         </div>
       </div>
-      <div data-role="collapsible" data-theme="b" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-        <H3>初期配置</h3>
+      <div id = "boardList" data-role="collapsible" data-theme="b" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+        <H3 data-i18n="menu_placement">初期配置リスト</h3>
         <div>
-          <fieldset data-role="controlgroup" data-inline="true" data-mini="true">
-            <input type="radio" name="radio-arrange" id="radio-arrange0" value="0" />
-            <label for="radio-arrange0">Standard:<img src="./img/standard.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange1" value="1" />
-            <label for="radio-arrange1">Arrange01:<img src="./img/arrange01.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange2" value="2" />
-            <label for="radio-arrange2">Arrange02:<img src="./img/arrange02.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange3" value="3" />
-            <label for="radio-arrange3">Arrange03:<img src="./img/arrange03.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange4" value="4" />
-            <label for="radio-arrange4">Arrange04:<img src="./img/arrange04.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange5" value="5" />
-            <label for="radio-arrange5">Arrange05:<img src="./img/arrange05.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange6" value="6" />
-            <label for="radio-arrange6">Arrange06:<img src="./img/arrange06.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange7" value="7" />
-            <label for="radio-arrange7">Arrange07:<img src="./img/arrange07.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange8" value="8" />
-            <label for="radio-arrange8">Arrange08:<img src="./img/arrange08.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange9" value="9" />
-            <label for="radio-arrange9">Arrange09:<img src="./img/arrange09.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange10" value="10" />
-            <label for="radio-arrange10">Arrange10:<img src="./img/arrange10.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange11" value="11" />
-            <label for="radio-arrange11">Arrange11:<img src="./img/arrange11.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange12" value="12" />
-            <label for="radio-arrange12">Arrange12:<img src="./img/arrange12.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange13" value="13" />
-            <label for="radio-arrange13">Arrange13:<img src="./img/arrange13.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange14" value="14" />
-            <label for="radio-arrange14">Arrange14:<img src="./img/arrange14.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange15" value="15" />
-            <label for="radio-arrange15">Arrange15:<img src="./img/arrange15.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange16" value="16" />
-            <label for="radio-arrange16">Arrange16:<img src="./img/arrange16.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange17" value="17" />
-            <label for="radio-arrange17">Arrange17:<img src="./img/arrange17.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange18" value="18" />
-            <label for="radio-arrange18">Arrange18:<img src="./img/arrange18.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange19" value="19" />
-            <label for="radio-arrange19">Arrange19:<img src="./img/arrange19.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange20" value="20" />
-            <label for="radio-arrange20">Arrange20:<img src="./img/arrange20.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange21" value="21" />
-            <label for="radio-arrange21">Arrange21:<img src="./img/arrange21.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange22" value="22" />
-            <label for="radio-arrange22">Arrange22:<img src="./img/arrange22.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange23" value="23" />
-            <label for="radio-arrange23">Arrange23:<img src="./img/arrange23.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange24" value="24" />
-            <label for="radio-arrange24">Arrange24:<img src="./img/arrange24.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange25" value="25" />
-            <label for="radio-arrange25">Arrange25:<img src="./img/arrange25.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange26" value="26" />
-            <label for="radio-arrange26">Arrange26:<img src="./img/arrange26.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange27" value="27" />
-            <label for="radio-arrange27">Arrange27:<img src="./img/arrange27.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange28" value="28" />
-            <label for="radio-arrange28">Arrange28:<img src="./img/arrange28.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange29" value="29" />
-            <label for="radio-arrange29">Arrange29:<img src="./img/arrange29.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange30" value="30" />
-            <label for="radio-arrange30">Arrange30:<img src="./img/arrange30.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange31" value="31" />
-            <label for="radio-arrange31">Arrange31:<img src="./img/arrange31.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange32" value="32" />
-            <label for="radio-arrange32">Arrange32:<img src="./img/arrange32.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange33" value="33" />
-            <label for="radio-arrange33">Arrange33:<img src="./img/arrange33.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange34" value="34" />
-            <label for="radio-arrange34">Arrange34:<img src="./img/arrange34.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange35" value="35" />
-            <label for="radio-arrange35">Arrange35:<img src="./img/arrange35.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange36" value="36" />
-            <label for="radio-arrange36">Arrange36:<img src="./img/arrange36.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange37" value="37" />
-            <label for="radio-arrange37">Arrange37:<img src="./img/arrange37.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange38" value="38" />
-            <label for="radio-arrange38">Arrange38:<img src="./img/arrange38.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange39" value="39" />
-            <label for="radio-arrange39">Arrange39:<img src="./img/arrange39.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange40" value="40" />
-            <label for="radio-arrange40">Arrange40:<img src="./img/arrange40.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange41" value="41" />
-            <label for="radio-arrange41">Arrange41:<img src="./img/arrange41.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange42" value="42" />
-            <label for="radio-arrange42">Arrange42:<img src="./img/arrange42.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange43" value="43" />
-            <label for="radio-arrange43">Arrange43:<img src="./img/arrange43.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange44" value="44" />
-            <label for="radio-arrange44">Arrange44:<img src="./img/arrange44.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange45" value="45" />
-            <label for="radio-arrange45">Arrange45:<img src="./img/arrange45.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange46" value="46" />
-            <label for="radio-arrange46">Arrange46:<img src="./img/arrange46.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange47" value="47" />
-            <label for="radio-arrange47">Arrange47:<img src="./img/arrange47.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange48" value="48" />
-            <label for="radio-arrange48">Arrange48:<img src="./img/arrange48.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange49" value="49" />
-            <label for="radio-arrange49">Arrange49:<img src="./img/arrange49.png" alt=""></label>
-            <input type="radio" name="radio-arrange" id="radio-arrange50" value="50" />
-            <label for="radio-arrange50">Arrange50:<img src="./img/arrange50.png" alt=""></label>
+          <fieldset id = "boardImage" data-role="controlgroup" data-inline="true" data-mini="true">
+    <script>
+    for (var idx = 0; idx <= 140; idx++) {
+        $("<input>", {
+            type: 'radio',
+            name: 'radio-arrange',
+            id: 'radio-arrange' + idx.toString(),
+            value: idx
+        }).appendTo('#boardImage');
+        var label = document.createElement('label');
+        label.htmlFor = 'radio-arrange' + idx.toString();
+        var title = ''
+        if (idx == 0) {
+            title = 'Standard:';
+        } else {
+            title = 'Arrange' + idx.toString() + ':';
+        }
+        label.innerHTML = title +
+'    <div class="ui-grid-solo-second">' +
+'      <div class="ui-block-a">' +
+'	     <div id="group_s_' + idx.toString() + '" data-role="controlgroup" data-type="horizontal">'+
+'        </div>'+
+'      </div>'+
+'    </div>'+
+'    <div id="mainboard" class="ui-grid-d-board">'+
+'      <div class="ui-block-a"></div>'+
+'      <div class="ui-block-b">３</div>'+
+'      <div class="ui-block-c">２</div>'+
+'      <div class="ui-block-d">１</div>'+
+'      <div class="ui-block-e"></div>'+
+'      <div class="ui-block-a">'+
+'      </div>'+
+'      <div class="ui-block-b"><div id="b31_' + idx.toString() + '" data-col="3" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div></div>'+
+'      <div class="ui-block-c"><div id="b21_' + idx.toString() + '" data-col="2" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div></div>'+
+'      <div class="ui-block-d"><div id="b11_' + idx.toString() + '" data-col="1" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div></div>'+
+'      <div class="ui-block-e">一</div>'+
+'      <div class="ui-block-a">'+
+'      </div>'+
+'      <div class="ui-block-b"><div id="b32_' + idx.toString() + '" data-col="3" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div></div>'+
+'      <div class="ui-block-c"><div id="b22_' + idx.toString() + '" data-col="2" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div></div>'+
+'      <div class="ui-block-d"><div id="b12_' + idx.toString() + '" data-col="1" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div></div>'+
+'      <div class="ui-block-e">二</div>'+
+'      <div class="ui-block-a"></div>'+
+'      <div class="ui-block-b"><div id="b33_' + idx.toString() + '" data-col="3" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div></div>'+
+'      <div class="ui-block-c"><div id="b23_' + idx.toString() + '" data-col="2" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div></div>'+
+'      <div class="ui-block-d"><div id="b13_' + idx.toString() + '" data-col="1" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div></div>'+
+'      <div class="ui-block-e">三</div>'+
+'    </div>'+
+'    <div class="ui-grid-solo-first">'+
+'      <div class="ui-block-a">'+
+'        <div id="group_f_' + idx.toString() + '" data-role="controlgroup" data-type="horizontal">'+
+'        </div>'+
+'      </div>'+
+'    </div>';
+        $('#boardImage').append(label);
+    }
+    </script>
           </fieldset>
         </div>
       </div>
+      <div id = "boardSearch" data-role="collapsible" data-theme="b" data-collapsed="false" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+        <h3 data-i18n="menu_search">初期配置検索</h3>
+        <div>
+          <form id="frm_pieces">
+            <fieldset data-role="controlgroup" data-type="horizontal" data-inline="true" data-mini="true">
+              <legend data-i18n="menu_pieces">使用されている駒を選択:</legend>
+              <input type="checkbox" name="check-hi" id="check-hi" value="Hi" />
+              <label for="check-hi">飛</label>
+              <input type="checkbox" name="check-ka" id="check-ka" value="Ka" />
+              <label for="check-ka">角</label>
+              <input type="checkbox" name="check-ki" id="check-ki" value="Ki" />
+              <label for="check-ki">金</label>
+              <input type="checkbox" name="check-gi" id="check-gi" value="Gi" />
+              <label for="check-gi">銀</label>
+              <input type="checkbox" name="check-ke" id="check-ke" value="Ke" />
+              <label for="check-ke">桂</label>
+              <input type="checkbox" name="check-ky" id="check-ky" value="Ky" />
+              <label for="check-ky">香</label>
+              <input type="checkbox" name="check-fu" id="check-fu" value="Fu" />
+              <label for="check-fu">歩</label>
+            </fieldset>
+            <button id="btnSearch" type="button" data-i18n="btn_search"></button>
+          </form>
+        </div>
+        <div id="searchArea">
+          <fieldset id="searchImage" data-role="controlgroup" data-inline="true" data-mini="true">
+          </fieldset>
+        </div>
+        <span id = "spanSearch" style="color: red;"></span>
+      </div>
       <div data-role="collapsible" data-theme="b" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-        <h3>「３三将棋」について</h3>
-        <p>　３×３の盤で遊ぶミニ将棋です。ルールも将棋とほぼ同じで二歩や打ち歩詰めの反則手は指せないようになっており千日手成立でゲームを中断するようにしています。通常の将棋では敵陣（３段目）に駒を移動した場合に駒を成ることが出来ますが、３三将棋では１段目（後手は３段目）に移動したり、１段目（後手は３段目）から移動する時に駒を成ることが出来ます。将棋のルールを知っている方であればすぐに遊ぶことができると思います。ネットの情報によると、本来の３三将棋は盤上に二つの玉を配置して先手・後手双方が銀と歩の持ち駒を一枚ずつ持って対戦するようですが、他にも初形パターンをいろいろ用意してみました。<br />ＡＩは駒得重視の思考ルーチンでそれほど強くありませんが、将棋初心者の方なら十分楽しめると思います。ＡＩ同士の対戦では勝ちを読み切ったところでゲーム終了しますが、対人戦では詰みまで指すようにしていますので、勝敗に納得いかない場合はメニューから負けた方の手番を持ってゲームを再開してみて下さい。どのように対応しても勝てないことが確認出来ると思います。人対人で遊ぶことも出来ますので是非いろいろな変化を楽しんでみてください。詳しい仕様については<a href="https://happyclam.github.io/project/2018-01-01/33shogiapp">ブログ記事</a>を参照してください。
+        <H3 data-i18n="menu_movement">駒の動き</h3>
+        <div>
+          <!-- <form id="frm_pieces"> -->
+          <!--   <fieldset data-type="horizontal" data-mini="true"> -->
+          <!--     <input type="checkbox" name="check-guide" id="check-guide" /> -->
+          <!--     <label for="check-guide" data-i18n="menu_guide">駒の移動ガイドを表示する</label> -->
+          <!--   </fieldset> -->
+          <!-- </form> -->
+          <!-- <hr> -->
+          <table style="border-collapse:collapse;" border="1" align="center">
+            <thead>
+              <tr>
+                <th data-i18n="[html]koma_front">表<br />略号</th>
+                <th data-i18n="koma_front_moves">動き</th>
+                <th data-i18n="[html]koma_back">裏（成駒）</th>
+                <th data-i18n="koma_back_moves">動き</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="center" data-i18n="[html]koma_gyoku">玉<br />OU</td>
+                <td>
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">玉</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="center">-</td>
+                <td align="center">-</td>
+              </tr>
+              <tr>
+                <td align="center" data-i18n="[html]koma_hisya">飛<br />HI</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">｜︎</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">｜</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">ー</td>
+                      <td align="center">ー</td>
+                      <td align="center">飛</td>
+                      <td align="center">ー</td>
+                      <td align="center">ー</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">｜</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">｜</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="center" data-i18n="[html]koma_ryu">竜<br />RY</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">｜</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">｜</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">ー</td>
+                      <td align="center">ー</td>
+                      <td align="center">竜</td>
+                      <td align="center">ー</td>
+                      <td align="center">ー</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">|</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">|</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" data-i18n="[html]koma_kaku">角<br />KA</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">＼</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">／</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">＼</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">／</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">角</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">／</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">＼</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">／</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">＼</td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="center" data-i18n="[html]koma_uma">馬<br />UM</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">＼</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">／</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">＼</td>
+                      <td align="center">◯</td>
+                      <td align="center">／</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">馬</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">／</td>
+                      <td align="center">◯</td>
+                      <td align="center">＼</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">／</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">＼</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" data-i18n="[html]koma_kin">金<br />KI</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">金</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="center">-</td>
+                <td align="center">-</td>
+              </tr>
+              <tr>
+                <td align="center" data-i18n="[html]koma_gin">銀<br />GI</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">銀</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="center" data-i18n="[html]koma_narigin">成銀<br />NG</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">全</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" data-i18n="[html]koma_keima">桂<br />KE</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;︎</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">桂</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="center" data-i18n="[html]koma_narikei">成桂<br />NK</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">圭</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" data-i18n="[html]koma_kyosya">香<br />KY</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">｜︎</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">｜</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">香</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="center" data-i18n="[html]koma_narikyo">成香<br />NY</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">杏</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" data-i18n="[html]koma_fu">歩<br />FU</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">歩</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="center" data-i18n="[html]koma_tokin">と金<br />TO</td>
+                <td align="center">
+                  <table border="1">
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">と</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">◯</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                    <tr>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                      <td align="center">&emsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div data-role="collapsible" data-theme="b" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+        <H3 data-i18n="menu_kifuinput">棋譜入力</h3>
+        <div>
+          <fieldset data-type="horizontal" data-mini="true">
+            <label for="text_kifu" data-i18n="menu_kifudata">CSA形式(*.csa)の棋譜を貼り付けてください:</label>
+            <textarea name="kifuarea" id="textKifu"></textarea>
+          </fieldset>
+          <button id="btnKifu" data-i18n="menu_btninput">棋譜読込</button>
+          <p>
+            <span class="message" id="kifuStatus"></span>
+          </p>
+        </div>
+      </div>
+      <div data-role="collapsible" data-theme="b" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+        <h3 data-i18n="menu_about">「３三将棋」について</h3>
+        <p data-i18n="[html]menu_description_html">　３×３の盤で遊ぶミニ将棋です。ルールも将棋とほぼ同じで二歩や打ち歩詰めの反則手は指せないようになっており千日手成立でゲームを中断するようにしています。通常の将棋では敵陣（３段目）に駒を移動した場合に駒を成ることが出来ますが、３三将棋では１段目（後手は３段目）に移動したり、１段目（後手は３段目）から移動する時に駒を成ることが出来ます。将棋のルールを知っている方であればすぐに遊ぶことができると思います。ネットの情報によると、本来の３三将棋は盤上に二つの玉を配置して先手・後手双方が銀と歩の持ち駒を一枚ずつ持って対戦するようですが、他にも初形パターンをいろいろ用意してみました。<br />ＡＩは駒得重視の思考ルーチンでそれほど強くありませんが、将棋初心者の方なら十分楽しめると思います。人対人で遊ぶことも出来ますので是非いろいろな変化を楽しんでみてください。詳しい仕様については<a href="https://happyclam.github.io/project/2018-01-01/33shogiapp">ブログ記事</a>を参照してください。
         </p>
       </div>
     </div>

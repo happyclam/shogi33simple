@@ -29308,12 +29308,21 @@ GameGUI = function () {
     }, {
       key: 'makeRecord',
       value: function makeRecord() {
-        var converted, linkStr;
+        var converted, linkStr, output;
         // console.log("GameGUI.makeRecord")
         // console.log(@history)
         converted = this.convert();
         linkStr = "https://play.google.com/store/apps/details?id=shogi33.io.github.happyclam";
-        window.plugins.socialsharing.share('\' #３三将棋 ' + linkStr + ' \n' + converted, 'shogi33', null, null);
+        // window.plugins.socialsharing.share('\' #３三将棋 ' + linkStr + ' \n' + converted, 'shogi33', null, null);
+        output = window.open('', '３三将棋');
+        output.document.open();
+        output.document.write('<HTML><HEAD>');
+        output.document.write('<TITLE>３三将棋</TITLE>');
+        output.document.writeln('<BODY>');
+        output.document.write('\' #３三将棋 ' + linkStr + ' <br /><pre>');
+        output.document.write(converted);
+        output.document.write('</pre></BODY></HTML>');
+        output.document.close();
       }
     }, {
       key: 'convert',
@@ -29325,22 +29334,22 @@ GameGUI = function () {
         }
         if (this.history[0]["latest"] != null) {
           radioNo = this.history[0]["latest"][0];
-          records = '\'No. ' + radioNo.toString() + '\n';
+          records = '\'No. ' + radioNo.toString() + '<br />';
         } else {
           radioNo = -1;
-          records = "'\n";
+          records = "'<br />";
         }
-        records += "'\n";
-        records += "V2.2\n";
+        records += "'<br />";
+        records += "V2.2<br />";
         if (this.first.human) {
-          records += "N+Player\n";
+          records += "N+Player<br />";
         } else {
-          records += "N+AI\n";
+          records += "N+AI<br />";
         }
         if (this.second.human) {
-          records += "N-Player\n";
+          records += "N-Player<br />";
         } else {
-          records += "N-AI\n";
+          records += "N-AI<br />";
         }
         if (radioNo === -1) {
           records += this.originalBoardImage;
@@ -29348,9 +29357,9 @@ GameGUI = function () {
           records += initialBoardImage.call(this, radioNo);
         }
         if (this.teban.turn === Const.SECOND) {
-          records += "-\n";
+          records += "-<br />";
         } else {
-          records += "+\n";
+          records += "+<br />";
         }
         ref = this.history;
         for (i = l = 0, len = ref.length; l < len; i = ++l) {
@@ -29361,7 +29370,7 @@ GameGUI = function () {
           teban = i % 2 === 1 ? "+" : "-";
           from = v.from.length !== 0 ? v.from.toString().replace(",", "") : "00";
           to = v.to.length !== 0 ? v.to.toString().replace(",", "") : "";
-          records += teban + from + to + v.koma + "\n";
+          records += teban + from + to + v.koma + "<br />";
         }
         return records;
       }
@@ -33488,941 +33497,941 @@ GameGUI = function () {
     b = "";
     switch (pattern) {
       case 0:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00GI00FU\n";
-        b += "P-00GI00FU\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00GI00FU<br />";
+        b += "P-00GI00FU<br />";
         break;
       case 1:
-        b += "P1-KA-OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +OU+KA\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1-KA-OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +OU+KA<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 2:
-        b += "P1 * -OU-KA\n";
-        b += "P2 *  *  * \n";
-        b += "P3+HI+OU * \n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1 * -OU-KA<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+HI+OU * <br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 3:
-        b += "P1 *  * -OU\n";
-        b += "P2+KA * -KA\n";
-        b += "P3+OU *  * \n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2+KA * -KA<br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 4:
-        b += "P1 * -KA-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+KA * \n";
-        b += "P+00HI00FU\n";
-        b += "P-00HI00FU\n";
+        b += "P1 * -KA-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+KA * <br />";
+        b += "P+00HI00FU<br />";
+        b += "P-00HI00FU<br />";
         break;
       case 5:
-        b += "P1 * -FU-OU\n";
-        b += "P2+HI * -HI\n";
-        b += "P3+OU+FU * \n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1 * -FU-OU<br />";
+        b += "P2+HI * -HI<br />";
+        b += "P3+OU+FU * <br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 6:
-        b += "P1-HI-OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +OU+HI\n";
+        b += "P1-HI-OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +OU+HI<br />";
         break;
       case 7:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00HI00FU\n";
-        b += "P-00HI00FU\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00HI00FU<br />";
+        b += "P-00HI00FU<br />";
         break;
       case 8:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00KA\n";
-        b += "P-00HI\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KA<br />";
+        b += "P-00HI<br />";
         break;
       case 9:
-        b += "P1-FU-KI-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+KI+FU\n";
+        b += "P1-FU-KI-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+KI+FU<br />";
         break;
       case 10:
-        b += "P1-KE-FU-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+FU+KE\n";
-        b += "P+00GI00FU\n";
-        b += "P-00GI00FU\n";
+        b += "P1-KE-FU-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+FU+KE<br />";
+        b += "P+00GI00FU<br />";
+        b += "P-00GI00FU<br />";
         break;
       case 11:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00KE00FU\n";
-        b += "P-00KE00FU\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KE00FU<br />";
+        b += "P-00KE00FU<br />";
         break;
       case 12:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00KY00FU\n";
-        b += "P-00KY00FU\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KY00FU<br />";
+        b += "P-00KY00FU<br />";
         break;
       case 13:
-        b += "P1 *  * -OU\n";
-        b += "P2+OU *  * \n";
-        b += "P3 *  *  * \n";
-        b += "P+00KY\n";
-        b += "P-00KI\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2+OU *  * <br />";
+        b += "P3 *  *  * <br />";
+        b += "P+00KY<br />";
+        b += "P-00KI<br />";
         break;
       case 14:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00KE00KY\n";
-        b += "P-00KE00KY\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KE00KY<br />";
+        b += "P-00KE00KY<br />";
         break;
       case 15:
-        b += "P1-FU-KA-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+KA+FU\n";
+        b += "P1-FU-KA-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+KA+FU<br />";
         break;
       case 16:
-        b += "P1+OU *  * \n";
-        b += "P2 * -KI * \n";
-        b += "P3 *  * -OU\n";
-        b += "P+00KI00GI\n";
-        b += "P-00GI\n";
+        b += "P1+OU *  * <br />";
+        b += "P2 * -KI * <br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00KI00GI<br />";
+        b += "P-00GI<br />";
         break;
       case 17:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00GI\n";
-        b += "P-00KI\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00GI<br />";
+        b += "P-00KI<br />";
         break;
       case 18:
-        b += "P1 * -OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +OU * \n";
-        b += "P+00HI\n";
-        b += "P-00KA00FU\n";
+        b += "P1 * -OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +OU * <br />";
+        b += "P+00HI<br />";
+        b += "P-00KA00FU<br />";
         break;
       case 19:
-        b += "P1 * -OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +OU * \n";
-        b += "P+00KE\n";
-        b += "P-00FU\n";
+        b += "P1 * -OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +OU * <br />";
+        b += "P+00KE<br />";
+        b += "P-00FU<br />";
         break;
       case 20:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00KE00KE\n";
-        b += "P-00KA\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KE00KE<br />";
+        b += "P-00KA<br />";
         break;
       case 21:
-        b += "P1 *  * -OU\n";
-        b += "P2 * -FU * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00HI\n";
-        b += "P-00KI\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 * -FU * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00HI<br />";
+        b += "P-00KI<br />";
         break;
       case 22:
-        b += "P1-FU-KA-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+HI+FU\n";
+        b += "P1-FU-KA-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+HI+FU<br />";
         break;
       case 23:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00KA00FU\n";
-        b += "P-00HI00FU\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KA00FU<br />";
+        b += "P-00HI00FU<br />";
         break;
       case 24:
-        b += "P1+OU+KI-KY\n";
-        b += "P2+KI+FU-GI\n";
-        b += "P3+FU-GI-OU\n";
+        b += "P1+OU+KI-KY<br />";
+        b += "P2+KI+FU-GI<br />";
+        b += "P3+FU-GI-OU<br />";
         break;
       case 25:
-        b += "P1 * +OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -OU * \n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1 * +OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -OU * <br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 26:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00KE00KY\n";
-        b += "P-00GI\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KE00KY<br />";
+        b += "P-00GI<br />";
         break;
       case 27:
-        b += "P1-OU-KY * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 *  * +OU\n";
-        b += "P+00KA00FU00FU\n";
-        b += "P-00KA\n";
+        b += "P1-OU-KY * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 *  * +OU<br />";
+        b += "P+00KA00FU00FU<br />";
+        b += "P-00KA<br />";
         break;
       case 28:
-        b += "P1 * -OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +OU * \n";
-        b += "P+00KA00FU\n";
-        b += "P-00HI00FU\n";
+        b += "P1 * -OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +OU * <br />";
+        b += "P+00KA00FU<br />";
+        b += "P-00HI00FU<br />";
         break;
       case 29:
-        b += "P1-HI-OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3+KA+OU * \n";
-        b += "P+00FU\n";
-        b += "P-00KY\n";
+        b += "P1-HI-OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KA+OU * <br />";
+        b += "P+00FU<br />";
+        b += "P-00KY<br />";
         break;
       case 30:
-        b += "P1 * -OU-HI\n";
-        b += "P2 *  *  * \n";
-        b += "P3+HI+OU * \n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1 * -OU-HI<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+HI+OU * <br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 31:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00FU\n";
-        b += "P-00KE00KY\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00FU<br />";
+        b += "P-00KE00KY<br />";
         break;
       case 32:
-        b += "P1+HI-KE-OU\n";
-        b += "P2-KA+FU-KY\n";
-        b += "P3+OU-GI+FU\n";
+        b += "P1+HI-KE-OU<br />";
+        b += "P2-KA+FU-KY<br />";
+        b += "P3+OU-GI+FU<br />";
         break;
       case 33:
-        b += "P1-OU-HI * \n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+HI * \n";
+        b += "P1-OU-HI * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+HI * <br />";
         break;
       case 34:
-        b += "P1 * -OU * \n";
-        b += "P2-HI *  * \n";
-        b += "P3 * +OU * \n";
-        b += "P+00KA\n";
+        b += "P1 * -OU * <br />";
+        b += "P2-HI *  * <br />";
+        b += "P3 * +OU * <br />";
+        b += "P+00KA<br />";
         break;
       case 35:
-        b += "P1-FU-KA-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+KY+FU\n";
+        b += "P1-FU-KA-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+KY+FU<br />";
         break;
       case 36:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00KA00FU\n";
-        b += "P-00GI00GI\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KA00FU<br />";
+        b += "P-00GI00GI<br />";
         break;
       case 37:
-        b += "P1 * -FU-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00GI00GI00FU\n";
-        b += "P-00KA00KA\n";
+        b += "P1 * -FU-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00GI00GI00FU<br />";
+        b += "P-00KA00KA<br />";
         break;
       case 38:
-        b += "P1 * -FU-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+FU * \n";
-        b += "P+00KA\n";
-        b += "P-00HI\n";
+        b += "P1 * -FU-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+FU * <br />";
+        b += "P+00KA<br />";
+        b += "P-00HI<br />";
         break;
       case 39:
-        b += "P1 *  *  * \n";
-        b += "P2+OU * -OU\n";
-        b += "P3 *  *  * \n";
-        b += "P+00KA\n";
-        b += "P-00HI00FU\n";
+        b += "P1 *  *  * <br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3 *  *  * <br />";
+        b += "P+00KA<br />";
+        b += "P-00HI00FU<br />";
         break;
       case 40:
-        b += "P1 * -OU * \n";
-        b += "P2-HI *  * \n";
-        b += "P3 * +OU+GI\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1 * -OU * <br />";
+        b += "P2-HI *  * <br />";
+        b += "P3 * +OU+GI<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 41:
-        b += "P1+KA * -OU\n";
-        b += "P2+FU * -FU\n";
-        b += "P3+OU * -KA\n";
+        b += "P1+KA * -OU<br />";
+        b += "P2+FU * -FU<br />";
+        b += "P3+OU * -KA<br />";
         break;
       case 42:
-        b += "P1 *  * -OU\n";
-        b += "P2 * +FU * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00KY\n";
-        b += "P-00KA00KI\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 * +FU * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KY<br />";
+        b += "P-00KA00KI<br />";
         break;
       case 43:
-        b += "P1 * -FU-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+FU * \n";
-        b += "P+00HI\n";
-        b += "P-00GI00GI\n";
+        b += "P1 * -FU-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+FU * <br />";
+        b += "P+00HI<br />";
+        b += "P-00GI00GI<br />";
         break;
       case 44:
-        b += "P1+OU-KE-FU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+FU+KE-OU\n";
+        b += "P1+OU-KE-FU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+FU+KE-OU<br />";
         break;
       case 45:
-        b += "P1+OU *  * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 *  * -OU\n";
-        b += "P+00GI00FU\n";
-        b += "P-00GI00FU\n";
+        b += "P1+OU *  * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00GI00FU<br />";
+        b += "P-00GI00FU<br />";
         break;
       case 46:
-        b += "P1+GI+OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -OU-GI\n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1+GI+OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -OU-GI<br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 47:
-        b += "P1-KY+OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -OU+KY\n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1-KY+OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -OU+KY<br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 48:
-        b += "P1+OU * -GI\n";
-        b += "P2 *  *  * \n";
-        b += "P3+GI * -OU\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1+OU * -GI<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+GI * -OU<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 49:
-        b += "P1+OU-FU * \n";
-        b += "P2-GI * +GI\n";
-        b += "P3 * +FU-OU\n";
+        b += "P1+OU-FU * <br />";
+        b += "P2-GI * +GI<br />";
+        b += "P3 * +FU-OU<br />";
         break;
       case 50:
-        b += "P1 *  * -KE\n";
-        b += "P2-OU * +OU\n";
-        b += "P3+KE *  * \n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1 *  * -KE<br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3+KE *  * <br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 51:
-        b += "P1 * -OU-FU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+FU+OU * \n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1 * -OU-FU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+FU+OU * <br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 52:
-        b += "P1+OU-KA * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +KA-OU\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1+OU-KA * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +KA-OU<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 53:
-        b += "P1 * -FU-HI\n";
-        b += "P2+OU * -OU\n";
-        b += "P3+HI+FU * \n";
+        b += "P1 * -FU-HI<br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3+HI+FU * <br />";
         break;
       case 54:
-        b += "P1-GI *  * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 *  * +GI\n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1-GI *  * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 *  * +GI<br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 55:
-        b += "P1+OU * -KY\n";
-        b += "P2 *  *  * \n";
-        b += "P3+KY * -OU\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1+OU * -KY<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KY * -OU<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 56:
-        b += "P1+OU-KA * \n";
-        b += "P2-GI * +GI\n";
-        b += "P3 * +KA-OU\n";
+        b += "P1+OU-KA * <br />";
+        b += "P2-GI * +GI<br />";
+        b += "P3 * +KA-OU<br />";
         break;
       case 57:
-        b += "P1-OU-FU+RY\n";
-        b += "P2 *  *  * \n";
-        b += "P3-RY+FU+OU\n";
+        b += "P1-OU-FU+RY<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3-RY+FU+OU<br />";
         break;
       case 58:
-        b += "P1 * -OU-KY\n";
-        b += "P2 *  *  * \n";
-        b += "P3+KY+OU * \n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1 * -OU-KY<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KY+OU * <br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 59:
-        b += "P1+GI *  * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 *  * -GI\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1+GI *  * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 *  * -GI<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 60:
-        b += "P1+OU *  * \n";
-        b += "P2+FU * -FU\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1+OU *  * <br />";
+        b += "P2+FU * -FU<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 61:
-        b += "P1 *  * -OU\n";
-        b += "P2-KA * +KA\n";
-        b += "P3+OU *  * \n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2-KA * +KA<br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 62:
-        b += "P1+OU-FU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +FU-OU\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1+OU-FU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +FU-OU<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 63:
-        b += "P1+OU-KE * \n";
-        b += "P2+GI * -GI\n";
-        b += "P3 * +KE-OU\n";
+        b += "P1+OU-KE * <br />";
+        b += "P2+GI * -GI<br />";
+        b += "P3 * +KE-OU<br />";
         break;
       case 64:
-        b += "P1 * -FU-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+FU * \n";
-        b += "P+00GI\n";
-        b += "P-00GI\n";
+        b += "P1 * -FU-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+FU * <br />";
+        b += "P+00GI<br />";
+        b += "P-00GI<br />";
         break;
       case 65:
-        b += "P1 * -KY-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU+KY * \n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1 * -KY-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU+KY * <br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 66:
-        b += "P1+OU-FU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +FU-OU\n";
-        b += "P+00GI\n";
-        b += "P-00GI\n";
+        b += "P1+OU-FU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +FU-OU<br />";
+        b += "P+00GI<br />";
+        b += "P-00GI<br />";
         break;
       case 67:
-        b += "P1-GI-FU+OU\n";
-        b += "P2 *  * -FU\n";
-        b += "P3 * +GI-OU\n";
+        b += "P1-GI-FU+OU<br />";
+        b += "P2 *  * -FU<br />";
+        b += "P3 * +GI-OU<br />";
         break;
       case 68:
-        b += "P1 * -FU * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 * +FU * \n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1 * -FU * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 * +FU * <br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 69:
-        b += "P1 * -FU * \n";
-        b += "P2+OU * -OU\n";
-        b += "P3 * +FU * \n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1 * -FU * <br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3 * +FU * <br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 70:
-        b += "P1-KY *  * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 *  * +KY\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1-KY *  * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 *  * +KY<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 71:
-        b += "P1 * +KI-KY\n";
-        b += "P2+OU * -OU\n";
-        b += "P3+KY-KI * \n";
+        b += "P1 * +KI-KY<br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3+KY-KI * <br />";
         break;
       case 72:
-        b += "P1 * +OU-FU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+FU-OU * \n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1 * +OU-FU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+FU-OU * <br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 73:
-        b += "P1-OU+GI-KE\n";
-        b += "P2 *  *  * \n";
-        b += "P3+KE-GI+OU\n";
+        b += "P1-OU+GI-KE<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KE-GI+OU<br />";
         break;
       case 74:
-        b += "P1 *  * -HI\n";
-        b += "P2+OU * -OU\n";
-        b += "P3+HI *  * \n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1 *  * -HI<br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3+HI *  * <br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 75:
-        b += "P1-FU *  * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 *  * +FU\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1-FU *  * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 *  * +FU<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 76:
-        b += "P1+OU * -KE\n";
-        b += "P2 *  *  * \n";
-        b += "P3+KE * -OU\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1+OU * -KE<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KE * -OU<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 77:
-        b += "P1+OU-FU * \n";
-        b += "P2+KY * -KY\n";
-        b += "P3 * +FU-OU\n";
+        b += "P1+OU-FU * <br />";
+        b += "P2+KY * -KY<br />";
+        b += "P3 * +FU-OU<br />";
         break;
       case 78:
-        b += "P1 * +OU * \n";
-        b += "P2-KI * +KI\n";
-        b += "P3 * -OU * \n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1 * +OU * <br />";
+        b += "P2-KI * +KI<br />";
+        b += "P3 * -OU * <br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 79:
-        b += "P1-KE * -FU\n";
-        b += "P2+OU * -OU\n";
-        b += "P3+FU * +KE\n";
+        b += "P1-KE * -FU<br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3+FU * +KE<br />";
         break;
       case 80:
-        b += "P1+OU *  * \n";
-        b += "P2+KI * -KI\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1+OU *  * <br />";
+        b += "P2+KI * -KI<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 81:
-        b += "P1-OU-KA * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +KA+OU\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1-OU-KA * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +KA+OU<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 82:
-        b += "P1-OU *  * \n";
-        b += "P2-KA * +KA\n";
-        b += "P3 *  * +OU\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1-OU *  * <br />";
+        b += "P2-KA * +KA<br />";
+        b += "P3 *  * +OU<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 83:
-        b += "P1-KE * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU * +KE\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1-KE * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU * +KE<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 84:
-        b += "P1+GI+OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -OU-GI\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1+GI+OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -OU-GI<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 85:
-        b += "P1 * -OU-TO\n";
-        b += "P2 *  * +FU\n";
-        b += "P3 *  * +OU\n";
+        b += "P1 * -OU-TO<br />";
+        b += "P2 *  * +FU<br />";
+        b += "P3 *  * +OU<br />";
         break;
       case 86:
-        b += "P1+OU *  * \n";
-        b += "P2+KA * -KA\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1+OU *  * <br />";
+        b += "P2+KA * -KA<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 87:
-        b += "P1-FU * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU * +FU\n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1-FU * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU * +FU<br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 88:
-        b += "P1+OU * -OU\n";
-        b += "P2 * -FU-NG\n";
-        b += "P3 * +TO * \n";
+        b += "P1+OU * -OU<br />";
+        b += "P2 * -FU-NG<br />";
+        b += "P3 * +TO * <br />";
         break;
       case 89:
-        b += "P1 * +OU * \n";
-        b += "P2-KY * +KY\n";
-        b += "P3 * -OU * \n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1 * +OU * <br />";
+        b += "P2-KY * +KY<br />";
+        b += "P3 * -OU * <br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 90:
-        b += "P1+OU * -FU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+FU * -OU\n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1+OU * -FU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+FU * -OU<br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 91:
-        b += "P1+OU *  * \n";
-        b += "P2-FU * +FU\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00GI\n";
-        b += "P-00GI\n";
+        b += "P1+OU *  * <br />";
+        b += "P2-FU * +FU<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00GI<br />";
+        b += "P-00GI<br />";
         break;
       case 92:
-        b += "P1+OU-KA-KY\n";
-        b += "P2 *  *  * \n";
-        b += "P3+KY+KA-OU\n";
+        b += "P1+OU-KA-KY<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KY+KA-OU<br />";
         break;
       case 93:
-        b += "P1 *  * -KE\n";
-        b += "P2+OU * -OU\n";
-        b += "P3+KE *  * \n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1 *  * -KE<br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3+KE *  * <br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 94:
-        b += "P1+OU-KE * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +KE-OU\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1+OU-KE * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +KE-OU<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 95:
-        b += "P1-KE *  * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 *  * +KE\n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1-KE *  * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 *  * +KE<br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 96:
-        b += "P1+KI *  * \n";
-        b += "P2+OU * -OU\n";
-        b += "P3 *  * -KI\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1+KI *  * <br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3 *  * -KI<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 97:
-        b += "P1-KI * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU * +KI\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1-KI * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU * +KI<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 98:
-        b += "P1-KE * -KY\n";
-        b += "P2+OU * -OU\n";
-        b += "P3+KY * +KE\n";
+        b += "P1-KE * -KY<br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3+KY * +KE<br />";
         break;
       case 99:
-        b += "P1-FU * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU * +FU\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1-FU * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU * +FU<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 100:
-        b += "P1 *  * -OU\n";
-        b += "P2+FU * -FU\n";
-        b += "P3+OU *  * \n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2+FU * -FU<br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 101:
-        b += "P1+OU+KA * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -KA-OU\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1+OU+KA * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -KA-OU<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 102:
-        b += "P1+OU *  * \n";
-        b += "P2-KY * +KY\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1+OU *  * <br />";
+        b += "P2-KY * +KY<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 103:
-        b += "P1+GI *  * \n";
-        b += "P2+OU * -OU\n";
-        b += "P3 *  * -GI\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1+GI *  * <br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3 *  * -GI<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 104:
-        b += "P1-OU-KA * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +KA+OU\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1-OU-KA * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +KA+OU<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 105:
-        b += "P1 * -KE * \n";
-        b += "P2+OU * -OU\n";
-        b += "P3 * +KE * \n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1 * -KE * <br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3 * +KE * <br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 106:
-        b += "P1+GI+OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -OU-GI\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1+GI+OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -OU-GI<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 107:
-        b += "P1-HI *  * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 *  * +HI\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1-HI *  * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 *  * +HI<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 108:
-        b += "P1-KY-FU * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 * +FU+KY\n";
+        b += "P1-KY-FU * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 * +FU+KY<br />";
         break;
       case 109:
-        b += "P1 * +OU-KY\n";
-        b += "P2 *  *  * \n";
-        b += "P3+KY-OU * \n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1 * +OU-KY<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KY-OU * <br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 110:
-        b += "P1 * +OU * \n";
-        b += "P2-KI * +TO\n";
-        b += "P3 * -OU * \n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1 * +OU * <br />";
+        b += "P2-KI * +TO<br />";
+        b += "P3 * -OU * <br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 111:
-        b += "P1 *  * -OU\n";
-        b += "P2+HI *  * \n";
-        b += "P3+OU * -KA\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2+HI *  * <br />";
+        b += "P3+OU * -KA<br />";
         break;
       case 112:
-        b += "P1 * +OU-FU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+FU-OU * \n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1 * +OU-FU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+FU-OU * <br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 113:
-        b += "P1+KI+OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -OU-KI\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1+KI+OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -OU-KI<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 114:
-        b += "P1-KE *  * \n";
-        b += "P2+OU * -OU\n";
-        b += "P3 *  * +KE\n";
-        b += "P+00GI\n";
-        b += "P-00GI\n";
+        b += "P1-KE *  * <br />";
+        b += "P2+OU * -OU<br />";
+        b += "P3 *  * +KE<br />";
+        b += "P+00GI<br />";
+        b += "P-00GI<br />";
         break;
       case 115:
-        b += "P1+OU * -KY\n";
-        b += "P2 *  *  * \n";
-        b += "P3+KY * -OU\n";
-        b += "P+00GI\n";
-        b += "P-00GI\n";
+        b += "P1+OU * -KY<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KY * -OU<br />";
+        b += "P+00GI<br />";
+        b += "P-00GI<br />";
         break;
       case 116:
-        b += "P1-KI * -KE\n";
-        b += "P2-OU * +OU\n";
-        b += "P3+KE * +KI\n";
+        b += "P1-KI * -KE<br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3+KE * +KI<br />";
         break;
       case 117:
-        b += "P1-KE+OU * \n";
-        b += "P2+KI * -KI\n";
-        b += "P3 * -OU+KE\n";
+        b += "P1-KE+OU * <br />";
+        b += "P2+KI * -KI<br />";
+        b += "P3 * -OU+KE<br />";
         break;
       case 118:
-        b += "P1-KE+OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -OU+KE\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1-KE+OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -OU+KE<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 119:
-        b += "P1-KY-OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +OU+KY\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1-KY-OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +OU+KY<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 120:
-        b += "P1 * -FU * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 * +FU * \n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1 * -FU * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 * +FU * <br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 121:
-        b += "P1-FU+OU * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -OU+FU\n";
-        b += "P+00GI\n";
-        b += "P-00GI\n";
+        b += "P1-FU+OU * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -OU+FU<br />";
+        b += "P+00GI<br />";
+        b += "P-00GI<br />";
         break;
       case 122:
-        b += "P1+OU-GI * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +GI-OU\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1+OU-GI * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +GI-OU<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 123:
-        b += "P1-GI * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU * +GI\n";
-        b += "P+00FU\n";
-        b += "P-00FU\n";
+        b += "P1-GI * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU * +GI<br />";
+        b += "P+00FU<br />";
+        b += "P-00FU<br />";
         break;
       case 124:
-        b += "P1 * +KA-OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU-KA * \n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1 * +KA-OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU-KA * <br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 125:
-        b += "P1+KA * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU * -KA\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1+KA * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU * -KA<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 126:
-        b += "P1+OU-KA * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +KA-OU\n";
-        b += "P+00KY\n";
-        b += "P-00KY\n";
+        b += "P1+OU-KA * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +KA-OU<br />";
+        b += "P+00KY<br />";
+        b += "P-00KY<br />";
         break;
       case 127:
-        b += "P1 *  * -OU\n";
-        b += "P2-KA * +KA\n";
-        b += "P3+OU *  * \n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2-KA * +KA<br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 128:
-        b += "P1+GI *  * \n";
-        b += "P2-OU * +OU\n";
-        b += "P3 *  * -GI\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1+GI *  * <br />";
+        b += "P2-OU * +OU<br />";
+        b += "P3 *  * -GI<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 129:
-        b += "P1+OU-KE * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * +KE-OU\n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1+OU-KE * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * +KE-OU<br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 130:
-        b += "P1+OU+KA * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -KA-OU\n";
-        b += "P+00KE\n";
-        b += "P-00KE\n";
+        b += "P1+OU+KA * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -KA-OU<br />";
+        b += "P+00KE<br />";
+        b += "P-00KE<br />";
         break;
       case 131:
-        b += "P1+OU * -KE\n";
-        b += "P2 *  *  * \n";
-        b += "P3+KE * -OU\n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1+OU * -KE<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KE * -OU<br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 132:
-        b += "P1+OU *  * \n";
-        b += "P2+HI * -HI\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00GI\n";
-        b += "P-00GI\n";
+        b += "P1+OU *  * <br />";
+        b += "P2+HI * -HI<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00GI<br />";
+        b += "P-00GI<br />";
         break;
       case 133:
-        b += "P1+OU *  * \n";
-        b += "P2+GI * -GI\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1+OU *  * <br />";
+        b += "P2+GI * -GI<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 134:
-        b += "P1+OU *  * \n";
-        b += "P2+TO * -TO\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1+OU *  * <br />";
+        b += "P2+TO * -TO<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 135:
-        b += "P1+OU *  * \n";
-        b += "P2+TO * -TO\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1+OU *  * <br />";
+        b += "P2+TO * -TO<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 136:
-        b += "P1+OU *  * \n";
-        b += "P2+KI * -KI\n";
-        b += "P3 *  * -OU\n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1+OU *  * <br />";
+        b += "P2+KI * -KI<br />";
+        b += "P3 *  * -OU<br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 137:
-        b += "P1+OU+KI * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -KI-OU\n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1+OU+KI * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -KI-OU<br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 138:
-        b += "P1+OU+TO * \n";
-        b += "P2 *  *  * \n";
-        b += "P3 * -TO-OU\n";
-        b += "P+00KA\n";
-        b += "P-00KA\n";
+        b += "P1+OU+TO * <br />";
+        b += "P2 *  *  * <br />";
+        b += "P3 * -TO-OU<br />";
+        b += "P+00KA<br />";
+        b += "P-00KA<br />";
         break;
       case 139:
-        b += "P1+OU * -KI\n";
-        b += "P2 *  *  * \n";
-        b += "P3+KI * -OU\n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1+OU * -KI<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+KI * -OU<br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       case 140:
-        b += "P1+OU * -TO\n";
-        b += "P2 *  *  * \n";
-        b += "P3+TO * -OU\n";
-        b += "P+00HI\n";
-        b += "P-00HI\n";
+        b += "P1+OU * -TO<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+TO * -OU<br />";
+        b += "P+00HI<br />";
+        b += "P-00HI<br />";
         break;
       default:
-        b += "P1 *  * -OU\n";
-        b += "P2 *  *  * \n";
-        b += "P3+OU *  * \n";
-        b += "P+00GI00FU\n";
-        b += "P-00GI00FU\n";
+        b += "P1 *  * -OU<br />";
+        b += "P2 *  *  * <br />";
+        b += "P3+OU *  * <br />";
+        b += "P+00GI00FU<br />";
+        b += "P-00GI00FU<br />";
     }
     return b;
   };

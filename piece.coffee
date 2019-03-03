@@ -14,7 +14,6 @@ class Piece
     setTurn: (turn) ->
         if turn != @turn
             @turn = turn
-            
     uniqueId = (length = 8) ->
         id = ""
         id += Math.random().toString(36).substr(2) while id.length < length
@@ -39,6 +38,9 @@ class Ou extends Piece
 
     kind: ->
         @constructor.name
+
+    koma: ->
+        return "OU"
 
     omomi: ->
         switch @status
@@ -76,6 +78,9 @@ class Hi extends Piece
     kind: ->
         @constructor.name
 
+    koma: ->
+        return if @status == Const.Status.URA then "RY" else "HI"
+
     omomi: ->
         switch @status
             when Const.Status.OMOTE then 85
@@ -111,6 +116,9 @@ class Ka extends Piece
 
     kind: ->
         @constructor.name
+
+    koma: ->
+        return if @status == Const.Status.URA then "UM" else "KA"
 
     omomi: ->
         switch @status
@@ -148,6 +156,9 @@ class Ki extends Piece
     kind: ->
         @constructor.name
 
+    koma: ->
+        return "KI"
+
     omomi: ->
         switch @status
             when Const.Status.OMOTE then 50
@@ -183,6 +194,9 @@ class Gi extends Piece
 
     kind: ->
         @constructor.name
+
+    koma: ->
+        return if @status == Const.Status.URA then "NG" else "GI"
 
     omomi: ->
         switch @status
@@ -220,6 +234,9 @@ class Ke extends Piece
     kind: ->
         @constructor.name
 
+    koma: ->
+        return if @status == Const.Status.URA then "NK" else "KE"
+
     omomi: ->
         switch @status
             when Const.Status.OMOTE then 30
@@ -256,6 +273,9 @@ class Ky extends Piece
     kind: ->
         @constructor.name
 
+    koma: ->
+        return if @status == Const.Status.URA then "NY" else "KY"
+
     omomi: ->
         switch @status
             when Const.Status.OMOTE then 25
@@ -291,6 +311,9 @@ class Fu extends Piece
 
     kind: ->
         @constructor.name
+
+    koma: ->
+        return if @status == Const.Status.URA then "TO" else "FU"
 
     omomi: ->
         switch @status

@@ -15863,7 +15863,7 @@ module.exports = CipherBase
 "use strict";
 
 
-var COLS, FIRST, MAX_VALUE, MIN_VALUE, ROWS, SECOND, Status;
+var COLS, FIRST, KIFU_KOMA_LENGTH, KIFU_ROW_LENGTH, KIFU_ROW_LENGTH_SUB, MAX_VALUE, MIN_VALUE, ROWS, SECOND, Status;
 
 Status = {
   OMOTE: 0,
@@ -15883,6 +15883,12 @@ MAX_VALUE = 50000;
 
 MIN_VALUE = -50000;
 
+KIFU_ROW_LENGTH = 9;
+
+KIFU_ROW_LENGTH_SUB = 8;
+
+KIFU_KOMA_LENGTH = 3;
+
 module.exports = {
   Status: Status,
   FIRST: FIRST,
@@ -15890,7 +15896,10 @@ module.exports = {
   COLS: COLS,
   ROWS: ROWS,
   MAX_VALUE: MAX_VALUE,
-  MIN_VALUE: MIN_VALUE
+  MIN_VALUE: MIN_VALUE,
+  KIFU_ROW_LENGTH: KIFU_ROW_LENGTH,
+  KIFU_ROW_LENGTH_SUB: KIFU_ROW_LENGTH_SUB,
+  KIFU_KOMA_LENGTH: KIFU_KOMA_LENGTH
 };
 
 /***/ }),
@@ -20836,7 +20845,7 @@ Piece = function () {
     }
 
     _createClass(Piece, [{
-      key: 'setTurn',
+      key: "setTurn",
       value: function setTurn(turn) {
         if (turn !== this.turn) {
           return this.turn = turn;
@@ -20870,7 +20879,7 @@ Ou = function () {
     _inherits(Ou, _Piece);
 
     _createClass(Ou, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -20883,12 +20892,17 @@ Ou = function () {
     }
 
     _createClass(Ou, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
+      key: "koma",
+      value: function koma() {
+        return "OU";
+      }
+    }, {
+      key: "omomi",
       value: function omomi() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -20902,7 +20916,7 @@ Ou = function () {
         }
       }
     }, {
-      key: 'caption',
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -20964,7 +20978,7 @@ Hi = function () {
     _inherits(Hi, _Piece2);
 
     _createClass(Hi, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -20977,12 +20991,21 @@ Hi = function () {
     }
 
     _createClass(Hi, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "RY";
+        } else {
+          return "HI";
+        }
+      }
+    }, {
+      key: "omomi",
       value: function omomi() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -20996,7 +21019,7 @@ Hi = function () {
         }
       }
     }, {
-      key: 'caption',
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21058,7 +21081,7 @@ Ka = function () {
     _inherits(Ka, _Piece3);
 
     _createClass(Ka, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21071,12 +21094,21 @@ Ka = function () {
     }
 
     _createClass(Ka, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "UM";
+        } else {
+          return "KA";
+        }
+      }
+    }, {
+      key: "omomi",
       value: function omomi() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21090,7 +21122,7 @@ Ka = function () {
         }
       }
     }, {
-      key: 'caption',
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21152,7 +21184,7 @@ Ki = function () {
     _inherits(Ki, _Piece4);
 
     _createClass(Ki, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21165,12 +21197,17 @@ Ki = function () {
     }
 
     _createClass(Ki, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
+      key: "koma",
+      value: function koma() {
+        return "KI";
+      }
+    }, {
+      key: "omomi",
       value: function omomi() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21184,7 +21221,7 @@ Ki = function () {
         }
       }
     }, {
-      key: 'caption',
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21246,7 +21283,7 @@ Gi = function () {
     _inherits(Gi, _Piece5);
 
     _createClass(Gi, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21259,12 +21296,21 @@ Gi = function () {
     }
 
     _createClass(Gi, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "NG";
+        } else {
+          return "GI";
+        }
+      }
+    }, {
+      key: "omomi",
       value: function omomi() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21278,7 +21324,7 @@ Gi = function () {
         }
       }
     }, {
-      key: 'caption',
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21340,7 +21386,7 @@ Ke = function () {
     _inherits(Ke, _Piece6);
 
     _createClass(Ke, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21353,12 +21399,21 @@ Ke = function () {
     }
 
     _createClass(Ke, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "NK";
+        } else {
+          return "KE";
+        }
+      }
+    }, {
+      key: "omomi",
       value: function omomi() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21372,7 +21427,7 @@ Ke = function () {
         }
       }
     }, {
-      key: 'caption',
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21434,7 +21489,7 @@ Ky = function () {
     _inherits(Ky, _Piece7);
 
     _createClass(Ky, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21447,12 +21502,21 @@ Ky = function () {
     }
 
     _createClass(Ky, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "NY";
+        } else {
+          return "KY";
+        }
+      }
+    }, {
+      key: "omomi",
       value: function omomi() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21466,7 +21530,7 @@ Ky = function () {
         }
       }
     }, {
-      key: 'caption',
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21528,7 +21592,7 @@ Fu = function () {
     _inherits(Fu, _Piece8);
 
     _createClass(Fu, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21541,12 +21605,21 @@ Fu = function () {
     }
 
     _createClass(Fu, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "TO";
+        } else {
+          return "FU";
+        }
+      }
+    }, {
+      key: "omomi",
       value: function omomi() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21560,7 +21633,7 @@ Fu = function () {
         }
       }
     }, {
-      key: 'caption',
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -28885,9 +28958,9 @@ $(function () {
 });
 
 Array.prototype.unique = function () {
-  var j, key, output, ref, results, value;
+  var key, l, output, ref, results, value;
   output = {};
-  for (key = j = 0, ref = this.length; 0 <= ref ? j < ref : j > ref; key = 0 <= ref ? ++j : --j) {
+  for (key = l = 0, ref = this.length; 0 <= ref ? l < ref : l > ref; key = 0 <= ref ? ++l : --l) {
     output[this[key]] = this[key];
   }
   results = [];
@@ -28898,165 +28971,223 @@ Array.prototype.unique = function () {
   return results;
 };
 
-BoardGUI = function () {
-  var getImg;
+BoardGUI = function (_Board) {
+  _inherits(BoardGUI, _Board);
 
-  var BoardGUI = function (_Board) {
-    _inherits(BoardGUI, _Board);
-
-    function BoardGUI() {
-      _classCallCheck(this, BoardGUI);
-
-      var _this = _possibleConstructorReturn(this, (BoardGUI.__proto__ || Object.getPrototypeOf(BoardGUI)).call(this));
-
-      _this.width = 0;
-      _this.height = 0;
-      _this.statusarea = null;
-      return _this;
-    }
-
-    _createClass(BoardGUI, [{
-      key: 'display',
-      value: function display() {
-        var col, f_motigoma, i, j, k, koma, l, len, len1, m, n, ref, ref1, ref2, ref3, row, s_motigoma, v;
-        s_motigoma = {
-          "Hi": 0,
-          "Ka": 0,
-          "Ki": 0,
-          "Gi": 0,
-          "Ke": 0,
-          "Ky": 0,
-          "Fu": 0
-        };
-        ref = this.pieces;
-        for (i = j = 0, len = ref.length; j < len; i = ++j) {
-          v = ref[i];
-          if (v.turn === Const.SECOND && v.status === Const.Status.MOTIGOMA) {
-            s_motigoma[v.kind()] += 1;
+  _createClass(BoardGUI, null, [{
+    key: 'getImg',
+    value: function getImg(piece) {
+      var ret;
+      ret = "";
+      switch (piece.kind()) {
+        case "Ou":
+          ret = piece.turn === Const.FIRST ? "./img/f_ou.svg" : "./img/s_ou.svg";
+          break;
+        case "Hi":
+          if (piece.status === Const.Status.URA) {
+            ret = piece.turn === Const.FIRST ? "./img/f_ry.svg" : "./img/s_ry.svg";
+          } else {
+            ret = piece.turn === Const.FIRST ? "./img/f_hi.svg" : "./img/s_hi.svg";
           }
+          break;
+        case "Ka":
+          if (piece.status === Const.Status.URA) {
+            ret = piece.turn === Const.FIRST ? "./img/f_um.svg" : "./img/s_um.svg";
+          } else {
+            ret = piece.turn === Const.FIRST ? "./img/f_ka.svg" : "./img/s_ka.svg";
+          }
+          break;
+        case "Ki":
+          ret = piece.turn === Const.FIRST ? "./img/f_ki.svg" : "./img/s_ki.svg";
+          break;
+        case "Gi":
+          if (piece.status === Const.Status.URA) {
+            ret = piece.turn === Const.FIRST ? "./img/f_ng.svg" : "./img/s_ng.svg";
+          } else {
+            ret = piece.turn === Const.FIRST ? "./img/f_gi.svg" : "./img/s_gi.svg";
+          }
+          break;
+        case "Ke":
+          if (piece.status === Const.Status.URA) {
+            ret = piece.turn === Const.FIRST ? "./img/f_nk.svg" : "./img/s_nk.svg";
+          } else {
+            ret = piece.turn === Const.FIRST ? "./img/f_ke.svg" : "./img/s_ke.svg";
+          }
+          break;
+        case "Ky":
+          if (piece.status === Const.Status.URA) {
+            ret = piece.turn === Const.FIRST ? "./img/f_ny.svg" : "./img/s_ny.svg";
+          } else {
+            ret = piece.turn === Const.FIRST ? "./img/f_ky.svg" : "./img/s_ky.svg";
+          }
+          break;
+        case "Fu":
+          if (piece.status === Const.Status.URA) {
+            ret = piece.turn === Const.FIRST ? "./img/f_to.svg" : "./img/s_to.svg";
+          } else {
+            ret = piece.turn === Const.FIRST ? "./img/f_fu.svg" : "./img/s_fu.svg";
+          }
+      }
+      return ret;
+    }
+  }]);
+
+  function BoardGUI() {
+    _classCallCheck(this, BoardGUI);
+
+    // console.log("BoardGUI.constructor")
+    var _this = _possibleConstructorReturn(this, (BoardGUI.__proto__ || Object.getPrototypeOf(BoardGUI)).call(this));
+
+    _this.width = 0;
+    _this.height = 0;
+    _this.statusarea = null;
+    return _this;
+  }
+
+  _createClass(BoardGUI, [{
+    key: 'display',
+    value: function display() {
+      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var searched = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      var col, f_motigoma, html, i, ids, k, koma, l, len, len1, m, n, p, ref, ref1, ref2, ref3, replace_alt, replace_class, replace_src, row, s_motigoma, v;
+      // console.log("BoardGUI.display")
+      if (id === null) {
+        ids = "";
+      } else {
+        if (searched === null) {
+          ids = "_" + id.toString();
+        } else {
+          ids = "_" + searched.toString();
+        }
+      }
+      // console.log("ids = #{ids}")
+      s_motigoma = {
+        "Hi": 0,
+        "Ka": 0,
+        "Ki": 0,
+        "Gi": 0,
+        "Ke": 0,
+        "Ky": 0,
+        "Fu": 0
+      };
+      ref = this.pieces;
+      for (i = l = 0, len = ref.length; l < len; i = ++l) {
+        v = ref[i];
+        if (v.turn === Const.SECOND && v.status === Const.Status.MOTIGOMA) {
+          s_motigoma[v.kind()] += 1;
+        }
+      }
+      if (id === null) {
+        for (k in s_motigoma) {
+          v = s_motigoma[k];
+          $('#s' + k + ids).text(v.toString());
+        }
+      } else {
+        html = '<div id="btnSecond" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b>' + i18next.t('menu_second') + '</b></div>';
+        if (searched === null) {
+          $('#group_s' + ids).append(html);
+        } else {
+          $('#search_s' + ids).append(html);
         }
         for (k in s_motigoma) {
           v = s_motigoma[k];
-          $('#s' + k).text(v.toString());
-        }
-        for (row = l = 1, ref1 = this.rows; 1 <= ref1 ? l <= ref1 : l >= ref1; row = 1 <= ref1 ? ++l : --l) {
-          for (col = m = ref2 = this.cols; m >= 1; col = m += -1) {
-            koma = function () {
-              var len1, n, ref3, results;
-              ref3 = this.pieces;
-              results = [];
-              for (n = 0, len1 = ref3.length; n < len1; n++) {
-                v = ref3[n];
-                if (v.posi != null && v.posi.toString() === [col, row].toString()) {
-                  results.push(v);
-                }
-              }
-              return results;
-            }.call(this)[0];
-            if (koma != null) {
-              $('#b' + koma.posi[0] + koma.posi[1]).children('img').attr({
-                'src': getImg.call(this, koma),
-                'alt': koma.caption(),
-                'class': koma.turn === Const.FIRST ? 'first' : 'second'
-              });
+          if (v > 0) {
+            html = '<div class="ui-btn ui-icon-s' + k.toLowerCase() + ' ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">' + v + '</div>';
+            if (searched === null) {
+              $('#group_s' + ids).append(html);
             } else {
-              $('#b' + col + row).children('img').attr({
-                'src': './img/empty.svg',
-                'class': 'empty'
-              });
+              $('#search_s' + ids).append(html);
             }
           }
         }
-        f_motigoma = {
-          "Hi": 0,
-          "Ka": 0,
-          "Ki": 0,
-          "Gi": 0,
-          "Ke": 0,
-          "Ky": 0,
-          "Fu": 0
-        };
-        ref3 = this.pieces;
-        for (i = n = 0, len1 = ref3.length; n < len1; i = ++n) {
-          v = ref3[i];
-          if (v.turn === Const.FIRST && v.status === Const.Status.MOTIGOMA) {
-            f_motigoma[v.kind()] += 1;
+      }
+      for (row = m = 1, ref1 = this.rows; 1 <= ref1 ? m <= ref1 : m >= ref1; row = 1 <= ref1 ? ++m : --m) {
+        for (col = n = ref2 = this.cols; n >= 1; col = n += -1) {
+          $('#b' + row.toString() + col.toString()).css('background-color', '#FFFACD');
+          $('#b' + row.toString() + col.toString()).css('border-style', 'solid');
+          koma = function () {
+            var len1, p, ref3, results;
+            ref3 = this.pieces;
+            results = [];
+            for (p = 0, len1 = ref3.length; p < len1; p++) {
+              v = ref3[p];
+              if (v.posi != null && v.posi.toString() === [col, row].toString()) {
+                results.push(v);
+              }
+            }
+            return results;
+          }.call(this)[0];
+          if (koma != null) {
+            // $('#b' + koma.posi[0] + koma.posi[1] + ids).children('img').attr('src': BoardGUI.getImg(koma), 'alt': koma.caption(), 'class': (if koma.turn == Const.FIRST then 'first' else 'second'))
+            replace_src = BoardGUI.getImg(koma);
+            replace_alt = koma.caption();
+            replace_class = koma.turn === Const.FIRST ? 'first' : 'second';
+            if (searched === null) {
+              $('#b' + koma.posi[0] + koma.posi[1] + ids).children('img').attr({
+                'src': replace_src,
+                'alt': replace_alt,
+                'class': replace_class
+              });
+            }
+          } else {
+            $('#b' + col + row + ids).children('img').attr({
+              'src': './img/empty.svg',
+              'class': 'empty'
+            });
           }
+        }
+      }
+      f_motigoma = {
+        "Hi": 0,
+        "Ka": 0,
+        "Ki": 0,
+        "Gi": 0,
+        "Ke": 0,
+        "Ky": 0,
+        "Fu": 0
+      };
+      ref3 = this.pieces;
+      for (i = p = 0, len1 = ref3.length; p < len1; i = ++p) {
+        v = ref3[i];
+        if (v.turn === Const.FIRST && v.status === Const.Status.MOTIGOMA) {
+          f_motigoma[v.kind()] += 1;
+        }
+      }
+      if (id === null) {
+        for (k in f_motigoma) {
+          v = f_motigoma[k];
+          $('#f' + k + ids).text(v.toString());
+        }
+      } else {
+        html = '<div id="btnFirst" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b>' + i18next.t('menu_first') + '</b></div>';
+        if (searched === null) {
+          $('#group_f' + ids).append(html);
+        } else {
+          $('#search_f' + ids).append(html);
         }
         for (k in f_motigoma) {
           v = f_motigoma[k];
-          $('#f' + k).text(v.toString());
+          if (v > 0) {
+            html = '<div class="ui-btn ui-icon-f' + k.toLowerCase() + ' ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">' + v + '</div>';
+            if (searched === null) {
+              $('#group_f' + ids).append(html);
+            } else {
+              $('#search_f' + ids).append(html);
+            }
+          }
         }
       }
-    }, {
-      key: 'init',
-      value: function init() {
-        return this.statusarea = document.getElementById("spanStatus");
-      }
-    }]);
-
-    return BoardGUI;
-  }(Board);
-
-  ;
-
-  getImg = function getImg(piece) {
-    var ret;
-    ret = "";
-    switch (piece.kind()) {
-      case "Ou":
-        ret = piece.turn === Const.FIRST ? "./img/f_ou.svg" : "./img/s_ou.svg";
-        break;
-      case "Hi":
-        if (piece.status === Const.Status.URA) {
-          ret = piece.turn === Const.FIRST ? "./img/f_ry.svg" : "./img/s_ry.svg";
-        } else {
-          ret = piece.turn === Const.FIRST ? "./img/f_hi.svg" : "./img/s_hi.svg";
-        }
-        break;
-      case "Ka":
-        if (piece.status === Const.Status.URA) {
-          ret = piece.turn === Const.FIRST ? "./img/f_um.svg" : "./img/s_um.svg";
-        } else {
-          ret = piece.turn === Const.FIRST ? "./img/f_ka.svg" : "./img/s_ka.svg";
-        }
-        break;
-      case "Ki":
-        ret = piece.turn === Const.FIRST ? "./img/f_ki.svg" : "./img/s_ki.svg";
-        break;
-      case "Gi":
-        if (piece.status === Const.Status.URA) {
-          ret = piece.turn === Const.FIRST ? "./img/f_ng.svg" : "./img/s_ng.svg";
-        } else {
-          ret = piece.turn === Const.FIRST ? "./img/f_gi.svg" : "./img/s_gi.svg";
-        }
-        break;
-      case "Ke":
-        if (piece.status === Const.Status.URA) {
-          ret = piece.turn === Const.FIRST ? "./img/f_nk.svg" : "./img/s_nk.svg";
-        } else {
-          ret = piece.turn === Const.FIRST ? "./img/f_ke.svg" : "./img/s_ke.svg";
-        }
-        break;
-      case "Ky":
-        if (piece.status === Const.Status.URA) {
-          ret = piece.turn === Const.FIRST ? "./img/f_ny.svg" : "./img/s_ny.svg";
-        } else {
-          ret = piece.turn === Const.FIRST ? "./img/f_ky.svg" : "./img/s_ky.svg";
-        }
-        break;
-      case "Fu":
-        if (piece.status === Const.Status.URA) {
-          ret = piece.turn === Const.FIRST ? "./img/f_to.svg" : "./img/s_to.svg";
-        } else {
-          ret = piece.turn === Const.FIRST ? "./img/f_fu.svg" : "./img/s_fu.svg";
-        }
     }
-    return ret;
-  };
+  }, {
+    key: 'init',
+    value: function init() {
+      return this.statusarea = document.getElementById("spanStatus");
+    }
+  }]);
 
   return BoardGUI;
-}();
+}(Board);
 
 State = function State(turn1, status) {
   var posi1 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -29069,9 +29200,32 @@ State = function State(turn1, status) {
 };
 
 GameGUI = function () {
-  var is_oute, launch;
+  var _sortCoordinate, checkKind, initialBoardImage, is_oute, launch, makePiece;
 
   var GameGUI = function () {
+    _createClass(GameGUI, null, [{
+      key: 'make_hash',
+
+      // 局面を比較するためHashを生成
+      value: function make_hash(board) {
+        var buf, koma, l, len, rec, ref;
+        rec = [];
+        ref = board.pieces;
+        for (l = 0, len = ref.length; l < len; l++) {
+          koma = ref[l];
+          buf = {};
+          buf["kind"] = koma.kind();
+          buf["turn"] = koma.turn;
+          buf["status"] = koma.status;
+          buf["posi0"] = koma.posi[0];
+          buf["posi1"] = koma.posi[1];
+          rec.push(buf);
+        }
+        rec.sort(_sortCoordinate);
+        return crypto.createHash('md5').update(JSON.stringify(rec)).digest("hex");
+      }
+    }]);
+
     function GameGUI() {
       _classCallCheck(this, GameGUI);
 
@@ -29085,47 +29239,298 @@ GameGUI = function () {
       this.interrupt_flg = false;
       this.auto_flg = false;
       this.history = [];
+      this.seq = 0;
       this.duplication = [];
       this.first_player = null;
       this.second_player = null;
+      this.check_guide = null;
       this.radio_arrange = null;
       this.radio_depth = null;
       this.first = new Player(Const.FIRST, true, 3);
       this.second = new Player(Const.SECOND, true, 3);
       this.teban = this.first;
+      this.label_idx = 0;
+      this.searchList = [];
+      this.searchResult = [];
       this.board = new BoardGUI();
+      this.bkup = new BoardGUI();
       this.md5hash = null;
       special_event = typeof cordova === "undefined" ? "DOMContentLoaded" : "deviceready";
       this.setEventListener(special_event);
+      this.originalBoardImage = "";
     }
 
     _createClass(GameGUI, [{
       key: 'viewState',
       value: function viewState() {
-        var i, j, len, ref, v;
+        var i, l, len, ref, v;
         ref = this.board.pieces;
-        for (i = j = 0, len = ref.length; j < len; i = ++j) {
+        // console.log("viewState")
+        for (i = l = 0, len = ref.length; l < len; i = ++l) {
           v = ref[i];
-          v.turn = this.history[this.seq][i].turn;
-          v.status = this.history[this.seq][i].status;
-          v.posi = this.history[this.seq][i].posi;
+          // console.log("class = #{v.constructor.name}")
+          v.turn = this.history[this.seq]["board"][i].turn;
+          v.status = this.history[this.seq]["board"][i].status;
+          v.posi = this.history[this.seq]["board"][i].posi;
         }
         $('#naviSeq').text(this.seq.toString());
-        return this.board.display();
+        this.board.display();
+        if (this.seq > 0) {
+          $('#b' + this.history[this.seq]["latest"][0].toString() + this.history[this.seq]["latest"][1].toString()).css('border-style', 'dashed');
+        }
       }
     }, {
       key: 'addState',
-      value: function addState(md5hash) {
-        var j, len, ref, state, v;
-        state = [];
+      value: function addState() {
+        var md5hash = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+        var latest = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var from = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+        var to = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+        var koma = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+
+        var l, len, record, ref, v;
+        // console.log("GameGUI.addState")
+        record = {};
+        record["latest"] = latest != null ? [].concat(latest) : null;
+        record["from"] = from != null ? [].concat(from) : null;
+        record["to"] = to != null ? [].concat(to) : null;
+        record["koma"] = koma != null ? koma : null;
+        record["board"] = [];
         ref = this.board.pieces;
-        for (j = 0, len = ref.length; j < len; j++) {
-          v = ref[j];
-          state.push(new State(v.turn, v.status, [].concat(v.posi)));
+        for (l = 0, len = ref.length; l < len; l++) {
+          v = ref[l];
+          record["board"].push(new State(v.turn, v.status, [].concat(v.posi)));
         }
-        this.history.push(state);
+        this.history.push(record);
         this.duplication.push(md5hash);
         return $('#naviSeq').text((this.history.length - 1).toString());
+      }
+    }, {
+      key: 'makeRecord',
+      value: function makeRecord() {
+        var converted, linkStr;
+        // console.log("GameGUI.makeRecord")
+        // console.log(@history)
+        converted = this.convert();
+        linkStr = "https://play.google.com/store/apps/details?id=shogi33.io.github.happyclam";
+        window.plugins.socialsharing.share('\' #３三将棋 ' + linkStr + ' \n' + converted, 'shogi33', null, null);
+      }
+    }, {
+      key: 'convert',
+      value: function convert() {
+        var from, i, l, len, radioNo, records, ref, teban, to, v;
+        if (this.history.length <= 0) {
+          // console.log("GameGUI.convert")
+          return "";
+        }
+        if (this.history[0]["latest"] != null) {
+          radioNo = this.history[0]["latest"][0];
+          records = '\'No. ' + radioNo.toString() + '\n';
+        } else {
+          radioNo = -1;
+          records = "'\n";
+        }
+        records += "'\n";
+        records += "V2.2\n";
+        if (this.first.human) {
+          records += "N+Player\n";
+        } else {
+          records += "N+AI\n";
+        }
+        if (this.second.human) {
+          records += "N-Player\n";
+        } else {
+          records += "N-AI\n";
+        }
+        if (radioNo === -1) {
+          records += this.originalBoardImage;
+        } else {
+          records += initialBoardImage.call(this, radioNo);
+        }
+        if (this.teban.turn === Const.SECOND) {
+          records += "-\n";
+        } else {
+          records += "+\n";
+        }
+        ref = this.history;
+        for (i = l = 0, len = ref.length; l < len; i = ++l) {
+          v = ref[i];
+          if (i === 0) {
+            continue;
+          }
+          teban = i % 2 === 1 ? "+" : "-";
+          from = v.from.length !== 0 ? v.from.toString().replace(",", "") : "00";
+          to = v.to.length !== 0 ? v.to.toString().replace(",", "") : "";
+          records += teban + from + to + v.koma + "\n";
+        }
+        return records;
+      }
+    }, {
+      key: 'inputRecord',
+      value: function inputRecord() {
+        var buf, col, cols, err, from, i, j, k, koma, l, len, len1, m, n, piece, ref, results, row, to, turn, v, w, y;
+        // console.log("GameGUI.inputRecord")
+        this.board.pieces = [];
+        this.history = [];
+        this.duplication = [];
+        this.seq = 0;
+        this.originalBoardImage = "";
+        try {
+          buf = $('#textKifu').val().split(/\r\n|\r|\n/);
+          results = [];
+          // console.log("buf = #{buf}")
+          // console.log(buf)
+          // console.log(buf.length)
+          for (i = l = 0, len = buf.length; l < len; i = ++l) {
+            v = buf[i];
+            if (v.length === 0) {
+              // console.log(v)
+              continue;
+            }
+            if (v[0] === "\'") {
+              continue;
+            }
+            if (v[0] === "V") {
+              continue;
+            }
+            if (v[0] === "T") {
+              continue;
+            }
+            if (v[0] === "%") {
+              continue;
+            }
+            if (v[0] === "N") {
+              continue;
+            }
+            if (v[0] === "$") {
+              continue;
+            }
+            switch (v[0]) {
+              case "P":
+                // throw "1:Line = #{i + 1}: #{v}" unless isFinite(v[1])
+                this.originalBoardImage += v + "\n";
+                if (isFinite(v[1])) {
+                  row = parseInt(v[1], 10);
+                  cols = v.slice(2);
+                  if (!(cols.length === Const.KIFU_ROW_LENGTH || cols.length === Const.KIFU_ROW_LENGTH_SUB)) {
+                    throw '01:Line = ' + (i + 1) + ': ' + v;
+                  }
+                  for (j = m = 1, ref = this.board.cols; 1 <= ref ? m <= ref : m >= ref; j = 1 <= ref ? ++m : --m) {
+                    y = Const.KIFU_ROW_LENGTH - Const.KIFU_KOMA_LENGTH * j;
+                    col = cols.slice(y, +(y + 2) + 1 || 9e9);
+                    if (col.indexOf("*") >= 0) {
+                      continue;
+                    }
+                    piece = makePiece.call(this, col, [j, row]);
+                    if (piece != null) {
+                      this.board.pieces.push(piece);
+                    } else {
+                      throw '02:Line = ' + (i + 1) + ': ' + v;
+                    }
+                  }
+                } else if (v[1] === "+" || v[1] === "-") {
+                  cols = v.split("00");
+                  // console.log(cols)
+                  for (k = n = 0, len1 = cols.length; n < len1; k = ++n) {
+                    j = cols[k];
+                    if (k === 0) {
+                      continue;
+                    }
+                    piece = makePiece.call(this, v[1] + j);
+                    if (piece != null) {
+                      this.board.pieces.push(piece);
+                    } else {
+                      throw '03:Line = ' + (i + 1) + ': ' + v;
+                    }
+                  }
+                } else {
+                  throw '04:Line = ' + (i + 1) + ': ' + v;
+                }
+                if (this.history.length > 0) {
+                  throw '09:Line = ' + i + ': ' + v;
+                } else {
+                  results.push(void 0);
+                }
+                break;
+              case "+":
+              case "-":
+                // console.log(@board.pieces)
+                if (v.length === 1) {
+                  this.addState();
+                  continue;
+                }
+                from = [v[1], v[2]].map(Number);
+                turn = v[0] === "+" ? Const.FIRST : Const.SECOND;
+                // console.log("v = #{v}")
+                if (v.slice(1, 3) === "00") {
+                  koma = function () {
+                    var len2, p, ref1, results1;
+                    ref1 = this.board.pieces;
+                    results1 = [];
+                    for (p = 0, len2 = ref1.length; p < len2; p++) {
+                      w = ref1[p];
+                      if (w.posi.length === 0 && w.turn === turn && w.koma() === v.slice(5, 7)) {
+                        results1.push(w);
+                      }
+                    }
+                    return results1;
+                  }.call(this);
+                } else {
+                  koma = function () {
+                    var len2, p, ref1, results1;
+                    ref1 = this.board.pieces;
+                    results1 = [];
+                    for (p = 0, len2 = ref1.length; p < len2; p++) {
+                      w = ref1[p];
+                      if (w.posi != null && w.turn === turn && w.posi[0] === from[0] && w.posi[1] === from[1]) {
+                        results1.push(w);
+                      }
+                    }
+                    return results1;
+                  }.call(this);
+                }
+                if (koma.length === 0) {
+                  throw '05:Line = ' + (i + 1) + ': ' + v;
+                }
+                to = [v[3], v[4]].map(Number);
+                if (!checkKind.call(this, v.slice(5, 7))) {
+                  // console.log(koma[0])
+                  // console.log(from)
+                  // console.log(to)
+                  throw '08:Line = ' + (i + 1) + ': ' + v;
+                }
+                if (this.board.check_move(koma[0], to)) {
+                  from = this.board.move_capture(koma[0], to);
+                  if (koma[0].koma() !== v.slice(5, 7)) {
+                    // 駒の種類が変わっていたら成ったと見做す
+                    koma[0].status = Const.Status.URA;
+                  }
+                } else {
+                  throw '06:Line = ' + (i + 1) + ': ' + v;
+                }
+                this.md5hash = GameGUI.make_hash(this.board);
+                this.seq += 1;
+                results.push(this.addState(this.md5hash, to, from, to, koma[0].koma()));
+                break;
+              default:
+                throw '07:Line= ' + (i + 1) + ': ' + v;
+            }
+          }
+          return results;
+        } catch (error) {
+          err = error;
+          console.log('Error: ' + err);
+          return this.kifustatus.innerHTML = 'Error: ' + err;
+        } finally {
+          if (err != null) {
+            return false;
+          } else {
+            // console.log(@history)
+            // console.log(@seq)
+            this.kifustatus.innerHTML = "";
+            return true;
+          }
+        }
       }
 
       // ゲーム開始毎
@@ -29133,6 +29538,7 @@ GameGUI = function () {
     }, {
       key: 'prepare',
       value: function prepare() {
+        var radioNo, radio_checked, v;
         // console.log("GameGUI.prepare")
         this.interrupt_flg = false;
         this.auto_flg = false;
@@ -29141,12 +29547,31 @@ GameGUI = function () {
         this.seq = 0;
         $('#naviSeq').text('');
         this.startbtn.disabled = true;
-        $("#btnStop").val("中断").button("refresh");
+        $("#btnStop").val(i18next.t('msgInterrupt')).button("refresh");
         this.naviA.style.display = "none";
-        this.board.statusarea.innerHTML = "先手の番です";
+        this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+          postProcess: 'sprintf',
+          sprintf: [i18next.t('msgBlack')]
+        });
         this.teban = this.first;
-        launch.call(this);
-        this.addState();
+        radio_checked = function () {
+          var l, len, ref, results;
+          ref = this.radio_arrange;
+          results = [];
+          for (l = 0, len = ref.length; l < len; l++) {
+            v = ref[l];
+            if (v.checked === true) {
+              results.push(v);
+            }
+          }
+          return results;
+        }.call(this)[0];
+        $('#patternNo').text(radio_checked.value);
+        radioNo = parseInt(radio_checked.value | 0, 10);
+        launch.call(this, radioNo);
+        // 初期配置No.を@history[0]に保存することにした
+        // 棋譜出力の際に実際の棋譜とラジオボタンの選択が相違していることがあるため
+        this.addState(null, radioNo);
         this.board.display();
         this.first_player.selectedIndex = parseInt(localStorage.getItem("first_player") | 0, 10);
         this.second_player.selectedIndex = parseInt(localStorage.getItem("second_player") | 0, 10);
@@ -29158,7 +29583,7 @@ GameGUI = function () {
       value: function auto_battle(seq) {
         var _this2 = this;
 
-        var chk_sennitite, i, j, len, oppo, player, ref, ret, src_posi, temp, threshold;
+        var chk_sennitite, i, l, len, oppo, player, ref, ret, src_posi, temp, threshold;
         this.seq = seq;
         // console.log("auto_battle")
         this.auto_flg = true;
@@ -29173,11 +29598,17 @@ GameGUI = function () {
         }
         temp = [];
         ret = [];
-        ref = [1, 2, 4, player.depth].unique();
-        for (j = 0, len = ref.length; j < len; j++) {
-          i = ref[j];
+        ref = [1, 2, player.depth].unique();
+        for (l = 0, len = ref.length; l < len; l++) {
+          i = ref[l];
           temp = [];
           temp = player.think(this.board, oppo, i, threshold);
+          if (this.interrupt_flg) {
+            // @interrupt_flg = false
+            this.auto_flg = false;
+            this.board.statusarea.innerHTML = "";
+            return;
+          }
           if (temp[0] != null) {
             ret = [].concat(temp);
             if (temp[2] >= Const.MAX_VALUE || temp[2] <= Const.MIN_VALUE) {
@@ -29192,6 +29623,7 @@ GameGUI = function () {
           chk_sennitite = this.sennitite(this.md5hash);
           if (chk_sennitite) {
             this.board.display();
+            $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
             this.auto_flg = false;
             return;
           }
@@ -29204,36 +29636,62 @@ GameGUI = function () {
             src_posi = this.board.move_capture(ret[0], ret[1]);
             ret[0].status = ret[3];
           }
-          this.md5hash = crypto.createHash('md5').update(JSON.stringify(this.board.pieces)).digest("hex");
+          this.md5hash = GameGUI.make_hash(this.board);
           this.seq += 1;
-          this.addState(this.md5hash);
+          this.addState(this.md5hash, ret[1], src_posi, ret[1], ret[0].koma());
           if (this.sennitite(this.md5hash)) {
             this.board.display();
+            $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
             this.auto_flg = false;
             return;
           }
           this.teban = this.seq % 2 === 0 ? this.first : this.second;
-          this.board.statusarea.innerHTML = (this.teban.turn === Const.FIRST ? "先手" : "後手") + "の番です";
-          this.board.statusarea.innerHTML = this.board.statusarea.innerHTML + "（評価値:" + ret[2].toString() + "）";
+          if (this.teban.turn === Const.FIRST) {
+            this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+              postProcess: 'sprintf',
+              sprintf: [i18next.t('msgBlack')]
+            });
+          } else {
+            this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+              postProcess: 'sprintf',
+              sprintf: [i18next.t('msgWhite')]
+            });
+          }
+          this.board.statusarea.innerHTML = this.board.statusarea.innerHTML + i18next.t('msgEvaluate', {
+            postProcess: 'sprintf',
+            sprintf: [ret[2].toString()]
+          });
         } else {
-          this.board.statusarea.innerHTML = (this.teban.turn === Const.FIRST ? "後手" : "先手") + "の勝ちです";
-          this.board.display();
+          if (this.teban.turn === Const.FIRST) {
+            this.board.statusarea.innerHTML = i18next.t('msgWinner', {
+              postProcess: 'sprintf',
+              sprintf: [i18next.t('msgWhite')]
+            });
+          } else {
+            this.board.statusarea.innerHTML = i18next.t('msgWinner', {
+              postProcess: 'sprintf',
+              sprintf: [i18next.t('msgBlack')]
+            });
+          }
+          // @board.display()
           this.startbtn.disabled = false;
-          $("#btnStop").val("再開").button("refresh");
+          $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
           this.naviA.style.display = "block";
           this.auto_flg = false;
           return;
         }
         this.board.display();
+        $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
         if (this.interrupt_flg) {
-          this.interrupt_flg = false;
+          // @interrupt_flg = false
           this.auto_flg = false;
           this.board.statusarea.innerHTML = "";
           return;
+        } else {
+          setTimeout(function () {
+            return _this2.auto_battle(_this2.seq);
+          }, 1000);
         }
-        setTimeout(function () {
-          return _this2.auto_battle(_this2.seq);
-        }, 1000);
       }
 
       // 起動時
@@ -29243,29 +29701,50 @@ GameGUI = function () {
       value: function init() {
         var _this3 = this;
 
-        var depth, err, idx;
+        var depth, err, idx, radio_checked, temp, v;
         // console.log("GameGUI.init")
         this.startbtn = document.getElementById("btnStart");
         this.first_player = document.getElementById("first_player");
         this.second_player = document.getElementById("second_player");
         this.radio_arrange = document.getElementsByName("radio-arrange");
         this.radio_depth = document.getElementsByName("radio-depth");
+        this.kifustatus = document.getElementById("kifuStatus");
         this.naviA = document.getElementById("naviA");
         this.naviA.style.display = "none";
+        this.boardList();
         try {
           this.first_player.selectedIndex = parseInt(localStorage.getItem("first_player") | 0, 10);
           this.second_player.selectedIndex = parseInt(localStorage.getItem("second_player") | 0, 10);
+          temp = JSON.parse(localStorage.getItem("movement_guide33"));
+          if (temp === true) {
+            this.check_guide = true;
+          } else {
+            this.check_guide = false;
+          }
           idx = parseInt(localStorage.getItem("radio-arrange") | 0, 10);
           this.radio_arrange[idx].checked = true;
+          radio_checked = function () {
+            var l, len, ref, results;
+            ref = this.radio_arrange;
+            results = [];
+            for (l = 0, len = ref.length; l < len; l++) {
+              v = ref[l];
+              if (v.checked === true) {
+                results.push(v);
+              }
+            }
+            return results;
+          }.call(this)[0];
+          $('#patternNo').text(radio_checked.value);
           depth = parseInt(localStorage.getItem("radio-depth") | 0, 10);
           if (depth === 3) {
             this.radio_depth[3].checked = true;
-            this.first.depth = 7;
-            this.second.depth = 7;
+            this.first.depth = 4;
+            this.second.depth = 4;
           } else if (depth === 2) {
             this.radio_depth[2].checked = true;
-            this.first.depth = 6;
-            this.second.depth = 6;
+            this.first.depth = 4;
+            this.second.depth = 4;
           } else if (depth === 1) {
             this.radio_depth[1].checked = true;
             this.first.depth = 4;
@@ -29284,6 +29763,25 @@ GameGUI = function () {
           this.radio_arrange[0].checked = true;
           this.radio_depth[0].checked = true;
         }
+        $('#btnRecord1').on('click', function (e) {
+          _this3.makeRecord();
+        });
+        $('#btnRecord2').on('click', function (e) {
+          _this3.makeRecord();
+        });
+        $('#btnKifu').on('click', function (e) {
+          // console.log("btnKifu onClick")
+          if (_this3.inputRecord()) {
+            $('#naviSeq').text('');
+            _this3.interrupt_flg = true;
+            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
+            _this3.startbtn.disabled = false;
+            _this3.naviA.style.display = "block";
+            _this3.board.statusarea.innerHTML = "";
+            location.href = "#home";
+            _this3.viewState();
+          }
+        });
         $('#btnStart').on('click', function (e) {
           var target;
           target = $(e.currentTarget);
@@ -29291,13 +29789,13 @@ GameGUI = function () {
           _this3.first.human = _this3.first_player.selectedIndex === 1 ? false : true;
           _this3.second.human = _this3.second_player.selectedIndex === 1 ? false : true;
           if (!_this3.first.human && !_this3.second.human) {
-            _this3.board.statusarea.innerHTML = "thinking...";
+            _this3.board.statusarea.innerHTML = i18next.t('msgThinking');
             _this3.board.display();
             setTimeout(function () {
               return _this3.auto_battle(_this3.seq);
             }, 1000);
           } else if (!_this3.first.human) {
-            _this3.board.statusarea.innerHTML = "thinking...";
+            _this3.board.statusarea.innerHTML = i18next.t('msgThinking');
             setTimeout(function () {
               var event;
               event = new $.Event('ai_thinking');
@@ -29408,6 +29906,7 @@ GameGUI = function () {
           return _this3.routine(_this3.selected, _this3.posi, false);
         });
         $('input[name=radio-arrange]').change(function () {
+          // console.log("radio-arrange.change")
           idx = $('input[name=radio-arrange]:checked').val();
           try {
             return localStorage.setItem("radio-arrange", idx);
@@ -29422,12 +29921,12 @@ GameGUI = function () {
           try {
             if (_this3.radio_depth[3].checked) {
               localStorage.setItem("radio-depth", 3);
-              _this3.first.depth = 7;
-              return _this3.second.depth = 7;
+              _this3.first.depth = 4;
+              return _this3.second.depth = 4;
             } else if (_this3.radio_depth[2].checked) {
               localStorage.setItem("radio-depth", 2);
-              _this3.first.depth = 6;
-              return _this3.second.depth = 6;
+              _this3.first.depth = 4;
+              return _this3.second.depth = 4;
             } else if (_this3.radio_depth[1].checked) {
               localStorage.setItem("radio-depth", 1);
               _this3.first.depth = 4;
@@ -29437,6 +29936,15 @@ GameGUI = function () {
               _this3.first.depth = 3;
               return _this3.second.depth = 3;
             }
+          } catch (error) {
+            err = error;
+            return console.log(err);
+          }
+        });
+        $('#check-guide').on('change', function (e) {
+          try {
+            _this3.check_guide = e.currentTarget.checked;
+            return localStorage.setItem("movement_guide33", _this3.check_guide);
           } catch (error) {
             err = error;
             return console.log(err);
@@ -29452,7 +29960,7 @@ GameGUI = function () {
             return console.log(err);
           }
         });
-        return $('#second_player').on('change', function (e) {
+        $('#second_player').on('change', function (e) {
           var target;
           target = $(e.currentTarget);
           try {
@@ -29462,6 +29970,179 @@ GameGUI = function () {
             return console.log(err);
           }
         });
+        return $('#btnSearch').on('click', function (e) {
+          var koma, l, len, ref;
+          // console.log("btnSearch.click")
+          // console.log("before pieces = #{JSON.stringify(@board.pieces)}")
+          _this3.bkup.pieces = [];
+          ref = _this3.board.pieces;
+          for (l = 0, len = ref.length; l < len; l++) {
+            koma = ref[l];
+            _this3.bkup.pieces.push(eval("new Piece." + koma.kind() + "(" + koma.turn + "," + koma.status + ",[" + koma.posi.toString() + "])"));
+          }
+          return _this3.listUp();
+        });
+      }
+
+      // console.log("after pieces = #{JSON.stringify(@board.pieces)}")
+
+    }, {
+      key: 'boardList',
+      value: function boardList() {
+        var i, l, results, v;
+        this.searchList = [];
+        this.set_standard();
+        this.searchList.push(function () {
+          var l, len, ref, results;
+          ref = this.board.pieces;
+          results = [];
+          for (l = 0, len = ref.length; l < len; l++) {
+            v = ref[l];
+            results.push(v.kind());
+          }
+          return results;
+        }.call(this).unique());
+        this.board.display(0, null);
+        results = [];
+        for (i = l = 1; l <= 140; i = ++l) {
+          launch.call(this, i);
+          this.searchList.push(function () {
+            var len, m, ref, results1;
+            ref = this.board.pieces;
+            results1 = [];
+            for (m = 0, len = ref.length; m < len; m++) {
+              v = ref[m];
+              results1.push(v.kind());
+            }
+            return results1;
+          }.call(this).unique());
+          results.push(this.board.display(i, null));
+        }
+        return results;
+      }
+    }, {
+      key: 'listUp',
+      value: function listUp() {
+        var checked, col, e, e2, i, idx, input, koma, l, label, len, m, mydiv, n, r, ref, ref1, ref2, row, title, v, w;
+        // console.log("listUp")
+        this.searchResult = [];
+        checked = [];
+        if ($("#check-hi").prop("checked")) {
+          checked.push($("#check-hi").val());
+        }
+        if ($("#check-ka").prop("checked")) {
+          checked.push($("#check-ka").val());
+        }
+        if ($("#check-ki").prop("checked")) {
+          checked.push($("#check-ki").val());
+        }
+        if ($("#check-gi").prop("checked")) {
+          checked.push($("#check-gi").val());
+        }
+        if ($("#check-ke").prop("checked")) {
+          checked.push($("#check-ke").val());
+        }
+        if ($("#check-ky").prop("checked")) {
+          checked.push($("#check-ky").val());
+        }
+        if ($("#check-fu").prop("checked")) {
+          checked.push($("#check-fu").val());
+        }
+        ref = this.searchList;
+        for (i = l = 0, len = ref.length; l < len; i = ++l) {
+          v = ref[i];
+          if (function () {
+            var len1, m, results;
+            results = [];
+            for (m = 0, len1 = checked.length; m < len1; m++) {
+              w = checked[m];
+              if (indexOf.call(v, w) >= 0) {
+                results.push(w);
+              }
+            }
+            return results;
+          }().length === checked.length) {
+            this.searchResult.push(i);
+          }
+        }
+        document.getElementById("spanSearch").innerHTML = "";
+        mydiv = document.getElementById("searchImage");
+        while (mydiv.firstChild) {
+          mydiv.removeChild(mydiv.firstChild);
+        }
+        e = document.createElement("div");
+        e.setAttribute("class", "ui-controlgroup-controls");
+        idx = 0;
+        while (idx < this.searchResult.length) {
+          launch.call(this, this.searchResult[idx]);
+          r = [[null, null, null], [null, null, null], [null, null, null]];
+          for (row = m = 1, ref1 = this.board.rows; 1 <= ref1 ? m <= ref1 : m >= ref1; row = 1 <= ref1 ? ++m : --m) {
+            for (col = n = ref2 = this.board.cols; n >= 1; col = n += -1) {
+              koma = function () {
+                var len1, p, ref3, results;
+                ref3 = this.board.pieces;
+                results = [];
+                for (p = 0, len1 = ref3.length; p < len1; p++) {
+                  v = ref3[p];
+                  if (v.posi != null && v.posi.toString() === [col, row].toString()) {
+                    results.push(v);
+                  }
+                }
+                return results;
+              }.call(this)[0];
+              if (koma != null) {
+                r[col - 1][row - 1] = {
+                  src: BoardGUI.getImg(koma),
+                  alt: koma.caption(),
+                  cls: koma.turn === Const.FIRST ? 'first' : 'second'
+                };
+              } else {
+                r[col - 1][row - 1] = {
+                  src: "./img/empty.svg",
+                  alt: "",
+                  cls: "empty"
+                };
+              }
+            }
+          }
+          e2 = document.createElement("div");
+          e2.setAttribute("class", "ui-radio ui-mini");
+          input = document.createElement('input');
+          input.setAttribute("type", "radio");
+          input.setAttribute("id", "radioSearch" + this.searchResult[idx].toString());
+          input.setAttribute("name", "radioSearch");
+          input.setAttribute("value", this.searchResult[idx]);
+          if (this.searchResult[idx].toString() === this.label_idx) {
+            input.setAttribute("checked", true);
+          }
+          // input.setAttribute "checked", true if idx == 0
+          input.onclick = function () {
+            var patternNo;
+            patternNo = $('input[name=\'radioSearch\']:checked').val();
+            $('#radio-arrange' + patternNo).prop('checked', true);
+            $('input[name="radio-arrange"]').checkboxradio('refresh');
+            return $('input[name=\'radio-arrange\'][value=\'' + patternNo + '\']').prop('checked', true).trigger('change');
+          };
+          label = document.createElement('label');
+          label.setAttribute("class", "ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-first-child ui-radio-on");
+          label.htmlFor = 'radioSearch' + this.searchResult[idx].toString();
+          if (this.searchResult[idx] === 0) {
+            title = 'Standard:';
+          } else {
+            title = 'Arrange' + this.searchResult[idx].toString() + ':';
+          }
+          label.innerHTML = title + '    <div class="ui-grid-solo-second">' + '      <div class="ui-block-a">' + '\t     <div id="search_s_' + this.searchResult[idx].toString() + '" data-role="controlgroup" data-type="horizontal">' + '        </div>' + '      </div>' + '    </div>' + '    <div id="mainboard" class="ui-grid-d-board">' + '      <div class="ui-block-a"></div>' + '      <div class="ui-block-b">３</div>' + '      <div class="ui-block-c">２</div>' + '      <div class="ui-block-d">１</div>' + '      <div class="ui-block-e"></div>' + '      <div class="ui-block-a">' + '      </div>' + '      <div class="ui-block-b"><div id="b31_' + this.searchResult[idx].toString() + '" data-col="3" data-row="1" class="ui-bar-board"><img class="' + r[2][0]["cls"] + '" src="' + r[2][0]["src"] + '" alt="' + r[2][0]["alt"] + '"></div></div>' + '      <div class="ui-block-c"><div id="b21_' + this.searchResult[idx].toString() + '" data-col="2" data-row="1" class="ui-bar-board"><img class="' + r[1][0]["cls"] + '" src="' + r[1][0]["src"] + '" alt="' + r[1][0]["alt"] + '"></div></div>' + '      <div class="ui-block-d"><div id="b11_' + this.searchResult[idx].toString() + '" data-col="1" data-row="1" class="ui-bar-board"><img class="' + r[0][0]["cls"] + '" src="' + r[0][0]["src"] + '" alt="' + r[0][0]["alt"] + '"></div></div>' + '      <div class="ui-block-e">一</div>' + '      <div class="ui-block-a">' + '      </div>' + '      <div class="ui-block-b"><div id="b32_' + this.searchResult[idx].toString() + '" data-col="3" data-row="2" class="ui-bar-board"><img class="' + r[2][1]["cls"] + '" src="' + r[2][1]["src"] + '" alt="' + r[2][1]["alt"] + '"></div></div>' + '      <div class="ui-block-c"><div id="b22_' + this.searchResult[idx].toString() + '" data-col="2" data-row="2" class="ui-bar-board"><img class="' + r[1][1]["cls"] + '" src="' + r[1][1]["src"] + '" alt="' + r[1][1]["alt"] + '"></div></div>' + '      <div class="ui-block-d"><div id="b12_' + this.searchResult[idx].toString() + '" data-col="1" data-row="2" class="ui-bar-board"><img class="' + r[0][1]["cls"] + '" src="' + r[0][1]["src"] + '" alt="' + r[0][1]["alt"] + '"></div></div>' + '      <div class="ui-block-e">二</div>' + '      <div class="ui-block-a"></div>' + '      <div class="ui-block-b"><div id="b33_' + this.searchResult[idx].toString() + '" data-col="3" data-row="3" class="ui-bar-board"><img class="' + r[2][2]["cls"] + '" src="' + r[2][2]["src"] + '" alt="' + r[2][2]["alt"] + '"></div></div>' + '      <div class="ui-block-c"><div id="b23_' + this.searchResult[idx].toString() + '" data-col="2" data-row="3" class="ui-bar-board"><img class="' + r[1][2]["cls"] + '" src="' + r[1][2]["src"] + '" alt="' + r[1][2]["alt"] + '"></div></div>' + '      <div class="ui-block-d"><div id="b13_' + this.searchResult[idx].toString() + '" data-col="1" data-row="3" class="ui-bar-board"><img class="' + r[0][2]["cls"] + '" src="' + r[0][2]["src"] + '" alt="' + r[0][2]["alt"] + '"></div></div>' + '      <div class="ui-block-e">三</div>' + '    </div>' + '    <div class="ui-grid-solo-first">' + '      <div class="ui-block-a">' + '        <div id="search_f_' + this.searchResult[idx].toString() + '" data-role="controlgroup" data-type="horizontal">' + '        </div>' + '      </div>' + '    </div>';
+          label.appendChild(input);
+          e2.appendChild(label);
+          e.appendChild(e2);
+          idx++;
+        }
+        document.getElementById("searchImage").appendChild(e);
+        setTimeout(function () {
+          var event;
+          event = new $.Event('after_search');
+          return $(document).trigger(event);
+        }, 500);
       }
     }, {
       key: 'interrupted',
@@ -29475,16 +30156,26 @@ GameGUI = function () {
         }
         if (this.startbtn.disabled) {
           this.interrupt_flg = true;
-          $("#btnStop").val("再開").button("refresh");
+          $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
           this.startbtn.disabled = false;
           this.naviA.style.display = "block";
           this.board.statusarea.innerHTML = "";
         } else {
           this.interrupt_flg = false;
-          $("#btnStop").val("中断").button("refresh");
+          $("#btnStop").val(i18next.t('msgInterrupt')).button("refresh");
           this.startbtn.disabled = true;
           this.naviA.style.display = "none";
-          this.board.statusarea.innerHTML = (this.seq % 2 === 0 ? "先手" : "後手") + "の番です";
+          if (this.seq % 2 === 0) {
+            this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+              postProcess: 'sprintf',
+              sprintf: [i18next.t('msgBlack')]
+            });
+          } else {
+            this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+              postProcess: 'sprintf',
+              sprintf: [i18next.t('msgWhite')]
+            });
+          }
           this.teban = this.seq % 2 === 0 ? this.first : this.second;
           this.first_player.selectedIndex = parseInt(localStorage.getItem("first_player") | 0, 10);
           this.second_player.selectedIndex = parseInt(localStorage.getItem("second_player") | 0, 10);
@@ -29493,18 +30184,21 @@ GameGUI = function () {
           this.history.splice(this.seq + 1);
           this.duplication.splice(this.seq + 1);
           if (!this.first.human && !this.second.human) {
-            this.board.statusarea.innerHTML = "thinking...";
+            this.board.statusarea.innerHTML = i18next.t('msgThinking');
             setTimeout(function () {
               return _this4.auto_battle(_this4.seq);
             }, 1000);
           } else if (!this.teban.human) {
-            this.board.statusarea.innerHTML = "thinking...";
+            this.board.statusarea.innerHTML = i18next.t('msgThinking');
             setTimeout(function () {
               var event;
               event = new $.Event('ai_thinking');
               return $(window).trigger(event);
             }, 500);
           } else {
+            if (this.sennitite(GameGUI.make_hash(this.board))) {
+              return;
+            }
             ret = [];
             oppo = this.teban.turn === Const.FIRST ? this.second : this.first;
             threshold = this.teban.turn === Const.FIRST ? Const.MAX_VALUE : Const.MIN_VALUE;
@@ -29512,15 +30206,15 @@ GameGUI = function () {
             if (!ret[0]) {
               switch (ret[2]) {
                 case Const.MAX_VALUE:
-                  this.board.statusarea.innerHTML = "先手の勝ちです";
+                  this.board.statusarea.innerHTML = i18next.t('msgFirstWin');
                   this.startbtn.disabled = false;
-                  $("#btnStop").val("再開").button("refresh");
+                  $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
                   this.naviA.style.display = "block";
                   break;
                 case Const.MIN_VALUE:
-                  this.board.statusarea.innerHTML = "後手の勝ちです";
+                  this.board.statusarea.innerHTML = i18next.t('msgSecondWin');
                   this.startbtn.disabled = false;
-                  $("#btnStop").val("再開").button("refresh");
+                  $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
                   this.naviA.style.display = "block";
                   break;
                 default:
@@ -29536,11 +30230,11 @@ GameGUI = function () {
       value: function sennitite(h) {
         var b, v;
         b = function () {
-          var j, len, ref, results;
+          var l, len, ref, results;
           ref = this.duplication;
           results = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            v = ref[j];
+          for (l = 0, len = ref.length; l < len; l++) {
+            v = ref[l];
             if (v === h) {
               results.push(v);
             }
@@ -29550,9 +30244,9 @@ GameGUI = function () {
         if (b.length === 3) {
           return null;
         } else if (b.length >= 4) {
-          this.board.statusarea.innerHTML = "千日手です";
+          this.board.statusarea.innerHTML = i18next.t('msgSennitite');
           this.startbtn.disabled = false;
-          $("#btnStop").val("再開").button("refresh");
+          $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
           this.naviA.style.display = "block";
           return true;
         } else {
@@ -29568,49 +30262,73 @@ GameGUI = function () {
         if (nari) {
           piece.status = Const.Status.URA;
         }
-        this.md5hash = crypto.createHash('md5').update(JSON.stringify(this.board.pieces)).digest("hex");
+        this.md5hash = GameGUI.make_hash(this.board);
         this.seq += 1;
-        this.addState(this.md5hash);
+        this.addState(this.md5hash, posi, src_posi, posi, piece.koma());
         if (this.sennitite(this.md5hash)) {
           this.board.display();
+          $('#b' + posi[0] + posi[1]).css('border-style', 'dashed');
           return;
         }
         this.teban = this.seq % 2 === 0 ? this.first : this.second;
         threshold = this.teban.turn === Const.FIRST ? Const.MAX_VALUE : Const.MIN_VALUE;
         switch (this.board.gameover()) {
           case Const.FIRST:
-            this.board.statusarea.innerHTML = "先手の勝ちです";
+            this.board.statusarea.innerHTML = i18next.t('msgFirstWin');
             this.startbtn.disabled = false;
-            $("#btnStop").val("再開").button("refresh");
+            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
             this.naviA.style.display = "block";
             this.board.display();
+            $('#b' + posi[0] + posi[1]).css('border-style', 'dashed');
             return;
           case Const.SECOND:
-            this.board.statusarea.innerHTML = "後手の勝ちです";
+            this.board.statusarea.innerHTML = i18next.t('msgSecondWin');
             this.startbtn.disabled = false;
-            $("#btnStop").val("再開").button("refresh");
+            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
             this.naviA.style.display = "block";
             this.board.display();
+            $('#b' + posi[0] + posi[1]).css('border-style', 'dashed');
             return;
           default:
-            this.board.statusarea.innerHTML = (this.teban.turn === Const.FIRST ? "先手" : "後手") + "の番です";
+            if (this.teban.turn === Const.FIRST) {
+              this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+                postProcess: 'sprintf',
+                sprintf: [i18next.t('msgBlack')]
+              });
+            } else {
+              this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+                postProcess: 'sprintf',
+                sprintf: [i18next.t('msgWhite')]
+              });
+            }
         }
         this.s_posi = null;
         this.d_posi = null;
         this.board.display();
+        $('#b' + posi[0] + posi[1]).css('border-style', 'dashed');
         if (this.teban.human) {
           oppo = this.teban.turn === Const.FIRST ? this.second : this.first;
           ret = [];
           // 詰みチェック
           ret = this.teban.think(this.board, oppo, 1, threshold);
           if (!ret[0]) {
-            this.board.statusarea.innerHTML = (this.teban.turn === Const.FIRST ? "後手" : "先手") + "の勝ちです";
+            if (this.teban.turn === Const.FIRST) {
+              this.board.statusarea.innerHTML = i18next.t('msgWinner', {
+                postProcess: 'sprintf',
+                sprintf: [i18next.t('msgWhite')]
+              });
+            } else {
+              this.board.statusarea.innerHTML = i18next.t('msgWinner', {
+                postProcess: 'sprintf',
+                sprintf: [i18next.t('msgBlack')]
+              });
+            }
             this.startbtn.disabled = false;
-            $("#btnStop").val("再開").button("refresh");
+            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
             this.naviA.style.display = "block";
           }
         } else {
-          this.board.statusarea.innerHTML = "thinking...";
+          this.board.statusarea.innerHTML = i18next.t('msgThinking');
           return setTimeout(function () {
             var event;
             event = new $.Event('ai_thinking');
@@ -29629,12 +30347,16 @@ GameGUI = function () {
         if (this.auto_flg) {
           return;
         }
+        if (piece == null) {
+          this.s_posi = null;
+          return;
+        }
         dest = function () {
-          var j, len, ref, results;
+          var l, len, ref, results;
           ref = this.board.pieces;
           results = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            v = ref[j];
+          for (l = 0, len = ref.length; l < len; l++) {
+            v = ref[l];
             if (v.posi != null && v.posi.toString() === posi.toString()) {
               results.push(v);
             }
@@ -29666,11 +30388,11 @@ GameGUI = function () {
         }
         this.board.make_kiki(player.turn);
         king = function () {
-          var j, len, ref, results;
+          var l, len, ref, results;
           ref = this.board.pieces;
           results = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            v = ref[j];
+          for (l = 0, len = ref.length; l < len; l++) {
+            v = ref[l];
             if (v.kind() === 'Ou' && v.turn === this.teban.turn) {
               results.push(v);
             }
@@ -29737,18 +30459,18 @@ GameGUI = function () {
           $('#b' + this.pre_posi[0] + this.pre_posi[1]).css('background-color', '#FFFACD');
         }
         this.selected = function () {
-          var j, len, ref, results;
+          var l, len, ref, results;
           ref = this.board.pieces;
           results = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            v = ref[j];
+          for (l = 0, len = ref.length; l < len; l++) {
+            v = ref[l];
             if (v.turn === turn && v.kind() === kind && v.status === Const.Status.MOTIGOMA && v.turn === this.teban.turn) {
               results.push(v);
             }
           }
           return results;
         }.call(this)[0];
-        if (this.selected) {
+        if (this.selected != null) {
           this.s_posi = !null;
         }
       }
@@ -29761,21 +30483,22 @@ GameGUI = function () {
         if (!this.s_posi) {
           this.s_posi = posi;
           this.selected = function () {
-            var j, len, ref, results;
+            var l, len, ref, results;
             ref = this.board.pieces;
             results = [];
-            for (j = 0, len = ref.length; j < len; j++) {
-              v = ref[j];
+            for (l = 0, len = ref.length; l < len; l++) {
+              v = ref[l];
               if (v.posi != null && v.posi.toString() === posi.toString() && v.turn === this.teban.turn) {
                 results.push(v);
               }
             }
             return results;
           }.call(this)[0];
-          if (this.selected) {
+          if (this.selected != null) {
             $('#b' + posi[0] + posi[1]).css('background-color', '#E3D7A6');
             this.pre_posi = posi;
           } else {
+            // @guide(@selected) if @check_guide
             this.s_posi = null;
           }
         } else {
@@ -29783,9 +30506,104 @@ GameGUI = function () {
           if (this.pre_posi) {
             $('#b' + this.pre_posi[0] + this.pre_posi[1]).css('background-color', '#FFFACD');
           }
+          // for c in [1..@board.cols]
+          //     for r in [1..@board.rows]
+          //         unless ((r == posi[1]) && (c == posi[0]))
+          //             $('#b' + c.toString() + r.toString()).css('background-color', '#FFFACD')
           this.touch(this.selected, this.d_posi);
         }
       }
+    }, {
+      key: 'guide',
+      value: function guide(piece) {
+        var buf, dest, l, len, m, n, p, q, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, results, results1, results2, results3, v, w;
+        ref = eval("Piece." + piece.kind()).getD(piece.turn, piece.status);
+        // console.log("GameGUI.guide")
+        for (l = 0, len = ref.length; l < len; l++) {
+          v = ref[l];
+          buf = [].concat(piece.posi);
+          buf[0] += v.xd;
+          buf[1] += v.yd;
+          if (v.series) {
+            while ((ref1 = buf[0], indexOf.call(function () {
+              results = [];
+              for (var m = 1, ref2 = this.board.cols; 1 <= ref2 ? m <= ref2 : m >= ref2; 1 <= ref2 ? m++ : m--) {
+                results.push(m);
+              }
+              return results;
+            }.apply(this), ref1) >= 0) && (ref3 = buf[1], indexOf.call(function () {
+              results1 = [];
+              for (var n = 1, ref4 = this.board.rows; 1 <= ref4 ? n <= ref4 : n >= ref4; 1 <= ref4 ? n++ : n--) {
+                results1.push(n);
+              }
+              return results1;
+            }.apply(this), ref3) >= 0)) {
+              dest = function () {
+                var len1, m, ref1, results;
+                ref1 = this.board.pieces;
+                results = [];
+                for (m = 0, len1 = ref1.length; m < len1; m++) {
+                  w = ref1[m];
+                  if (w.posi != null && w.posi[0] === buf[0] && w.posi[1] === buf[1]) {
+                    results.push(w);
+                  }
+                }
+                return results;
+              }.call(this);
+              if (dest.length !== 0) {
+                if (piece.turn !== dest[0].turn) {
+                  $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+                }
+                // $('#b' + buf[0].toString() + buf[1].toString()).css('border-style', 'dotted')
+                break;
+              } else {
+                $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+              }
+              // $('#b' + buf[0].toString() + buf[1].toString()).css('border-style', 'dotted')
+              buf[0] += v.xd;
+              buf[1] += v.yd;
+            }
+          } else {
+            dest = function () {
+              var len1, p, ref5, results2;
+              ref5 = this.board.pieces;
+              results2 = [];
+              for (p = 0, len1 = ref5.length; p < len1; p++) {
+                w = ref5[p];
+                if (w.posi != null && w.posi[0] === buf[0] && w.posi[1] === buf[1]) {
+                  results2.push(w);
+                }
+              }
+              return results2;
+            }.call(this);
+            if (dest.length !== 0) {
+              if (piece.turn !== dest[0].turn) {
+                $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+              }
+            } else {
+              // $('#b' + buf[0].toString() + buf[1].toString()).css('border-style', 'dotted')
+              if ((ref5 = buf[0], indexOf.call(function () {
+                results2 = [];
+                for (var p = 1, ref6 = this.board.cols; 1 <= ref6 ? p <= ref6 : p >= ref6; 1 <= ref6 ? p++ : p--) {
+                  results2.push(p);
+                }
+                return results2;
+              }.apply(this), ref5) >= 0) && (ref7 = buf[1], indexOf.call(function () {
+                results3 = [];
+                for (var q = 1, ref8 = this.board.rows; 1 <= ref8 ? q <= ref8 : q >= ref8; 1 <= ref8 ? q++ : q--) {
+                  results3.push(q);
+                }
+                return results3;
+              }.apply(this), ref7) >= 0)) {
+                $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+              }
+            }
+          }
+        }
+      }
+
+      // $('#b' + buf[0].toString() + buf[1].toString()).css('border-style', 'dotted')
+
     }, {
       key: 'set_standard',
       value: function set_standard() {
@@ -29804,7 +30622,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange1',
@@ -29826,7 +30644,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange2',
@@ -29848,7 +30666,7 @@ GameGUI = function () {
         this.board.move_capture(fh, [3, 3]);
         sm = new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sm);
-        return this.board.move_capture(sm, [1, 1]);
+        this.board.move_capture(sm, [1, 1]);
       }
     }, {
       key: 'set_arrange3',
@@ -29870,7 +30688,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange4',
@@ -29896,7 +30714,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange5',
@@ -29924,7 +30742,7 @@ GameGUI = function () {
         this.board.move_capture(ff, [2, 3]);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
-        return this.board.move_capture(sf, [2, 1]);
+        this.board.move_capture(sf, [2, 1]);
       }
     }, {
       key: 'set_arrange6',
@@ -29942,7 +30760,7 @@ GameGUI = function () {
         this.board.move_capture(fh, [1, 3]);
         sh = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sh);
-        return this.board.move_capture(sh, [3, 1]);
+        this.board.move_capture(sh, [3, 1]);
       }
     }, {
       key: 'set_arrange7',
@@ -29962,7 +30780,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange8',
@@ -29978,7 +30796,7 @@ GameGUI = function () {
         fm = new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(fm);
         sh = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sh);
+        this.board.add(sh);
       }
     }, {
       key: 'set_arrange9',
@@ -30002,7 +30820,7 @@ GameGUI = function () {
         this.board.move_capture(ff, [1, 3]);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
-        return this.board.move_capture(sf, [3, 1]);
+        this.board.move_capture(sf, [3, 1]);
       }
     }, {
       key: 'set_arrange10',
@@ -30026,7 +30844,7 @@ GameGUI = function () {
         this.board.move_capture(ff, [2, 3]);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
-        return this.board.move_capture(sf, [2, 1]);
+        this.board.move_capture(sf, [2, 1]);
       }
     }, {
       key: 'set_arrange11',
@@ -30046,7 +30864,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange12',
@@ -30066,7 +30884,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange13',
@@ -30082,7 +30900,7 @@ GameGUI = function () {
         fy = new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(fy);
         sx = new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sx);
+        this.board.add(sx);
       }
     }, {
       key: 'set_arrange14',
@@ -30102,7 +30920,7 @@ GameGUI = function () {
         fy = new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(fy);
         sy = new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sy);
+        this.board.add(sy);
       }
     }, {
       key: 'set_arrange15',
@@ -30126,7 +30944,7 @@ GameGUI = function () {
         this.board.move_capture(ff, [1, 3]);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
-        return this.board.move_capture(sf, [3, 1]);
+        this.board.move_capture(sf, [3, 1]);
       }
     }, {
       key: 'set_arrange16',
@@ -30147,7 +30965,7 @@ GameGUI = function () {
         this.board.add(sg);
         sx = new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sx);
-        return this.board.move_capture(sx, [2, 2]);
+        this.board.move_capture(sx, [2, 2]);
       }
     }, {
       key: 'set_arrange17',
@@ -30163,7 +30981,7 @@ GameGUI = function () {
         fg = new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(fg);
         sx = new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sx);
+        this.board.add(sx);
       }
     }, {
       key: 'set_arrange18',
@@ -30181,7 +30999,7 @@ GameGUI = function () {
         sm = new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sm);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange19',
@@ -30197,7 +31015,7 @@ GameGUI = function () {
         fk = new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(fk);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange20',
@@ -30212,7 +31030,7 @@ GameGUI = function () {
         this.board.move_capture(so, [1, 1]);
         this.board.add(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
         this.board.add(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
-        return this.board.add(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.add(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
       }
     }, {
       key: 'set_arrange21',
@@ -30231,7 +31049,7 @@ GameGUI = function () {
         fh = new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(fh);
         sx = new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sx);
+        this.board.add(sx);
       }
     }, {
       key: 'set_arrange22',
@@ -30255,7 +31073,7 @@ GameGUI = function () {
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
         this.board.move_capture(ff, [1, 3]);
-        return this.board.move_capture(sf, [3, 1]);
+        this.board.move_capture(sf, [3, 1]);
       }
     }, {
       key: 'set_arrange23',
@@ -30275,7 +31093,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange24',
@@ -30308,7 +31126,7 @@ GameGUI = function () {
         so = new Piece.Ou(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(so);
         this.board.move_capture(fo, [3, 1]);
-        return this.board.move_capture(so, [1, 3]);
+        this.board.move_capture(so, [1, 3]);
       }
     }, {
       key: 'set_arrange25',
@@ -30324,7 +31142,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange26',
@@ -30342,7 +31160,7 @@ GameGUI = function () {
         fy = new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(fy);
         sg = new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sg);
+        this.board.add(sg);
       }
     }, {
       key: 'set_arrange27',
@@ -30365,7 +31183,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         ff2 = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
-        return this.board.add(ff2);
+        this.board.add(ff2);
       }
     }, {
       key: 'set_arrange28',
@@ -30385,7 +31203,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange29',
@@ -30407,7 +31225,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sy = new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sy);
+        this.board.add(sy);
       }
     }, {
       key: 'set_arrange30',
@@ -30429,7 +31247,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange31',
@@ -30447,7 +31265,7 @@ GameGUI = function () {
         sk = new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sk);
         sy = new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sy);
+        this.board.add(sy);
       }
     }, {
       key: 'set_arrange32',
@@ -30480,7 +31298,7 @@ GameGUI = function () {
         this.board.move_capture(fh, [3, 1]);
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
-        return this.board.move_capture(ff, [2, 2]);
+        this.board.move_capture(ff, [2, 2]);
       }
     }, {
       key: 'set_arrange33',
@@ -30498,7 +31316,7 @@ GameGUI = function () {
         this.board.move_capture(fh, [2, 3]);
         sh = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sh);
-        return this.board.move_capture(sh, [2, 1]);
+        this.board.move_capture(sh, [2, 1]);
       }
     }, {
       key: 'set_arrange34',
@@ -30515,7 +31333,7 @@ GameGUI = function () {
         this.board.add(fm);
         sh = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sh);
-        return this.board.move_capture(sh, [3, 2]);
+        this.board.move_capture(sh, [3, 2]);
       }
     }, {
       key: 'set_arrange35',
@@ -30539,7 +31357,7 @@ GameGUI = function () {
         this.board.move_capture(ff, [1, 3]);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
-        return this.board.move_capture(sf, [3, 1]);
+        this.board.move_capture(sf, [3, 1]);
       }
     }, {
       key: 'set_arrange36',
@@ -30559,7 +31377,7 @@ GameGUI = function () {
         sg2 = new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sg2);
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
-        return this.board.add(ff);
+        this.board.add(ff);
       }
     }, {
       key: 'set_arrange37',
@@ -30584,7 +31402,7 @@ GameGUI = function () {
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
-        return this.board.move_capture(sf, [2, 1]);
+        this.board.move_capture(sf, [2, 1]);
       }
     }, {
       key: 'set_arrange38',
@@ -30606,27 +31424,17 @@ GameGUI = function () {
         this.board.move_capture(ff, [2, 3]);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
-        return this.board.move_capture(sf, [2, 1]);
+        this.board.move_capture(sf, [2, 1]);
       }
     }, {
       key: 'set_arrange39',
       value: function set_arrange39() {
-        var ff, fm, fo, sf, sh, so;
         this.board.pieces = [];
-        fo = new Piece.Ou(Const.FIRST, Const.Status.MOTIGOMA);
-        this.board.add(fo);
-        so = new Piece.Ou(Const.SECOND, Const.Status.MOTIGOMA);
-        this.board.add(so);
-        this.board.move_capture(fo, [2, 3]);
-        this.board.move_capture(so, [2, 1]);
-        fm = new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA);
-        this.board.add(fm);
-        sh = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA);
-        this.board.add(sh);
-        ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
-        this.board.add(ff);
-        sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
       }
     }, {
       key: 'set_arrange40',
@@ -30648,7 +31456,7 @@ GameGUI = function () {
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
-        return this.board.add(sf);
+        this.board.add(sf);
       }
     }, {
       key: 'set_arrange41',
@@ -30672,7 +31480,7 @@ GameGUI = function () {
         this.board.move_capture(ff, [3, 2]);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
-        return this.board.move_capture(sf, [1, 2]);
+        this.board.move_capture(sf, [1, 2]);
       }
     }, {
       key: 'set_arrange42',
@@ -30693,7 +31501,7 @@ GameGUI = function () {
         this.board.add(sm);
         ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
         this.board.add(ff);
-        return this.board.move_capture(ff, [2, 2]);
+        this.board.move_capture(ff, [2, 2]);
       }
     }, {
       key: 'set_arrange43',
@@ -30717,7 +31525,7 @@ GameGUI = function () {
         this.board.move_capture(ff, [2, 3]);
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
         this.board.add(sf);
-        return this.board.move_capture(sf, [2, 1]);
+        this.board.move_capture(sf, [2, 1]);
       }
     }, {
       key: 'set_arrange44',
@@ -30728,7 +31536,7 @@ GameGUI = function () {
         this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3, 3]));
         this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1, 1]));
         this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [2, 3]));
-        return this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [2, 1]));
       }
     }, {
       key: 'set_arrange45',
@@ -30739,7 +31547,7 @@ GameGUI = function () {
         this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA));
         this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA));
         this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
-        return this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
       }
     }, {
       key: 'set_arrange46',
@@ -30750,7 +31558,7 @@ GameGUI = function () {
         this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
         this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
         this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [3, 1]));
-        return this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 3]));
       }
     }, {
       key: 'set_arrange47',
@@ -30761,7 +31569,7 @@ GameGUI = function () {
         this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
         this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
         this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [1, 3]));
-        return this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [3, 1]));
       }
     }, {
       key: 'set_arrange48',
@@ -30772,7 +31580,7 @@ GameGUI = function () {
         this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
         this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
         this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [3, 3]));
-        return this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 1]));
       }
     }, {
       key: 'set_arrange49',
@@ -30783,7 +31591,7 @@ GameGUI = function () {
         this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
         this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
         this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [1, 2]));
-        return this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [3, 2]));
       }
     }, {
       key: 'set_arrange50',
@@ -30794,7 +31602,992 @@ GameGUI = function () {
         this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [3, 3]));
         this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [1, 1]));
         this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
-        return this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange51',
+      value: function set_arrange51() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+      }
+    }, {
+      key: 'set_arrange52',
+      value: function set_arrange52() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange53',
+      value: function set_arrange53() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+      }
+    }, {
+      key: 'set_arrange54',
+      value: function set_arrange54() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange55',
+      value: function set_arrange55() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange56',
+      value: function set_arrange56() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+      }
+    }, {
+      key: 'set_arrange57',
+      value: function set_arrange57() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.URA, [1, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.URA, [3, 3]));
+      }
+    }, {
+      key: 'set_arrange58',
+      value: function set_arrange58() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange59',
+      value: function set_arrange59() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange60',
+      value: function set_arrange60() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange61',
+      value: function set_arrange61() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+      }
+    }, {
+      key: 'set_arrange62',
+      value: function set_arrange62() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange63',
+      value: function set_arrange63() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+      }
+    }, {
+      key: 'set_arrange64',
+      value: function set_arrange64() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange65',
+      value: function set_arrange65() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange66',
+      value: function set_arrange66() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange67',
+      value: function set_arrange67() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+      }
+    }, {
+      key: 'set_arrange68',
+      value: function set_arrange68() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange69',
+      value: function set_arrange69() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange70',
+      value: function set_arrange70() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange71',
+      value: function set_arrange71() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+      }
+    }, {
+      key: 'set_arrange72',
+      value: function set_arrange72() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange73',
+      value: function set_arrange73() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+      }
+    }, {
+      key: 'set_arrange74',
+      value: function set_arrange74() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange75',
+      value: function set_arrange75() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange76',
+      value: function set_arrange76() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange77',
+      value: function set_arrange77() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+      }
+    }, {
+      key: 'set_arrange78',
+      value: function set_arrange78() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange79',
+      value: function set_arrange79() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+      }
+    }, {
+      key: 'set_arrange80',
+      value: function set_arrange80() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange81',
+      value: function set_arrange81() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+      }
+    }, {
+      key: 'set_arrange82',
+      value: function set_arrange82() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+      }
+    }, {
+      key: 'set_arrange83',
+      value: function set_arrange83() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange84',
+      value: function set_arrange84() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange85',
+      value: function set_arrange85() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.URA, [1, 1]));
+      }
+    }, {
+      key: 'set_arrange86',
+      value: function set_arrange86() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange87',
+      value: function set_arrange87() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange88',
+      value: function set_arrange88() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.URA, [1, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.URA, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 2]));
+      }
+    }, {
+      key: 'set_arrange89',
+      value: function set_arrange89() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange90',
+      value: function set_arrange90() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange91',
+      value: function set_arrange91() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange92',
+      value: function set_arrange92() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+      }
+    }, {
+      key: 'set_arrange93',
+      value: function set_arrange93() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange94',
+      value: function set_arrange94() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange95',
+      value: function set_arrange95() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange96',
+      value: function set_arrange96() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange97',
+      value: function set_arrange97() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange98',
+      value: function set_arrange98() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+      }
+    }, {
+      key: 'set_arrange99',
+      value: function set_arrange99() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange100',
+      value: function set_arrange100() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange101',
+      value: function set_arrange101() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange102',
+      value: function set_arrange102() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange103',
+      value: function set_arrange103() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+      }
+    }, {
+      key: 'set_arrange104',
+      value: function set_arrange104() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange105',
+      value: function set_arrange105() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange106',
+      value: function set_arrange106() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange107',
+      value: function set_arrange107() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange108',
+      value: function set_arrange108() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+      }
+    }, {
+      key: 'set_arrange109',
+      value: function set_arrange109() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange110',
+      value: function set_arrange110() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.URA, [1, 2]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange111',
+      value: function set_arrange111() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+      }
+    }, {
+      key: 'set_arrange112',
+      value: function set_arrange112() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange113',
+      value: function set_arrange113() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange114',
+      value: function set_arrange114() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange115',
+      value: function set_arrange115() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange116',
+      value: function set_arrange116() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+      }
+    }, {
+      key: 'set_arrange117',
+      value: function set_arrange117() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+      }
+    }, {
+      key: 'set_arrange118',
+      value: function set_arrange118() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange119',
+      value: function set_arrange119() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange120',
+      value: function set_arrange120() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange121',
+      value: function set_arrange121() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange122',
+      value: function set_arrange122() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange123',
+      value: function set_arrange123() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange124',
+      value: function set_arrange124() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange125',
+      value: function set_arrange125() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange126',
+      value: function set_arrange126() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange127',
+      value: function set_arrange127() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange128',
+      value: function set_arrange128() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange129',
+      value: function set_arrange129() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange130',
+      value: function set_arrange130() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange131',
+      value: function set_arrange131() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ke(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange132',
+      value: function set_arrange132() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange133',
+      value: function set_arrange133() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange134',
+      value: function set_arrange134() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.URA, [3, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.URA, [1, 2]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange135',
+      value: function set_arrange135() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.URA, [3, 2]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.URA, [1, 2]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange136',
+      value: function set_arrange136() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [3, 2]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [1, 2]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange137',
+      value: function set_arrange137() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [2, 1]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [2, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange138',
+      value: function set_arrange138() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.URA, [2, 1]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.URA, [2, 3]));
+        this.board.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange139',
+      value: function set_arrange139() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.FIRST, Const.Status.OMOTE, [3, 3]));
+        this.board.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.OMOTE, [1, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
+      }
+    }, {
+      key: 'set_arrange140',
+      value: function set_arrange140() {
+        this.board.pieces = [];
+        this.board.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 1]));
+        this.board.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.URA, [3, 3]));
+        this.board.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.URA, [1, 1]));
+        this.board.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA));
+        return this.board.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA));
       }
     }, {
       key: 'setBoardSize',
@@ -30812,8 +32605,27 @@ GameGUI = function () {
       value: function setEventListener(special) {
         var _this5 = this;
 
+        $(document).on('after_search', function (e) {
+          var i, koma, l, len, len1, m, ref, ref1, results, v;
+          ref = _this5.searchResult;
+          // console.log("after_search")
+          for (i = l = 0, len = ref.length; l < len; i = ++l) {
+            v = ref[i];
+            launch.call(_this5, v);
+            _this5.board.display(i, _this5.searchResult[i]);
+          }
+          _this5.board.pieces = [];
+          ref1 = _this5.bkup.pieces;
+          results = [];
+          for (m = 0, len1 = ref1.length; m < len1; m++) {
+            koma = ref1[m];
+            results.push(_this5.board.pieces.push(koma));
+          }
+          return results;
+        });
+        // console.log("revert pieces = #{JSON.stringify(@board.pieces)}")
         $(window).on('ai_thinking', function (e) {
-          var chk_sennitite, i, j, len, oppo, oppo_threshold, player, player_threshold, ref, ret, src_posi, temp;
+          var chk_sennitite, i, l, len, oppo, oppo_threshold, player, player_threshold, ref, ret, src_posi, temp, tumi;
           // console.log("ai_thinking")
           if (_this5.teban.turn === Const.FIRST) {
             player = _this5.first;
@@ -30829,13 +32641,10 @@ GameGUI = function () {
           // 対人戦の場合は相手玉を取るまで指す
           temp = [];
           ret = [];
-          ref = [1, 2, 4, player.depth].unique();
-          for (j = 0, len = ref.length; j < len; j++) {
-            i = ref[j];
+          ref = [1, 2, player.depth].unique();
+          for (l = 0, len = ref.length; l < len; l++) {
+            i = ref[l];
             temp = [];
-            // if i >= 6
-            //     temp = player.prepare(@board, oppo, i, player_threshold)
-            // else
             temp = player.think(_this5.board, oppo, i, player_threshold);
             // console.log("player = #{player.turn}: i = #{i}: temp = #{JSON.stringify(temp)}")
             if (temp[0] != null) {
@@ -30852,6 +32661,7 @@ GameGUI = function () {
             chk_sennitite = _this5.sennitite(_this5.md5hash);
             if (chk_sennitite) {
               _this5.board.display();
+              $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
               return;
             }
             // else if chk_sennitite == null && ret[4]["koma"]?
@@ -30863,36 +32673,47 @@ GameGUI = function () {
               src_posi = _this5.board.move_capture(ret[0], ret[1]);
               ret[0].status = ret[3];
             }
-            _this5.md5hash = crypto.createHash('md5').update(JSON.stringify(_this5.board.pieces)).digest("hex");
+            _this5.md5hash = GameGUI.make_hash(_this5.board);
             _this5.seq += 1;
-            _this5.addState(_this5.md5hash);
+            _this5.addState(_this5.md5hash, ret[1], src_posi, ret[1], ret[0].koma());
             if (_this5.sennitite(_this5.md5hash)) {
               _this5.board.display();
+              $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
               return;
             }
             _this5.teban = _this5.seq % 2 === 0 ? _this5.first : _this5.second;
           } else {
-            _this5.board.statusarea.innerHTML = (_this5.teban.turn === Const.FIRST ? "後手" : "先手") + "の勝ちです";
+            if (_this5.teban.turn === Const.FIRST) {
+              _this5.board.statusarea.innerHTML = i18next.t('msgWinner', {
+                postProcess: 'sprintf',
+                sprintf: [i18next.t('msgWhite')]
+              });
+            } else {
+              _this5.board.statusarea.innerHTML = i18next.t('msgWinner', {
+                postProcess: 'sprintf',
+                sprintf: [i18next.t('msgBlack')]
+              });
+            }
             _this5.startbtn.disabled = false;
-            $("#btnStop").val("再開").button("refresh");
+            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
             _this5.naviA.style.display = "block";
             return;
           }
           // 詰みチェック
-          ret = [];
-          ret = oppo.think(_this5.board, player, 1, oppo_threshold);
-          if (!ret[0]) {
-            switch (ret[2]) {
+          tumi = [];
+          tumi = oppo.think(_this5.board, player, 1, oppo_threshold);
+          if (!tumi[0]) {
+            switch (tumi[2]) {
               case Const.MAX_VALUE:
-                _this5.board.statusarea.innerHTML = "先手の勝ちです";
+                _this5.board.statusarea.innerHTML = i18next.t('msgFirstWin');
                 _this5.startbtn.disabled = false;
-                $("#btnStop").val("再開").button("refresh");
+                $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
                 _this5.naviA.style.display = "block";
                 break;
               case Const.MIN_VALUE:
-                _this5.board.statusarea.innerHTML = "後手の勝ちです";
+                _this5.board.statusarea.innerHTML = i18next.t('msgSecondWin');
                 _this5.startbtn.disabled = false;
-                $("#btnStop").val("再開").button("refresh");
+                $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
                 _this5.naviA.style.display = "block";
                 break;
               default:
@@ -30904,21 +32725,36 @@ GameGUI = function () {
           // 相手玉が自爆しても指し手を進めてしまうのでゲーム終了チェック
           switch (_this5.board.gameover()) {
             case Const.FIRST:
-              _this5.board.statusarea.innerHTML = "先手の勝ちです";
+              _this5.board.statusarea.innerHTML = i18next.t('msgFirstWin');
               _this5.startbtn.disabled = false;
-              $("#btnStop").val("再開").button("refresh");
+              $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
               _this5.naviA.style.display = "block";
               break;
             case Const.SECOND:
-              _this5.board.statusarea.innerHTML = "後手の勝ちです";
+              _this5.board.statusarea.innerHTML = i18next.t('msgSecondWin');
               _this5.startbtn.disabled = false;
-              $("#btnStop").val("再開").button("refresh");
+              $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
               _this5.naviA.style.display = "block";
               break;
             default:
-              _this5.board.statusarea.innerHTML = (_this5.teban.turn === Const.FIRST ? "先手" : "後手") + "の番です";
+              if (_this5.teban.turn === Const.FIRST) {
+                _this5.board.statusarea.innerHTML = i18next.t('msgTurn', {
+                  postProcess: 'sprintf',
+                  sprintf: [i18next.t('msgBlack')]
+                });
+              } else {
+                _this5.board.statusarea.innerHTML = i18next.t('msgTurn', {
+                  postProcess: 'sprintf',
+                  sprintf: [i18next.t('msgWhite')]
+                });
+              }
+              _this5.board.statusarea.innerHTML = _this5.board.statusarea.innerHTML + i18next.t('msgEvaluate', {
+                postProcess: 'sprintf',
+                sprintf: [ret[2].toString()]
+              });
           }
-          return _this5.board.display();
+          _this5.board.display();
+          return $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
         });
         $(window).on('load', function (e) {
           var target;
@@ -30926,13 +32762,33 @@ GameGUI = function () {
           target = $(e.currentTarget);
           _this5.setBoardSize(target.width(), target.height());
           _this5.init();
-          _this5.board.init();
-          return _this5.board.display();
+          return _this5.board.init();
         });
-        return $(window).on(special, function (e) {
+        $(window).on(special, function (e) {
           var target;
           // console.log("=== Device Ready ===")
           return target = $(e.currentTarget);
+        });
+        $(boardSearch).on('updatelayout', function (e) {
+          var target;
+          // console.log("boardSearch updatelayout")
+          return target = $(e.currentTarget);
+        });
+        $(boardList).on('updatelayout', function (e) {
+          var scrollHeight;
+          // console.log("updatelayout")
+          if (window.myVersionString != null && parseInt(window.myVersionString[0] | 0, 10) >= 6) {
+            scrollHeight = $("boardImage").context.scrollingElement.scrollHeight;
+            return $('html,body').animate({
+              scrollTop: scrollHeight / (140 + 1) * _this5.label_idx
+            }, {
+              queue: false
+            });
+          }
+        });
+        return $(document).on('pagecontainershow', function (e) {
+          // console.log("pagecontainershow")
+          return _this5.label_idx = $('input[name=radio-arrange]:checked').val();
         });
       }
     }]);
@@ -30942,16 +32798,22 @@ GameGUI = function () {
 
   ;
 
-  // @setBoardSize(target.width(), target.height())
+  // 同じ駒が複数使用されていることもあるので座標も含めてソート
+  _sortCoordinate = function _sortCoordinate(a, b) {
+    var kinds;
+    kinds = ["Ou", "Hi", "Ka", "Ki", "Gi", "Ke", "Ky", "Fu"];
+    return kinds.indexOf(a["kind"]) - kinds.indexOf(b["kind"]) || a["posi0"] - b["posi0"] || a["posi1"] - b["posi1"];
+  };
+
   is_oute = function is_oute(piece, d_posi) {
     var buf, oppo, oppo_king, v;
     oppo = piece.turn === Const.FIRST ? Const.SECOND : Const.FIRST;
     oppo_king = function () {
-      var j, len, ref, results;
+      var l, len, ref, results;
       ref = this.board.pieces;
       results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        v = ref[j];
+      for (l = 0, len = ref.length; l < len; l++) {
+        v = ref[l];
         if (v.turn === oppo && v.kind() === 'Ou') {
           results.push(v);
         }
@@ -30966,20 +32828,9 @@ GameGUI = function () {
   };
 
   launch = function launch() {
-    var radio_checked, v;
-    radio_checked = function () {
-      var j, len, ref, results;
-      ref = this.radio_arrange;
-      results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        v = ref[j];
-        if (v.checked === true) {
-          results.push(v);
-        }
-      }
-      return results;
-    }.call(this)[0];
-    switch (parseInt(radio_checked.value | 0, 10)) {
+    var idx = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    switch (idx) {
       case 0:
         this.set_standard();
         break;
@@ -31133,9 +32984,1447 @@ GameGUI = function () {
       case 50:
         this.set_arrange50();
         break;
+      case 51:
+        this.set_arrange51();
+        break;
+      case 52:
+        this.set_arrange52();
+        break;
+      case 53:
+        this.set_arrange53();
+        break;
+      case 54:
+        this.set_arrange54();
+        break;
+      case 55:
+        this.set_arrange55();
+        break;
+      case 56:
+        this.set_arrange56();
+        break;
+      case 57:
+        this.set_arrange57();
+        break;
+      case 58:
+        this.set_arrange58();
+        break;
+      case 59:
+        this.set_arrange59();
+        break;
+      case 60:
+        this.set_arrange60();
+        break;
+      case 61:
+        this.set_arrange61();
+        break;
+      case 62:
+        this.set_arrange62();
+        break;
+      case 63:
+        this.set_arrange63();
+        break;
+      case 64:
+        this.set_arrange64();
+        break;
+      case 65:
+        this.set_arrange65();
+        break;
+      case 66:
+        this.set_arrange66();
+        break;
+      case 67:
+        this.set_arrange67();
+        break;
+      case 68:
+        this.set_arrange68();
+        break;
+      case 69:
+        this.set_arrange69();
+        break;
+      case 70:
+        this.set_arrange70();
+        break;
+      case 71:
+        this.set_arrange71();
+        break;
+      case 72:
+        this.set_arrange72();
+        break;
+      case 73:
+        this.set_arrange73();
+        break;
+      case 74:
+        this.set_arrange74();
+        break;
+      case 75:
+        this.set_arrange75();
+        break;
+      case 76:
+        this.set_arrange76();
+        break;
+      case 77:
+        this.set_arrange77();
+        break;
+      case 78:
+        this.set_arrange78();
+        break;
+      case 79:
+        this.set_arrange79();
+        break;
+      case 80:
+        this.set_arrange80();
+        break;
+      case 81:
+        this.set_arrange81();
+        break;
+      case 82:
+        this.set_arrange82();
+        break;
+      case 83:
+        this.set_arrange83();
+        break;
+      case 84:
+        this.set_arrange84();
+        break;
+      case 85:
+        this.set_arrange85();
+        break;
+      case 86:
+        this.set_arrange86();
+        break;
+      case 87:
+        this.set_arrange87();
+        break;
+      case 88:
+        this.set_arrange88();
+        break;
+      case 89:
+        this.set_arrange89();
+        break;
+      case 90:
+        this.set_arrange90();
+        break;
+      case 91:
+        this.set_arrange91();
+        break;
+      case 92:
+        this.set_arrange92();
+        break;
+      case 93:
+        this.set_arrange93();
+        break;
+      case 94:
+        this.set_arrange94();
+        break;
+      case 95:
+        this.set_arrange95();
+        break;
+      case 96:
+        this.set_arrange96();
+        break;
+      case 97:
+        this.set_arrange97();
+        break;
+      case 98:
+        this.set_arrange98();
+        break;
+      case 99:
+        this.set_arrange99();
+        break;
+      case 100:
+        this.set_arrange100();
+        break;
+      case 101:
+        this.set_arrange101();
+        break;
+      case 102:
+        this.set_arrange102();
+        break;
+      case 103:
+        this.set_arrange103();
+        break;
+      case 104:
+        this.set_arrange104();
+        break;
+      case 105:
+        this.set_arrange105();
+        break;
+      case 106:
+        this.set_arrange106();
+        break;
+      case 107:
+        this.set_arrange107();
+        break;
+      case 108:
+        this.set_arrange108();
+        break;
+      case 109:
+        this.set_arrange109();
+        break;
+      case 110:
+        this.set_arrange110();
+        break;
+      case 111:
+        this.set_arrange111();
+        break;
+      case 112:
+        this.set_arrange112();
+        break;
+      case 113:
+        this.set_arrange113();
+        break;
+      case 114:
+        this.set_arrange114();
+        break;
+      case 115:
+        this.set_arrange115();
+        break;
+      case 116:
+        this.set_arrange116();
+        break;
+      case 117:
+        this.set_arrange117();
+        break;
+      case 118:
+        this.set_arrange118();
+        break;
+      case 119:
+        this.set_arrange119();
+        break;
+      case 120:
+        this.set_arrange120();
+        break;
+      case 121:
+        this.set_arrange121();
+        break;
+      case 122:
+        this.set_arrange122();
+        break;
+      case 123:
+        this.set_arrange123();
+        break;
+      case 124:
+        this.set_arrange124();
+        break;
+      case 125:
+        this.set_arrange125();
+        break;
+      case 126:
+        this.set_arrange126();
+        break;
+      case 127:
+        this.set_arrange127();
+        break;
+      case 128:
+        this.set_arrange128();
+        break;
+      case 129:
+        this.set_arrange129();
+        break;
+      case 130:
+        this.set_arrange130();
+        break;
+      case 131:
+        this.set_arrange131();
+        break;
+      case 132:
+        this.set_arrange132();
+        break;
+      case 133:
+        this.set_arrange133();
+        break;
+      case 134:
+        this.set_arrange134();
+        break;
+      case 135:
+        this.set_arrange135();
+        break;
+      case 136:
+        this.set_arrange136();
+        break;
+      case 137:
+        this.set_arrange137();
+        break;
+      case 138:
+        this.set_arrange138();
+        break;
+      case 139:
+        this.set_arrange139();
+        break;
+      case 140:
+        this.set_arrange140();
+        break;
       default:
         console.log("--- Error ---");
     }
+  };
+
+  checkKind = function checkKind(str) {
+    return str === "OU" || str === "HI" || str === "KA" || str === "KI" || str === "GI" || str === "KE" || str === "KY" || str === "FU" || str === "RY" || str === "UM" || str === "NG" || str === "NK" || str === "NY" || str === "TO";
+  };
+
+  makePiece = function makePiece(str) {
+    var posi = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+    var ret;
+    ret = null;
+    switch (str.slice(1, 3)) {
+      case "OU":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ou(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ou(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ou(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ou(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "RY":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Hi(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Hi(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "HI":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Hi(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Hi(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "UM":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ka(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Ka(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "KA":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ka(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ka(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "KI":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ki(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ki(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ki(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "NG":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Gi(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Gi(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "GI":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Gi(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Gi(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "NK":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ke(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Ke(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "KE":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ke(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ke(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "NY":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ky(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Ky(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "KY":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ky(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ky(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "TO":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Fu(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Fu(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "FU":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Fu(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Fu(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+    }
+    return ret;
+  };
+
+  initialBoardImage = function initialBoardImage(pattern) {
+    var b;
+    // console.log("GameGUI.initialBoardImage")
+    b = "";
+    switch (pattern) {
+      case 0:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00GI00FU\n";
+        b += "P-00GI00FU\n";
+        break;
+      case 1:
+        b += "P1-KA-OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +OU+KA\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 2:
+        b += "P1 * -OU-KA\n";
+        b += "P2 *  *  * \n";
+        b += "P3+HI+OU * \n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 3:
+        b += "P1 *  * -OU\n";
+        b += "P2+KA * -KA\n";
+        b += "P3+OU *  * \n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 4:
+        b += "P1 * -KA-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+KA * \n";
+        b += "P+00HI00FU\n";
+        b += "P-00HI00FU\n";
+        break;
+      case 5:
+        b += "P1 * -FU-OU\n";
+        b += "P2+HI * -HI\n";
+        b += "P3+OU+FU * \n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 6:
+        b += "P1-HI-OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +OU+HI\n";
+        break;
+      case 7:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00HI00FU\n";
+        b += "P-00HI00FU\n";
+        break;
+      case 8:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00KA\n";
+        b += "P-00HI\n";
+        break;
+      case 9:
+        b += "P1-FU-KI-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+KI+FU\n";
+        break;
+      case 10:
+        b += "P1-KE-FU-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+FU+KE\n";
+        b += "P+00GI00FU\n";
+        b += "P-00GI00FU\n";
+        break;
+      case 11:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00KE00FU\n";
+        b += "P-00KE00FU\n";
+        break;
+      case 12:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00KY00FU\n";
+        b += "P-00KY00FU\n";
+        break;
+      case 13:
+        b += "P1 *  * -OU\n";
+        b += "P2+OU *  * \n";
+        b += "P3 *  *  * \n";
+        b += "P+00KY\n";
+        b += "P-00KI\n";
+        break;
+      case 14:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00KE00KY\n";
+        b += "P-00KE00KY\n";
+        break;
+      case 15:
+        b += "P1-FU-KA-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+KA+FU\n";
+        break;
+      case 16:
+        b += "P1+OU *  * \n";
+        b += "P2 * -KI * \n";
+        b += "P3 *  * -OU\n";
+        b += "P+00KI00GI\n";
+        b += "P-00GI\n";
+        break;
+      case 17:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00GI\n";
+        b += "P-00KI\n";
+        break;
+      case 18:
+        b += "P1 * -OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +OU * \n";
+        b += "P+00HI\n";
+        b += "P-00KA00FU\n";
+        break;
+      case 19:
+        b += "P1 * -OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +OU * \n";
+        b += "P+00KE\n";
+        b += "P-00FU\n";
+        break;
+      case 20:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00KE00KE\n";
+        b += "P-00KA\n";
+        break;
+      case 21:
+        b += "P1 *  * -OU\n";
+        b += "P2 * -FU * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00HI\n";
+        b += "P-00KI\n";
+        break;
+      case 22:
+        b += "P1-FU-KA-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+HI+FU\n";
+        break;
+      case 23:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00KA00FU\n";
+        b += "P-00HI00FU\n";
+        break;
+      case 24:
+        b += "P1+OU+KI-KY\n";
+        b += "P2+KI+FU-GI\n";
+        b += "P3+FU-GI-OU\n";
+        break;
+      case 25:
+        b += "P1 * +OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -OU * \n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 26:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00KE00KY\n";
+        b += "P-00GI\n";
+        break;
+      case 27:
+        b += "P1-OU-KY * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 *  * +OU\n";
+        b += "P+00KA00FU00FU\n";
+        b += "P-00KA\n";
+        break;
+      case 28:
+        b += "P1 * -OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +OU * \n";
+        b += "P+00KA00FU\n";
+        b += "P-00HI00FU\n";
+        break;
+      case 29:
+        b += "P1-HI-OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3+KA+OU * \n";
+        b += "P+00FU\n";
+        b += "P-00KY\n";
+        break;
+      case 30:
+        b += "P1 * -OU-HI\n";
+        b += "P2 *  *  * \n";
+        b += "P3+HI+OU * \n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 31:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00FU\n";
+        b += "P-00KE00KY\n";
+        break;
+      case 32:
+        b += "P1+HI-KE-OU\n";
+        b += "P2-KA+FU-KY\n";
+        b += "P3+OU-GI+FU\n";
+        break;
+      case 33:
+        b += "P1-OU-HI * \n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+HI * \n";
+        break;
+      case 34:
+        b += "P1 * -OU * \n";
+        b += "P2-HI *  * \n";
+        b += "P3 * +OU * \n";
+        b += "P+00KA\n";
+        break;
+      case 35:
+        b += "P1-FU-KA-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+KY+FU\n";
+        break;
+      case 36:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00KA00FU\n";
+        b += "P-00GI00GI\n";
+        break;
+      case 37:
+        b += "P1 * -FU-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00GI00GI00FU\n";
+        b += "P-00KA00KA\n";
+        break;
+      case 38:
+        b += "P1 * -FU-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+FU * \n";
+        b += "P+00KA\n";
+        b += "P-00HI\n";
+        break;
+      case 39:
+        b += "P1 *  *  * \n";
+        b += "P2+OU * -OU\n";
+        b += "P3 *  *  * \n";
+        b += "P+00KA\n";
+        b += "P-00HI00FU\n";
+        break;
+      case 40:
+        b += "P1 * -OU * \n";
+        b += "P2-HI *  * \n";
+        b += "P3 * +OU+GI\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 41:
+        b += "P1+KA * -OU\n";
+        b += "P2+FU * -FU\n";
+        b += "P3+OU * -KA\n";
+        break;
+      case 42:
+        b += "P1 *  * -OU\n";
+        b += "P2 * +FU * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00KY\n";
+        b += "P-00KA00KI\n";
+        break;
+      case 43:
+        b += "P1 * -FU-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+FU * \n";
+        b += "P+00HI\n";
+        b += "P-00GI00GI\n";
+        break;
+      case 44:
+        b += "P1+OU-KE-FU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+FU+KE-OU\n";
+        break;
+      case 45:
+        b += "P1+OU *  * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 *  * -OU\n";
+        b += "P+00GI00FU\n";
+        b += "P-00GI00FU\n";
+        break;
+      case 46:
+        b += "P1+GI+OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -OU-GI\n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 47:
+        b += "P1-KY+OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -OU+KY\n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 48:
+        b += "P1+OU * -GI\n";
+        b += "P2 *  *  * \n";
+        b += "P3+GI * -OU\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 49:
+        b += "P1+OU-FU * \n";
+        b += "P2-GI * +GI\n";
+        b += "P3 * +FU-OU\n";
+        break;
+      case 50:
+        b += "P1 *  * -KE\n";
+        b += "P2-OU * +OU\n";
+        b += "P3+KE *  * \n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 51:
+        b += "P1 * -OU-FU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+FU+OU * \n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 52:
+        b += "P1+OU-KA * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +KA-OU\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 53:
+        b += "P1 * -FU-HI\n";
+        b += "P2+OU * -OU\n";
+        b += "P3+HI+FU * \n";
+        break;
+      case 54:
+        b += "P1-GI *  * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 *  * +GI\n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 55:
+        b += "P1+OU * -KY\n";
+        b += "P2 *  *  * \n";
+        b += "P3+KY * -OU\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 56:
+        b += "P1+OU-KA * \n";
+        b += "P2-GI * +GI\n";
+        b += "P3 * +KA-OU\n";
+        break;
+      case 57:
+        b += "P1-OU-FU+RY\n";
+        b += "P2 *  *  * \n";
+        b += "P3-RY+FU+OU\n";
+        break;
+      case 58:
+        b += "P1 * -OU-KY\n";
+        b += "P2 *  *  * \n";
+        b += "P3+KY+OU * \n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 59:
+        b += "P1+GI *  * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 *  * -GI\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 60:
+        b += "P1+OU *  * \n";
+        b += "P2+FU * -FU\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 61:
+        b += "P1 *  * -OU\n";
+        b += "P2-KA * +KA\n";
+        b += "P3+OU *  * \n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 62:
+        b += "P1+OU-FU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +FU-OU\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 63:
+        b += "P1+OU-KE * \n";
+        b += "P2+GI * -GI\n";
+        b += "P3 * +KE-OU\n";
+        break;
+      case 64:
+        b += "P1 * -FU-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+FU * \n";
+        b += "P+00GI\n";
+        b += "P-00GI\n";
+        break;
+      case 65:
+        b += "P1 * -KY-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU+KY * \n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 66:
+        b += "P1+OU-FU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +FU-OU\n";
+        b += "P+00GI\n";
+        b += "P-00GI\n";
+        break;
+      case 67:
+        b += "P1-GI-FU+OU\n";
+        b += "P2 *  * -FU\n";
+        b += "P3 * +GI-OU\n";
+        break;
+      case 68:
+        b += "P1 * -FU * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 * +FU * \n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 69:
+        b += "P1 * -FU * \n";
+        b += "P2+OU * -OU\n";
+        b += "P3 * +FU * \n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 70:
+        b += "P1-KY *  * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 *  * +KY\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 71:
+        b += "P1 * +KI-KY\n";
+        b += "P2+OU * -OU\n";
+        b += "P3+KY-KI * \n";
+        break;
+      case 72:
+        b += "P1 * +OU-FU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+FU-OU * \n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 73:
+        b += "P1-OU+GI-KE\n";
+        b += "P2 *  *  * \n";
+        b += "P3+KE-GI+OU\n";
+        break;
+      case 74:
+        b += "P1 *  * -HI\n";
+        b += "P2+OU * -OU\n";
+        b += "P3+HI *  * \n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 75:
+        b += "P1-FU *  * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 *  * +FU\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 76:
+        b += "P1+OU * -KE\n";
+        b += "P2 *  *  * \n";
+        b += "P3+KE * -OU\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 77:
+        b += "P1+OU-FU * \n";
+        b += "P2+KY * -KY\n";
+        b += "P3 * +FU-OU\n";
+        break;
+      case 78:
+        b += "P1 * +OU * \n";
+        b += "P2-KI * +KI\n";
+        b += "P3 * -OU * \n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 79:
+        b += "P1-KE * -FU\n";
+        b += "P2+OU * -OU\n";
+        b += "P3+FU * +KE\n";
+        break;
+      case 80:
+        b += "P1+OU *  * \n";
+        b += "P2+KI * -KI\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 81:
+        b += "P1-OU-KA * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +KA+OU\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 82:
+        b += "P1-OU *  * \n";
+        b += "P2-KA * +KA\n";
+        b += "P3 *  * +OU\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 83:
+        b += "P1-KE * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU * +KE\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 84:
+        b += "P1+GI+OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -OU-GI\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 85:
+        b += "P1 * -OU-TO\n";
+        b += "P2 *  * +FU\n";
+        b += "P3 *  * +OU\n";
+        break;
+      case 86:
+        b += "P1+OU *  * \n";
+        b += "P2+KA * -KA\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 87:
+        b += "P1-FU * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU * +FU\n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 88:
+        b += "P1+OU * -OU\n";
+        b += "P2 * -FU-NG\n";
+        b += "P3 * +TO * \n";
+        break;
+      case 89:
+        b += "P1 * +OU * \n";
+        b += "P2-KY * +KY\n";
+        b += "P3 * -OU * \n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 90:
+        b += "P1+OU * -FU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+FU * -OU\n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 91:
+        b += "P1+OU *  * \n";
+        b += "P2-FU * +FU\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00GI\n";
+        b += "P-00GI\n";
+        break;
+      case 92:
+        b += "P1+OU-KA-KY\n";
+        b += "P2 *  *  * \n";
+        b += "P3+KY+KA-OU\n";
+        break;
+      case 93:
+        b += "P1 *  * -KE\n";
+        b += "P2+OU * -OU\n";
+        b += "P3+KE *  * \n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 94:
+        b += "P1+OU-KE * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +KE-OU\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 95:
+        b += "P1-KE *  * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 *  * +KE\n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 96:
+        b += "P1+KI *  * \n";
+        b += "P2+OU * -OU\n";
+        b += "P3 *  * -KI\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 97:
+        b += "P1-KI * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU * +KI\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 98:
+        b += "P1-KE * -KY\n";
+        b += "P2+OU * -OU\n";
+        b += "P3+KY * +KE\n";
+        break;
+      case 99:
+        b += "P1-FU * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU * +FU\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 100:
+        b += "P1 *  * -OU\n";
+        b += "P2+FU * -FU\n";
+        b += "P3+OU *  * \n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 101:
+        b += "P1+OU+KA * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -KA-OU\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 102:
+        b += "P1+OU *  * \n";
+        b += "P2-KY * +KY\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 103:
+        b += "P1+GI *  * \n";
+        b += "P2+OU * -OU\n";
+        b += "P3 *  * -GI\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 104:
+        b += "P1-OU-KA * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +KA+OU\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 105:
+        b += "P1 * -KE * \n";
+        b += "P2+OU * -OU\n";
+        b += "P3 * +KE * \n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 106:
+        b += "P1+GI+OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -OU-GI\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 107:
+        b += "P1-HI *  * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 *  * +HI\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 108:
+        b += "P1-KY-FU * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 * +FU+KY\n";
+        break;
+      case 109:
+        b += "P1 * +OU-KY\n";
+        b += "P2 *  *  * \n";
+        b += "P3+KY-OU * \n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 110:
+        b += "P1 * +OU * \n";
+        b += "P2-KI * +TO\n";
+        b += "P3 * -OU * \n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 111:
+        b += "P1 *  * -OU\n";
+        b += "P2+HI *  * \n";
+        b += "P3+OU * -KA\n";
+        break;
+      case 112:
+        b += "P1 * +OU-FU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+FU-OU * \n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 113:
+        b += "P1+KI+OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -OU-KI\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 114:
+        b += "P1-KE *  * \n";
+        b += "P2+OU * -OU\n";
+        b += "P3 *  * +KE\n";
+        b += "P+00GI\n";
+        b += "P-00GI\n";
+        break;
+      case 115:
+        b += "P1+OU * -KY\n";
+        b += "P2 *  *  * \n";
+        b += "P3+KY * -OU\n";
+        b += "P+00GI\n";
+        b += "P-00GI\n";
+        break;
+      case 116:
+        b += "P1-KI * -KE\n";
+        b += "P2-OU * +OU\n";
+        b += "P3+KE * +KI\n";
+        break;
+      case 117:
+        b += "P1-KE+OU * \n";
+        b += "P2+KI * -KI\n";
+        b += "P3 * -OU+KE\n";
+        break;
+      case 118:
+        b += "P1-KE+OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -OU+KE\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 119:
+        b += "P1-KY-OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +OU+KY\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 120:
+        b += "P1 * -FU * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 * +FU * \n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 121:
+        b += "P1-FU+OU * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -OU+FU\n";
+        b += "P+00GI\n";
+        b += "P-00GI\n";
+        break;
+      case 122:
+        b += "P1+OU-GI * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +GI-OU\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 123:
+        b += "P1-GI * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU * +GI\n";
+        b += "P+00FU\n";
+        b += "P-00FU\n";
+        break;
+      case 124:
+        b += "P1 * +KA-OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU-KA * \n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 125:
+        b += "P1+KA * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU * -KA\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 126:
+        b += "P1+OU-KA * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +KA-OU\n";
+        b += "P+00KY\n";
+        b += "P-00KY\n";
+        break;
+      case 127:
+        b += "P1 *  * -OU\n";
+        b += "P2-KA * +KA\n";
+        b += "P3+OU *  * \n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 128:
+        b += "P1+GI *  * \n";
+        b += "P2-OU * +OU\n";
+        b += "P3 *  * -GI\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 129:
+        b += "P1+OU-KE * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * +KE-OU\n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 130:
+        b += "P1+OU+KA * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -KA-OU\n";
+        b += "P+00KE\n";
+        b += "P-00KE\n";
+        break;
+      case 131:
+        b += "P1+OU * -KE\n";
+        b += "P2 *  *  * \n";
+        b += "P3+KE * -OU\n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 132:
+        b += "P1+OU *  * \n";
+        b += "P2+HI * -HI\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00GI\n";
+        b += "P-00GI\n";
+        break;
+      case 133:
+        b += "P1+OU *  * \n";
+        b += "P2+GI * -GI\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 134:
+        b += "P1+OU *  * \n";
+        b += "P2+TO * -TO\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 135:
+        b += "P1+OU *  * \n";
+        b += "P2+TO * -TO\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 136:
+        b += "P1+OU *  * \n";
+        b += "P2+KI * -KI\n";
+        b += "P3 *  * -OU\n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 137:
+        b += "P1+OU+KI * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -KI-OU\n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 138:
+        b += "P1+OU+TO * \n";
+        b += "P2 *  *  * \n";
+        b += "P3 * -TO-OU\n";
+        b += "P+00KA\n";
+        b += "P-00KA\n";
+        break;
+      case 139:
+        b += "P1+OU * -KI\n";
+        b += "P2 *  *  * \n";
+        b += "P3+KI * -OU\n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      case 140:
+        b += "P1+OU * -TO\n";
+        b += "P2 *  *  * \n";
+        b += "P3+TO * -OU\n";
+        b += "P+00HI\n";
+        b += "P-00HI\n";
+        break;
+      default:
+        b += "P1 *  * -OU\n";
+        b += "P2 *  *  * \n";
+        b += "P3+OU *  * \n";
+        b += "P+00GI00FU\n";
+        b += "P-00GI00FU\n";
+    }
+    return b;
   };
 
   return GameGUI;
@@ -51143,7 +54432,7 @@ Board = function () {
     }, {
       key: 'check_utifudume',
       value: function check_utifudume(piece, d_posi) {
-        var buf, check, dest, j, k, l, len, o, oppo, oppo_king, org, ref, ref1, ref2, ref3, ref4, results, results1, v;
+        var dest, j, k, l, len, o, oppo, oppo_king, org, ref, ref1, ref2, ref3, ref4, results, results1, v, w;
         // console.log("check_utifudume")
         oppo = piece.turn === Const.FIRST ? Const.SECOND : Const.FIRST;
         oppo_king = function () {
@@ -51158,16 +54447,14 @@ Board = function () {
           }
           return results;
         }.call(this)[0];
-        buf = [].concat(d_posi);
-        buf[0] += eval("Piece." + piece.kind()).getD(piece.turn, piece.status)[0].xd;
-        buf[1] += eval("Piece." + piece.kind()).getD(piece.turn, piece.status)[0].yd;
+        // buf = [].concat(d_posi)
+        // buf[0] += eval("Piece."+piece.kind()).getD(piece.turn, piece.status)[0].xd
+        // buf[1] += eval("Piece."+piece.kind()).getD(piece.turn, piece.status)[0].yd
         //1,打ち歩による王手
-        // check = piece.status == Const.Status.MOTIGOMA && piece.kind() == 'Fu' && oppo_king.posi.toString() == buf.toString()
-        check = piece.status === Const.Status.MOTIGOMA && piece.kind() === 'Fu' && oppo_king.posi[0] === buf[0] && oppo_king.posi[1] === buf[1];
-        if (!check) {
-          // console.log("check1")
-          return false;
-        }
+        // check = piece.status == Const.Status.MOTIGOMA && piece.kind() == 'Fu' && oppo_king.posi[0] == buf[0] && oppo_king.posi[1] == buf[1]
+        // console.log("check1")
+        // return false unless check
+
         //2,打ち歩を玉以外の味方の駒で取ることが出来ない
         this.make_kiki(oppo, 'Ou');
         // if (d_posi.toString() in @kiki[oppo].map (o) -> o.toString())
@@ -51223,12 +54510,25 @@ Board = function () {
           }.call(this)[0] != null) {
             continue;
           } else {
-            if (this.check_move(oppo_king, dest)) {
-              // console.log("check3")
+            if (function () {
+              var len1, m, ref5, results2;
+              ref5 = this.pieces;
+              results2 = [];
+              for (m = 0, len1 = ref5.length; m < len1; m++) {
+                w = ref5[m];
+                if (w.posi != null && w.posi[0] === dest[0] && w.posi[1] === dest[1]) {
+                  results2.push(w);
+                }
+              }
+              return results2;
+            }.call(this)[0] == null) {
               return false;
             }
           }
         }
+        // if @check_move(oppo_king, dest)
+        //     # console.log("check3")
+        //     return false
         // console.log("check4")
         return true;
       }

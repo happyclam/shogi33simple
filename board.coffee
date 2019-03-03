@@ -166,14 +166,13 @@ class Board
         # console.log("check_utifudume")
         oppo = if piece.turn == Const.FIRST then Const.SECOND else Const.FIRST
         oppo_king = (v for v in @pieces when v.turn == oppo && v.kind() == 'Ou')[0]
-        buf = [].concat(d_posi)
-        buf[0] += eval("Piece."+piece.kind()).getD(piece.turn, piece.status)[0].xd
-        buf[1] += eval("Piece."+piece.kind()).getD(piece.turn, piece.status)[0].yd
+        # buf = [].concat(d_posi)
+        # buf[0] += eval("Piece."+piece.kind()).getD(piece.turn, piece.status)[0].xd
+        # buf[1] += eval("Piece."+piece.kind()).getD(piece.turn, piece.status)[0].yd
         #1,打ち歩による王手
-        # check = piece.status == Const.Status.MOTIGOMA && piece.kind() == 'Fu' && oppo_king.posi.toString() == buf.toString()
-        check = piece.status == Const.Status.MOTIGOMA && piece.kind() == 'Fu' && oppo_king.posi[0] == buf[0] && oppo_king.posi[1] == buf[1]
+        # check = piece.status == Const.Status.MOTIGOMA && piece.kind() == 'Fu' && oppo_king.posi[0] == buf[0] && oppo_king.posi[1] == buf[1]
         # console.log("check1")
-        return false unless check
+        # return false unless check
 
         #2,打ち歩を玉以外の味方の駒で取ることが出来ない
         @make_kiki(oppo, 'Ou')
@@ -192,9 +191,11 @@ class Board
             if (o for o in @kiki[piece.turn] when o[0] == dest[0] && o[1] == dest[1])[0]?
                 continue
             else
-                if @check_move(oppo_king, dest)
-                    # console.log("check3")
+                unless (w for w in @pieces when w.posi? && w.posi[0] == dest[0] && w.posi[1] == dest[1])[0]?
                     return false
+                # if @check_move(oppo_king, dest)
+                #     # console.log("check3")
+                #     return false
         # console.log("check4")
         return true
 

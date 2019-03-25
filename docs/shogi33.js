@@ -29547,7 +29547,7 @@ GameGUI = function () {
     }, {
       key: 'prepare',
       value: function prepare() {
-        var radioNo, radio_checked, v;
+        var err, radioNo, radio_checked, v;
         // console.log("GameGUI.prepare")
         this.interrupt_flg = false;
         this.auto_flg = false;
@@ -29582,10 +29582,16 @@ GameGUI = function () {
         // 棋譜出力の際に実際の棋譜とラジオボタンの選択が相違していることがあるため
         this.addState(null, radioNo);
         this.board.display();
-        this.first_player.selectedIndex = parseInt(localStorage.getItem("first_player") | 0, 10);
-        this.second_player.selectedIndex = parseInt(localStorage.getItem("second_player") | 0, 10);
-        this.first.human = first_player.selectedIndex === 1 ? false : true;
-        return this.second.human = second_player.selectedIndex === 1 ? false : true;
+        try {
+          this.first_player.selectedIndex = parseInt(localStorage.getItem("first_player") | 0, 10);
+          this.second_player.selectedIndex = parseInt(localStorage.getItem("second_player") | 0, 10);
+        } catch (error) {
+          err = error;
+          this.first_player.selectedIndex = 0;
+          this.second_player.selectedIndex = 0;
+        }
+        this.first.human = this.first_player.selectedIndex === 1 ? false : true;
+        return this.second.human = this.second_player.selectedIndex === 1 ? false : true;
       }
     }, {
       key: 'auto_battle',

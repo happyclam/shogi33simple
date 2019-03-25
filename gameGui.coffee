@@ -357,10 +357,14 @@ class GameGUI
         # 棋譜出力の際に実際の棋譜とラジオボタンの選択が相違していることがあるため
         @addState(null, radioNo)
         @board.display()
-        @first_player.selectedIndex = parseInt(localStorage.getItem("first_player")|0, 10)
-        @second_player.selectedIndex = parseInt(localStorage.getItem("second_player")|0, 10)
-        @first.human = if first_player.selectedIndex == 1 then false else true
-        @second.human = if second_player.selectedIndex == 1 then false else true
+        try
+            @first_player.selectedIndex = parseInt(localStorage.getItem("first_player")|0, 10)
+            @second_player.selectedIndex = parseInt(localStorage.getItem("second_player")|0, 10)
+        catch err
+            @first_player.selectedIndex = 0
+            @second_player.selectedIndex = 0
+        @first.human = if @first_player.selectedIndex == 1 then false else true
+        @second.human = if @second_player.selectedIndex == 1 then false else true
 
     auto_battle: (@seq) ->
         # console.log("auto_battle")

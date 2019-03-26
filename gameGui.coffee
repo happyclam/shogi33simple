@@ -201,10 +201,10 @@ class GameGUI
 
         output = window.open('', '３三将棋')
         output.document.open()
-        output.document.write '<HTML><HEAD>'
+        output.document.write '<!DOCTYPE html><HTML><HEAD>'
         output.document.write '<TITLE>３三将棋</TITLE>'
-        output.document.writeln '<BODY>'
-        output.document.write '\' #３三将棋 ' + linkStr + ' <br /><pre>'
+        output.document.writeln '</HEAD><BODY>'
+        output.document.write '<pre>\' #３三将棋 ' + linkStr + ' <br />'
         output.document.write converted
         output.document.write '</pre></BODY></HTML>'
         output.document.close()

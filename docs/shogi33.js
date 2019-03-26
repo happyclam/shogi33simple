@@ -20870,7 +20870,7 @@ Piece = function () {
   };
 
   return Piece;
-}();
+}.call(undefined);
 
 Ou = function () {
   var _direction;
@@ -20969,7 +20969,7 @@ Ou = function () {
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [];
 
   return Ou;
-}();
+}.call(undefined);
 
 Hi = function () {
   var _direction;
@@ -21072,7 +21072,7 @@ Hi = function () {
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(true, 0, 1), new Course(true, 1, 0), new Course(true, 0, -1), new Course(true, -1, 0)];
 
   return Hi;
-}();
+}.call(undefined);
 
 Ka = function () {
   var _direction;
@@ -21175,7 +21175,7 @@ Ka = function () {
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(true, 1, 1), new Course(true, 1, -1), new Course(true, -1, -1), new Course(true, -1, 1)];
 
   return Ka;
-}();
+}.call(undefined);
 
 Ki = function () {
   var _direction;
@@ -21274,7 +21274,7 @@ Ki = function () {
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(false, 0, 1), new Course(false, 1, 1), new Course(false, 1, 0), new Course(false, 0, -1), new Course(false, -1, 0), new Course(false, -1, 1)];
 
   return Ki;
-}();
+}.call(undefined);
 
 Gi = function () {
   var _direction;
@@ -21377,7 +21377,7 @@ Gi = function () {
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(false, 0, 1), new Course(false, 1, 1), new Course(false, 1, -1), new Course(false, -1, -1), new Course(false, -1, 1)];
 
   return Gi;
-}();
+}.call(undefined);
 
 Ke = function () {
   var _direction;
@@ -21480,7 +21480,7 @@ Ke = function () {
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(false, -1, 2), new Course(false, 1, 2)];
 
   return Ke;
-}();
+}.call(undefined);
 
 Ky = function () {
   var _direction;
@@ -21583,7 +21583,7 @@ Ky = function () {
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(true, 0, 1)];
 
   return Ky;
-}();
+}.call(undefined);
 
 Fu = function () {
   var _direction;
@@ -21686,7 +21686,7 @@ Fu = function () {
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(false, 0, 1)];
 
   return Fu;
-}();
+}.call(undefined);
 
 module.exports = {
   Course: Course,
@@ -29316,10 +29316,10 @@ GameGUI = function () {
         // window.plugins.socialsharing.share('\' #３三将棋 ' + linkStr + ' \n' + converted, 'shogi33', null, null);
         output = window.open('', '３三将棋');
         output.document.open();
-        output.document.write('<HTML><HEAD>');
+        output.document.write('<!DOCTYPE html><HTML><HEAD>');
         output.document.write('<TITLE>３三将棋</TITLE>');
-        output.document.writeln('<BODY>');
-        output.document.write('\' #３三将棋 ' + linkStr + ' <br /><pre>');
+        output.document.writeln('</HEAD><BODY>');
+        output.document.write('<pre>\' #３三将棋 ' + linkStr + ' <br />');
         output.document.write(converted);
         output.document.write('</pre></BODY></HTML>');
         output.document.close();
@@ -29386,10 +29386,10 @@ GameGUI = function () {
         this.originalBoardImage = "";
         try {
           buf = $('#textKifu').val().split(/\r\n|\r|\n/);
-          results = [];
           // console.log("buf = #{buf}")
           // console.log(buf)
           // console.log(buf.length)
+          results = [];
           for (i = l = 0, len = buf.length; l < len; i = ++l) {
             v = buf[i];
             if (v.length === 0) {
@@ -30531,7 +30531,7 @@ GameGUI = function () {
     }, {
       key: 'guide',
       value: function guide(piece) {
-        var buf, dest, l, len, m, n, p, q, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, results, results1, results2, results3, v, w;
+        var buf, dest, l, len, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, v, w;
         ref = eval("Piece." + piece.kind()).getD(piece.turn, piece.status);
         // console.log("GameGUI.guide")
         for (l = 0, len = ref.length; l < len; l++) {
@@ -30541,17 +30541,17 @@ GameGUI = function () {
           buf[1] += v.yd;
           if (v.series) {
             while ((ref1 = buf[0], indexOf.call(function () {
-              results = [];
+              var results = [];
               for (var m = 1, ref2 = this.board.cols; 1 <= ref2 ? m <= ref2 : m >= ref2; 1 <= ref2 ? m++ : m--) {
                 results.push(m);
               }
               return results;
             }.apply(this), ref1) >= 0) && (ref3 = buf[1], indexOf.call(function () {
-              results1 = [];
-              for (var n = 1, ref4 = this.board.rows; 1 <= ref4 ? n <= ref4 : n >= ref4; 1 <= ref4 ? n++ : n--) {
-                results1.push(n);
+              var results = [];
+              for (var m = 1, ref4 = this.board.rows; 1 <= ref4 ? m <= ref4 : m >= ref4; 1 <= ref4 ? m++ : m--) {
+                results.push(m);
               }
-              return results1;
+              return results;
             }.apply(this), ref3) >= 0)) {
               dest = function () {
                 var len1, m, ref1, results;
@@ -30580,16 +30580,16 @@ GameGUI = function () {
             }
           } else {
             dest = function () {
-              var len1, p, ref5, results2;
+              var len1, m, ref5, results;
               ref5 = this.board.pieces;
-              results2 = [];
-              for (p = 0, len1 = ref5.length; p < len1; p++) {
-                w = ref5[p];
+              results = [];
+              for (m = 0, len1 = ref5.length; m < len1; m++) {
+                w = ref5[m];
                 if (w.posi != null && w.posi[0] === buf[0] && w.posi[1] === buf[1]) {
-                  results2.push(w);
+                  results.push(w);
                 }
               }
-              return results2;
+              return results;
             }.call(this);
             if (dest.length !== 0) {
               if (piece.turn !== dest[0].turn) {
@@ -30598,17 +30598,17 @@ GameGUI = function () {
             } else {
               // $('#b' + buf[0].toString() + buf[1].toString()).css('border-style', 'dotted')
               if ((ref5 = buf[0], indexOf.call(function () {
-                results2 = [];
-                for (var p = 1, ref6 = this.board.cols; 1 <= ref6 ? p <= ref6 : p >= ref6; 1 <= ref6 ? p++ : p--) {
-                  results2.push(p);
+                var results = [];
+                for (var m = 1, ref6 = this.board.cols; 1 <= ref6 ? m <= ref6 : m >= ref6; 1 <= ref6 ? m++ : m--) {
+                  results.push(m);
                 }
-                return results2;
+                return results;
               }.apply(this), ref5) >= 0) && (ref7 = buf[1], indexOf.call(function () {
-                results3 = [];
-                for (var q = 1, ref8 = this.board.rows; 1 <= ref8 ? q <= ref8 : q >= ref8; 1 <= ref8 ? q++ : q--) {
-                  results3.push(q);
+                var results = [];
+                for (var m = 1, ref8 = this.board.rows; 1 <= ref8 ? m <= ref8 : m >= ref8; 1 <= ref8 ? m++ : m--) {
+                  results.push(m);
                 }
-                return results3;
+                return results;
               }.apply(this), ref7) >= 0)) {
                 $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
               }
@@ -34443,7 +34443,7 @@ GameGUI = function () {
   };
 
   return GameGUI;
-}();
+}.call(undefined);
 
 /***/ }),
 /* 130 */
@@ -54259,7 +54259,7 @@ Board = function () {
     }, {
       key: 'check_move',
       value: function check_move(piece, d_posi) {
-        var buf, dest, force_promo, j, k, l, len, o, ref, ref1, ref2, ref3, ref4, results, results1, v;
+        var buf, dest, force_promo, j, len, o, ref, ref1, ref2, ref3, ref4, v;
         // console.log("check_move")
         force_promo = false;
         // dest = null
@@ -54331,17 +54331,17 @@ Board = function () {
           }
           if (v.series) {
             while ((ref1 = buf[0], indexOf.call(function () {
-              results = [];
+              var results = [];
               for (var k = 1, ref2 = this.cols; 1 <= ref2 ? k <= ref2 : k >= ref2; 1 <= ref2 ? k++ : k--) {
                 results.push(k);
               }
               return results;
             }.apply(this), ref1) >= 0) && (ref3 = buf[1], indexOf.call(function () {
-              results1 = [];
-              for (var l = 1, ref4 = this.rows; 1 <= ref4 ? l <= ref4 : l >= ref4; 1 <= ref4 ? l++ : l--) {
-                results1.push(l);
+              var results = [];
+              for (var k = 1, ref4 = this.rows; 1 <= ref4 ? k <= ref4 : k >= ref4; 1 <= ref4 ? k++ : k--) {
+                results.push(k);
               }
-              return results1;
+              return results;
             }.apply(this), ref3) >= 0)) {
               // if (buf.toString() == d_posi.toString())
               if (buf[0] === d_posi[0] && buf[1] === d_posi[1]) {
@@ -54447,7 +54447,7 @@ Board = function () {
     }, {
       key: 'check_utifudume',
       value: function check_utifudume(piece, d_posi) {
-        var dest, j, k, l, len, o, oppo, oppo_king, org, ref, ref1, ref2, ref3, ref4, results, results1, v, w;
+        var dest, j, len, o, oppo, oppo_king, org, ref, ref1, ref2, ref3, ref4, v, w;
         // console.log("check_utifudume")
         oppo = piece.turn === Const.FIRST ? Const.SECOND : Const.FIRST;
         oppo_king = function () {
@@ -54496,46 +54496,46 @@ Board = function () {
           v = ref[j];
           dest = [org[0] + v.xd, org[1] + v.yd];
           if (!((ref1 = dest[0], indexOf.call(function () {
-            results = [];
+            var results = [];
             for (var k = 1, ref2 = this.cols; 1 <= ref2 ? k <= ref2 : k >= ref2; 1 <= ref2 ? k++ : k--) {
               results.push(k);
             }
             return results;
           }.apply(this), ref1) >= 0) && (ref3 = dest[1], indexOf.call(function () {
-            results1 = [];
-            for (var l = 1, ref4 = this.rows; 1 <= ref4 ? l <= ref4 : l >= ref4; 1 <= ref4 ? l++ : l--) {
-              results1.push(l);
+            var results = [];
+            for (var k = 1, ref4 = this.rows; 1 <= ref4 ? k <= ref4 : k >= ref4; 1 <= ref4 ? k++ : k--) {
+              results.push(k);
             }
-            return results1;
+            return results;
           }.apply(this), ref3) >= 0))) {
             continue;
           }
           // if (dest.toString() in @kiki[piece.turn].map (o) -> o.toString())
           if (function () {
-            var len1, m, ref5, results2;
+            var k, len1, ref5, results;
             ref5 = this.kiki[piece.turn];
-            results2 = [];
-            for (m = 0, len1 = ref5.length; m < len1; m++) {
-              o = ref5[m];
+            results = [];
+            for (k = 0, len1 = ref5.length; k < len1; k++) {
+              o = ref5[k];
               if (o[0] === dest[0] && o[1] === dest[1]) {
-                results2.push(o);
+                results.push(o);
               }
             }
-            return results2;
+            return results;
           }.call(this)[0] != null) {
             continue;
           } else {
             if (function () {
-              var len1, m, ref5, results2;
+              var k, len1, ref5, results;
               ref5 = this.pieces;
-              results2 = [];
-              for (m = 0, len1 = ref5.length; m < len1; m++) {
-                w = ref5[m];
+              results = [];
+              for (k = 0, len1 = ref5.length; k < len1; k++) {
+                w = ref5[k];
                 if (w.posi != null && w.posi[0] === dest[0] && w.posi[1] === dest[1]) {
-                  results2.push(w);
+                  results.push(w);
                 }
               }
-              return results2;
+              return results;
             }.call(this)[0] == null) {
               return false;
             }
@@ -54586,7 +54586,7 @@ Board = function () {
   };
 
   check_kiki = function check_kiki(piece, d_posi) {
-    var buf, j, k, l, len, o, ref, ref1, ref2, ref3, ref4, results, results1, v;
+    var buf, j, len, o, ref, ref1, ref2, ref3, ref4, v;
     ref = eval("Piece." + piece.kind()).getD(piece.turn, piece.status);
     for (j = 0, len = ref.length; j < len; j++) {
       v = ref[j];
@@ -54615,17 +54615,17 @@ Board = function () {
           break;
         }
         if (!(v.series && (ref1 = buf[0], indexOf.call(function () {
-          results = [];
+          var results = [];
           for (var k = 1, ref2 = this.cols; 1 <= ref2 ? k <= ref2 : k >= ref2; 1 <= ref2 ? k++ : k--) {
             results.push(k);
           }
           return results;
         }.apply(this), ref1) >= 0) && (ref3 = buf[1], indexOf.call(function () {
-          results1 = [];
-          for (var l = 1, ref4 = this.rows; 1 <= ref4 ? l <= ref4 : l >= ref4; 1 <= ref4 ? l++ : l--) {
-            results1.push(l);
+          var results = [];
+          for (var k = 1, ref4 = this.rows; 1 <= ref4 ? k <= ref4 : k >= ref4; 1 <= ref4 ? k++ : k--) {
+            results.push(k);
           }
-          return results1;
+          return results;
         }.apply(this), ref3) >= 0))) {
           break;
         }
@@ -54635,7 +54635,7 @@ Board = function () {
   };
 
   return Board;
-}();
+}.call(undefined);
 
 module.exports = Board;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
@@ -54691,7 +54691,7 @@ Player = function () {
       value: function think(board, oppo, limit, preValue) {
         var utifudume = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
-        var buf, col, dest, dest_piece, i, j, k, kinds, koma, l, lastkoma, lastposi, lastscore, laststatus, len, len1, m, move_piece, n, o, promotion, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, result, results, results1, ret, row, score, shortCut, spare, utifudume_flg, v;
+        var buf, col, dest, dest_piece, i, j, k, kinds, koma, l, lastkoma, lastposi, lastscore, laststatus, len, len1, move_piece, o, promotion, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, result, ret, row, score, shortCut, spare, utifudume_flg, v;
         spare = {};
         lastscore = this.turn === Const.FIRST ? Const.MIN_VALUE : Const.MAX_VALUE;
         lastposi = null;
@@ -54790,17 +54790,17 @@ Player = function () {
                 buf = [].concat(koma.posi);
                 while (true) {
                   if (!((ref5 = buf[0] + v.xd, indexOf.call(function () {
-                    results = [];
+                    var results = [];
                     for (var m = 1, ref6 = board.cols; 1 <= ref6 ? m <= ref6 : m >= ref6; 1 <= ref6 ? m++ : m--) {
                       results.push(m);
                     }
                     return results;
                   }.apply(this), ref5) >= 0) && (ref7 = buf[1] + v.yd, indexOf.call(function () {
-                    results1 = [];
-                    for (var n = 1, ref8 = board.rows; 1 <= ref8 ? n <= ref8 : n >= ref8; 1 <= ref8 ? n++ : n--) {
-                      results1.push(n);
+                    var results = [];
+                    for (var m = 1, ref8 = board.rows; 1 <= ref8 ? m <= ref8 : m >= ref8; 1 <= ref8 ? m++ : m--) {
+                      results.push(m);
                     }
-                    return results1;
+                    return results;
                   }.apply(this), ref7) >= 0))) {
                     break;
                   }
@@ -54808,16 +54808,16 @@ Player = function () {
                   buf[0] += v.xd;
                   buf[1] += v.yd;
                   dest = function () {
-                    var len2, p, ref9, results2;
+                    var len2, m, ref9, results;
                     ref9 = board.pieces;
-                    results2 = [];
-                    for (p = 0, len2 = ref9.length; p < len2; p++) {
-                      o = ref9[p];
+                    results = [];
+                    for (m = 0, len2 = ref9.length; m < len2; m++) {
+                      o = ref9[m];
                       if (o.posi != null && o.posi[0] === buf[0] && o.posi[1] === buf[1]) {
-                        results2.push(o);
+                        results.push(o);
                       }
                     }
-                    return results2;
+                    return results;
                   }();
                   if (dest.length !== 0 && dest[0].turn === koma.turn) {
                     break;
@@ -55021,7 +55021,7 @@ Player = function () {
   };
 
   return Player;
-}();
+}.call(undefined);
 
 module.exports = Player;
 

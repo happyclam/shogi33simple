@@ -44,6 +44,7 @@ describe '--- syokyu', ->
             b.move_capture(sg, [2,1])
             b.move_capture(sf, [1,1])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0            
             ret = first.think(b, second, 3, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Fu')
             expect(ret[1]).to.deep.equal([1,2])
@@ -56,6 +57,7 @@ describe '--- syokyu', ->
             b.move_capture(sy, [3,1])
             b.display()
             second.depth = 5; first.depth = 5
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[2]).to.be.below(-9999)
             # expect(ret[0].kind()).to.equal('Ky')
@@ -69,6 +71,7 @@ describe '--- syokyu', ->
             b.move_capture(fm, [3,3])
             b.move_capture(fy, [1,3])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 2, Const.MAX_VALUE)
             expect(ret[2]).to.be.above(9999)
             expect(ret[1]).to.deep.equal([1,1])
@@ -78,6 +81,7 @@ describe '--- syokyu', ->
             b.move_capture(fo, [2,3])
             b.move_capture(so, [2,1])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
             expect(ret[1]).to.deep.equal([2,2])
     describe '初級3-2', ->
@@ -91,6 +95,7 @@ describe '--- syokyu', ->
             b.move_capture(sf, [3,1])
             b.display()
             first.depth = 6; second.depth = 6
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,1])
@@ -101,6 +106,7 @@ describe '--- syokyu', ->
             b.move_capture(fo, [3,2])
             b.move_capture(so, [1,2])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
@@ -144,12 +150,13 @@ describe '--- tyukyu', ->
 
     describe '中級1', ->
         it 'expects Ki move [1,3]', ->
-            b.add(fo);b.add(fx);b.add(so);b.add(sx);b.add(sf)
+            b.add(fo);b.add(fx);b.add(so);b.add(sx);b.add(sf);b.add(ff)
             b.move_capture(fo, [3,3])
             b.move_capture(so, [1,1])
             b.move_capture(sf, [2,2])
             b.display()
             first.depth = 5; second.depth = 5
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ki')
             expect(ret[1]).to.deep.equal([1,3])
@@ -162,6 +169,7 @@ describe '--- tyukyu', ->
             b.move_capture(fh, [3,1])
             b.display()
             second.depth = 7; first.depth = 7
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])
@@ -172,6 +180,7 @@ describe '--- tyukyu', ->
             b.move_capture(fy, [1,3])
             b.move_capture(so, [1,1])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ou')
             expect(ret[1]).to.deep.equal([2,1])
@@ -181,6 +190,7 @@ describe '--- tyukyu', ->
             b.move_capture(fo, [2,3])
             b.move_capture(so, [2,1])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,2])
@@ -191,6 +201,7 @@ describe '--- tyukyu', ->
             b.move_capture(fk, [3,3])
             b.move_capture(so, [3,1])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])

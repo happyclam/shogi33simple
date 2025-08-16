@@ -42,6 +42,20 @@ img {
 .ui-grid-d > .ui-block-span4 {
   width: 80%;
 }
+.ui-icon-output:after {
+    background-image: url("./file.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.ui-icon-fou:after {
+    background-image: url("./f_ou.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
 .ui-icon-fhi:after {
     background-image: url("./f_hi.svg");
     background-color:transparent;
@@ -49,8 +63,22 @@ img {
     -webkit-border-radius:0px;
     border-radius:0px;
 }
+.ui-icon-fry:after {
+    background-image: url("./f_ry.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
 .ui-icon-fka:after {
     background-image: url("./f_ka.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.ui-icon-fum:after {
+    background-image: url("./f_um.svg");
     background-color:transparent;
     -moz-border-radius: 0px;
     -webkit-border-radius:0px;
@@ -70,8 +98,22 @@ img {
     -webkit-border-radius:0px;
     border-radius:0px;
 }
+.ui-icon-fng:after {
+    background-image: url("./f_ng.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
 .ui-icon-fke:after {
     background-image: url("./f_ke.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.ui-icon-fnk:after {
+    background-image: url("./f_nk.svg");
     background-color:transparent;
     -moz-border-radius: 0px;
     -webkit-border-radius:0px;
@@ -84,8 +126,29 @@ img {
     -webkit-border-radius:0px;
     border-radius:0px;
 }
+.ui-icon-fny:after {
+    background-image: url("./f_ny.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
 .ui-icon-ffu:after {
     background-image: url("./f_fu.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.ui-icon-fto:after {
+    background-image: url("./f_to.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.ui-icon-sou:after {
+    background-image: url("./s_ou.svg");
     background-color:transparent;
     -moz-border-radius: 0px;
     -webkit-border-radius:0px;
@@ -98,8 +161,22 @@ img {
     -webkit-border-radius:0px;
     border-radius:0px;
 }
+.ui-icon-sry:after {
+    background-image: url("./s_ry.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
 .ui-icon-ska:after {
     background-image: url("./s_ka.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.ui-icon-sum:after {
+    background-image: url("./s_um.svg");
     background-color:transparent;
     -moz-border-radius: 0px;
     -webkit-border-radius:0px;
@@ -119,8 +196,22 @@ img {
     -webkit-border-radius:0px;
     border-radius:0px;
 }
+.ui-icon-sng:after {
+    background-image: url("./s_ng.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
 .ui-icon-ske:after {
     background-image: url("./s_ke.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.ui-icon-snk:after {
+    background-image: url("./s_nk.svg");
     background-color:transparent;
     -moz-border-radius: 0px;
     -webkit-border-radius:0px;
@@ -133,8 +224,22 @@ img {
     -webkit-border-radius:0px;
     border-radius:0px;
 }
+.ui-icon-sny:after {
+    background-image: url("./s_ny.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
 .ui-icon-sfu:after {
     background-image: url("./s_fu.svg");
+    background-color:transparent;
+    -moz-border-radius: 0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
+}
+.ui-icon-sto:after {
+    background-image: url("./s_to.svg");
     background-color:transparent;
     -moz-border-radius: 0px;
     -webkit-border-radius:0px;
@@ -220,6 +325,22 @@ img {
     /* outline:none; */
 }
 
+.firstR {
+    clip-path: polygon(50% 0, 95% 25%, 100% 100%, 0 100%, 5% 25%);
+    background: #F9BA39;
+    transform: scale(-1, -1);    
+    /* border:none; */
+    /* outline:none; */
+}
+
+.secondR {
+    clip-path: polygon(95% 75%, 50% 100%, 5% 75%, 0 0, 100% 0);
+    background: #F9BA39;
+    transform: scale(-1, -1);    
+    /* border:none; */
+    /* outline:none; */
+}
+
 .message {
     color:#ff0000;
 }
@@ -250,18 +371,22 @@ img {
     width: 30%;
 }
 
+
 table {
     table-layout: auto;
     word-break: break-all;
     wordwrap: break-word;
 }
+#popupPanel {
+    /* width: 250px; */
+    /* padding-right: 10px; */
+    /* border-left: 1px solid rgba(125,125,125,.1); */
+    background: rgba(227,217,166,0.5);
+    /* margin: 1px  0; */
+}
+#popupPanel .ui-btn {
+    margin: 0px 0px 0px 3px;
+    background: rgba(250,186,58,0.5);    /* FABA3A */
+}
+=======
 
-.ui-grid-c-github > .ui-block-span2 {
-  width: 25%;
-}
-.ui-grid-c-github > .ui-block-span3 {
-  width: 50%;
-}
-.ui-grid-c-github > .ui-block-span4 {
-  width: 25%;
-}

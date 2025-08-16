@@ -1,0 +1,8 @@
+{
+  "require": [
+    "coffeescript/register"
+  ],
+  "reporter": "spec",
+  "color": true,
+  "timeout": "10000"
+}

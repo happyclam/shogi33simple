@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg2194"
+   version="1.1"
+   viewBox="0 0 500 500">
+  <metadata
+     id="metadata2200">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs2198" />
+  <g
+     id="text2192"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:557.35296631px;font-family:'衡山毛筆フォント OTF';-inkscape-font-specification:'衡山毛筆フォント OTF, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;white-space:pre;fill:#ff0000;stroke-width:24.23281097"
+     transform="scale(0.99717151,1.0028365)"
+     aria-label="と">
+    <path
+       id="path7"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:557.35296631px;font-family:'衡山毛筆フォント OTF';-inkscape-font-specification:'衡山毛筆フォント OTF, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;white-space:pre;fill:#ff0000;stroke-width:24.23281097"
+       d="m 226.75301,477.97787 c 21.17941,2.22941 39.57206,-1.11471 55.73529,-10.58971 15.60589,-9.475 31.21177,-20.62206 46.2603,-34.55588 v -1.11471 c -8.3603,3.34412 -16.72059,6.13088 -23.96618,7.80294 -8.36029,1.67206 -17.27794,3.34412 -26.19559,4.45883 -12.26176,0 -23.96618,0 -36.22794,0 -11.70441,0 -22.29412,-2.78677 -31.21177,-8.91765 l -10.03235,-15.04853 v -5.57353 h 3.90147 l -2.22941,-11.14706 c 1.67206,-15.04853 3.90147,-29.53971 7.80294,-44.03088 3.34412,-14.49118 8.91765,-27.86765 18.39265,-40.68677 h 3.90147 l 5.57353,19.50735 22.29412,16.16324 13.93382,-3.90147 c 3.90147,-6.13088 5.57353,-12.26177 5.57353,-20.06471 0,-7.80294 0.55735,-15.04853 2.22941,-22.29412 l -2.22941,-18.95 c 1.67206,-10.5897 2.22941,-20.62206 2.22941,-31.21176 0,-10.58971 1.67206,-20.06471 5.57353,-28.98236 l -3.90147,-16.72059 h -13.37647 v 3.90147 l -10.03235,2.22942 c -6.13089,2.22941 -11.70442,5.57353 -16.72059,10.5897 -5.01618,5.01618 -8.91765,11.14706 -13.37647,17.27794 h -3.90147 C 220.06477,225.49697 214.49124,205.43227 211.14712,184.81021 207.24565,164.18815 198.328,145.7955 185.50889,129.63226 h -2.22942 c 5.57353,23.96618 8.91765,47.93236 11.70442,73.01324 2.78676,25.08089 7.80294,48.48971 16.16323,70.78383 -3.90147,19.50735 -9.475,37.9 -16.16323,55.7353 -6.13089,17.83529 -10.58971,36.22794 -13.37647,55.73529 0,12.26177 0,24.52353 0,37.9 0,12.81912 3.90147,24.52353 11.70441,34.55589 z m 22.29411,-190.61472 -2.22941,1.67206 -2.22941,-1.67206 6.68824,-11.70441 h 3.34411 z" />
+  </g>
+</svg>

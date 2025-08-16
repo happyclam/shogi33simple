@@ -1,38 +1,94 @@
-# ３三将棋simple
+# ３三将棋アプリ
 
-[３三将棋アプリ](https://play.google.com/store/apps/details?id=shogi33.io.github.happyclam)（Version1.0.7.1）の「長考」「瞑想」モードを省いた簡易版です。  
-[スマホアプリ](https://happyclam.github.io/project/2018-01-01/33shogiapp)では４手読みで候補手を上位５手までに絞って、さらにその５手を評価値でソート後１０手読みを行うという反復深化の方法で先読みを行いますが、ブラウザで実行するには重たすぎるので、その部分を省略しています。  
+[３三将棋アプリ](https://happyclam.booth.pm/items/6323599)（Version1.1.8.0）のソースファイル一式です。  
 
-* [３三将棋 for Android](https://play.google.com/store/apps/details?id=shogi33.io.github.happyclam)
+
+### 関連記事
+* [「３三将棋CUI版のC++バージョン」](https://happyclam.github.io/software/2025-08-07/OOP)
+* [「CUIで９マス将棋を解く」](https://happyclam.github.io/project/2018-06-30/9masushogi_solver)
+
+### 実行ファイル
+* [３三将棋 for Android](https://happyclam.booth.pm/items/6323599)
 * [３三将棋 for PC](https://happyclam.github.io/shogi33simple/)  
-※駒が表示されない場合は、設定メニューから「ＡＩレベル」が選択されているか確認してください。
 
-# JavaScript生成（transpile）環境
-```
-npm install webpack -g
-yarn add -D coffeescript
-yarn add -D coffee-loader
-yarn add -D babel-core babel-loader babel-preset-es2015
-```
-
-※package.json参照
 
 # JavaScript生成（transpile）
 ```
-webpack
+$ npm install
+$ npm run dev
 ```
-
-※webpack.config.coffee参照
 
 # CUI版実行
 ```
-coffee game.coffee
+$ coffee --version
+CoffeeScript version 2.4.1
+
+
+$ coffee game.coffee 
+x
+ 3 2 1
+| | |o|1
+| |f| |2
+|O| | |3
+H
+x
+ 3 2 1
+|H| |o|1
+| |f| |2
+|O| | |3
+
+x
+ 3 2 1
+|H| | |1
+| |f|o|2
+|O| | |3
+
+x
+ 3 2 1
+|H| | |1
+|O|f|o|2
+| | | |3
+
+
+ 3 2 1
+|H| | |1
+|O|f|o|2
+|x| | |3
+
+
+ 3 2 1
+|H| | |1
+| |f|o|2
+|O| | |3
+X
+
+ 3 2 1
+|H| | |1
+| | |o|2
+|O|t| |3
+X
+
+ 3 2 1
+|H| | |1
+|O| |o|2
+| |t| |3
+X
+
+ 3 2 1
+|H| | |1
+|O|t|o|2
+| | | |3
+X
+Second Win
+8
+経過時間: 1781ミリ秒
+
 ```
 
 # テストスクリプト
 ```
-mocha test/
+mocha test/tumeShogi.coffee
 ```
 
-※簡易版に実装していないメソッドではエラーになります。
+※「.mocharc.jsonファイル」参照
 

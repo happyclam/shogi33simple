@@ -242,6 +242,7 @@ describe '--- Board5', ->
             b.move_capture(so, [1,3])
             b.move_capture(sf, [1,2])
             ret = []
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 1, Const.MIN_VALUE)
             expect(ret[0]).to.not.equal(null)
             console.log(ret)

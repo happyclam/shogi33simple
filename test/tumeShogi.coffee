@@ -44,6 +44,7 @@ describe '--- 9masuBooks', ->
             b.move_capture(so, [1,1])
             b.move_capture(sk, [2,1])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ke')
             expect(ret[1]).to.deep.equal([2,3])
@@ -56,6 +57,7 @@ describe '--- 9masuBooks', ->
             b.move_capture(fm, [3,3])
             b.move_capture(so, [1,1])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 5, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,1])
@@ -70,6 +72,7 @@ describe '--- 9masuBooks', ->
             sm.status = Const.Status.URA
             ff.status = Const.Status.URA
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([3,2])
@@ -81,6 +84,7 @@ describe '--- 9masuBooks', ->
             b.move_capture(fo, [2,3])
             b.move_capture(so, [2,1])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 4, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Gi')
             expect(ret[1][0]).to.be.within(2,3)
@@ -101,6 +105,7 @@ describe '--- 9masuBooks', ->
             b.move_capture(so, [1,1])
             b.move_capture(fh, [3,2])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 1, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Hi')
             expect(ret[1]).to.deep.equal([3,1])
@@ -166,6 +171,7 @@ describe '--- utifudume', ->
             b.move_capture(fm, [2,3])
             b.move_capture(sh, [1,3])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,2])
@@ -187,6 +193,7 @@ describe '--- utifudume', ->
             b.move_capture(fg, [1,3])
             b.display()
             first.depth = 3; second.depth = 3
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
@@ -208,6 +215,7 @@ describe '--- utifudume', ->
             b.move_capture(fg, [1,3])
             first.depth = 2; second.depth = 2
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
@@ -231,6 +239,7 @@ describe '--- utifudume', ->
             b.move_capture(fg, [1,3])
             first.depth = 1; second.depth = 1
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             if ret[0].kind() == 'Fu' && ret[2] >= Const.MAX_VALUE && first.depth <= 2
                 console.log("alternatives")
@@ -247,6 +256,7 @@ describe '--- utifudume', ->
             b.move_capture(sf, [2,2])
             first.depth = 2; second.depth = 2
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             if ret[0].kind() == 'Fu' && ret[0].status == Const.Status.MOTIGOMA
                 console.log("alternatives")
@@ -262,6 +272,7 @@ describe '--- utifudume', ->
             b.move_capture(fg, [3,1])
             first.depth = 6; second.depth = 6
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Gi')
             expect(ret[1]).to.deep.equal([2,2])
@@ -276,6 +287,7 @@ describe '--- utifudume', ->
             b.move_capture(sm, [1,2])
             second.depth = 4; first.depth = 4
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([2,3])
@@ -291,6 +303,7 @@ describe '--- utifudume', ->
             sm.status = Const.Status.URA
             first.depth = 2; second.depth = 2
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([2,2])
@@ -304,6 +317,7 @@ describe '--- utifudume', ->
             b.move_capture(sg, [2,2])
             second.depth = 2; first.depth = 2
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 2, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1][0]).to.equal(2)
@@ -358,6 +372,7 @@ describe '--- utifudume2', ->
             b.move_capture(sf, [2,2])
             first.depth = 2; second.depth = 2
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             console.log("Not alternatives")
             expect(ret[0].kind()).to.equal('Ka')
@@ -372,6 +387,7 @@ describe '--- utifudume2', ->
             b.move_capture(fm, [2,3])
             b.move_capture(sh, [1,3])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,2])
@@ -386,6 +402,7 @@ describe '--- utifudume2', ->
             b.move_capture(fg, [1,3])
             b.display()
             first.depth = 3; second.depth = 3
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
@@ -400,6 +417,7 @@ describe '--- utifudume2', ->
             b.move_capture(fg, [1,3])
             first.depth = 2; second.depth = 2
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
@@ -416,6 +434,7 @@ describe '--- utifudume2', ->
             b.move_capture(fg, [1,3])
             first.depth = 1; second.depth = 1
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Gi')
             expect(ret[1]).to.deep.equal([2,2])
@@ -432,6 +451,7 @@ describe '--- utifudume2', ->
             b.move_capture(sf, [2,2])
             first.depth = 2; second.depth = 2
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([3,2])
@@ -448,6 +468,7 @@ describe '--- utifudume2', ->
             b.move_capture(ff, [3,2])
             first.depth = 8; second.depth = 8
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,2])
@@ -460,6 +481,7 @@ describe '--- utifudume2', ->
             b.move_capture(fh, [3,1])
             second.depth = 7; first.depth = 7
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])
@@ -472,6 +494,7 @@ describe '--- utifudume2', ->
             b.move_capture(sm, [1,1])
             first.depth = 7; second.depth = 7
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Fu')
             expect(ret[1]).to.deep.equal([1,2])
@@ -483,6 +506,7 @@ describe '--- utifudume2', ->
             b.move_capture(sh, [3,2])
             second.depth = 7; first.depth = 7
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 7, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,3])
@@ -496,6 +520,7 @@ describe '--- utifudume2', ->
             fg.turn = Const.SECOND
             second.depth = 7; first.depth = 7
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 7, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])
@@ -545,8 +570,9 @@ describe '--- tumeshogi1', ->
             b.move_capture(so, [3,1])
             b.move_capture(fh, [2,3])
             ff.turn = Const.FIRST
-            second.depth = 4
+            first.depth = 4; second.depth = 4
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Hi')
             expect(ret[1]).to.deep.equal([3,2])
@@ -557,8 +583,9 @@ describe '--- tumeshogi1', ->
             b.move_capture(so, [3,1])
             b.move_capture(fh, [2,3])
             ff.turn = Const.FIRST
-            second.depth = 3
+            first.depth = 3; second.depth = 3
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Hi')
             expect(ret[1]).to.deep.equal([3,2])
@@ -569,8 +596,9 @@ describe '--- tumeshogi1', ->
             b.move_capture(so, [3,1])
             b.move_capture(fh, [2,3])
             ff.turn = Const.FIRST
-            second.depth = 2
+            first.depth = 2; second.depth = 2
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Hi')
             expect(ret[1]).to.deep.equal([3,2])
@@ -583,13 +611,14 @@ describe '--- tumeshogi1', ->
             b.move_capture(sf, [1,2])
             b.move_capture(fm, [3,2])
             fh.turn = Const.SECOND
-            second.depth = 4
+            first.depth = 4; second.depth = 4
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[0].kind()).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,2])
     describe 'first do not miss win', ->
-        it 'expects Hi place [3,2]', ->
+        it 'expects Ka place [3,2]', ->
             b.add(fo);b.add(so);b.add(fm);b.add(sm);b.add(fg);b.add(sg);b.add(ff);b.add(sf)
             b.move_capture(fo, [3,3])
             b.move_capture(so, [1,1])
@@ -597,9 +626,10 @@ describe '--- tumeshogi1', ->
             b.move_capture(sg, [3,1])
             b.move_capture(sf, [1,2])
             b.move_capture(ff, [2,2])
-            first.depth = 8
+            first.depth = 8; second.depth = 8
             # first.pre_select = 4
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([3,2])
@@ -610,8 +640,9 @@ describe '--- tumeshogi1', ->
             b.move_capture(so, [1,1])
             b.move_capture(fg, [1,3])
             b.move_capture(sg, [2,1])
-            first.depth = 4
+            first.depth = 4; second.depth = 4
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Fu')
             expect(ret[1]).to.deep.equal([1,2])
@@ -654,56 +685,71 @@ describe '--- tumeshogi2', ->
         sy = new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA)
         sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA)
 
-    describe 'first do not miss tumi', ->
+    describe 'first do not miss tumi -1', ->
         it 'expects Hi move [3,1] and Nari', ->
             b.add(fo);b.add(so);b.add(fh);b.add(sx)
             b.move_capture(fo, [3,3])
             b.move_capture(so, [1,2])
             b.move_capture(fh, [3,1])
-            first.depth = 4
+            first.depth = 4; second.depth = 4
             b.display()
             ret = first.prepare(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Hi')
             expect(ret[3]).to.equal(Const.Status.URA)            
             expect(ret[1]).to.deep.equal([3,2])
-    describe 'first do not miss tumi', ->
+    describe 'first do not miss tumi -2', ->
         it 'expects Hi move [3,1] and Nari', ->
             b.add(fo);b.add(so);b.add(fh);b.add(sx)
             b.move_capture(fo, [3,3])
             b.move_capture(so, [1,2])
             b.move_capture(fh, [3,1])
-            first.depth = 4
+            first.depth = 4; second.depth = 4
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Hi')
             expect(ret[3]).to.equal(Const.Status.URA)            
             expect(ret[1]).to.deep.equal([3,2])
-    describe 'first do not miss tumi', ->
+    describe 'first do not miss tumi -3', ->
         it 'expects Ka move [1,1] and Nari', ->
             b.add(fo);b.add(so);b.add(fm);b.add(fk)
             b.move_capture(fo, [3,3])
             b.move_capture(so, [2,1])
             b.move_capture(fm, [2,2])
             b.move_capture(fk, [2,3])            
-            first.depth = 2
+            first.depth = 2; second.depth = 2
             b.display()
             ret = first.prepare(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[3]).to.equal(Const.Status.URA)            
             expect(ret[1]).to.deep.equal([1,1])
-    describe 'first do not miss tumi', ->
+    describe 'first do not miss tumi -4', ->
         it 'expects Ka move [1,1] and Nari', ->
             b.add(fo);b.add(so);b.add(fm);b.add(fk)
             b.move_capture(fo, [3,3])
             b.move_capture(so, [2,1])
             b.move_capture(fm, [2,2])
             b.move_capture(fk, [2,3])            
-            first.depth = 2
+            first.depth = 2; second.depth = 2
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[3]).to.equal(Const.Status.URA)            
             expect(ret[1]).to.deep.equal([1,1])
+    describe 'first do not miss tumi -5', ->
+        it 'expects Hi move [2,3]', ->
+            b.add(fo);b.add(so);b.add(fh);b.add(fy);b.add(sh);b.add(sy)
+            b.move_capture(fo, [1,1])
+            b.move_capture(so, [3,3])
+            b.move_capture(fh, [1,3])
+            b.move_capture(sh, [2,3])            
+            first.depth = 6; second.depth = 6
+            b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
+            ret = first.think(b, second, first.depth, Const.MAX_VALUE)
+            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[1]).to.deep.equal([2,3])
     afterEach ->
         console.log(ret)
         if ret[0]?

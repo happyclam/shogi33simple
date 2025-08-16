@@ -47,6 +47,7 @@ describe '--- leave alone', ->
             b.move_capture(sh, [1,2])            
             b.move_capture(sf, [2,2])
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 1, Const.MIN_VALUE)
             expect(ret[0]).to.equal(null)
             expect(ret[1]).to.equal(null)            
@@ -64,6 +65,7 @@ describe '--- leave alone', ->
             b.move_capture(sf, [2,3])
             sf.status = Const.Status.URA            
             b.display()
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 0, Const.MAX_VALUE)
             expect(ret[0].kind()).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,3])

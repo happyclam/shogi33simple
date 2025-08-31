@@ -15,7 +15,7 @@ describe '--- 9reading', ->
     before ->
         first = new Player(Const.FIRST, false, 7)
         second = new Player(Const.SECOND, false, 7)
-    beforeEach ->        
+    beforeEach ->
         b = new Board()
         fo = new Piece.Ou(Const.FIRST, Const.Status.MOTIGOMA)
         # fh = new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA)
@@ -38,10 +38,10 @@ describe '--- 9reading', ->
             b.add(fo); b.add(so); b.add(fg); b.add(sx)
             b.move_capture(fo, [3,3])
             b.move_capture(so, [1,1])
-            b.display()            
+            b.display()
             ret = first.prepare(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Gi')
-            expect(ret[1]).to.deep.equal([2,2])            
+            expect(ret[0].name).to.equal('Gi')
+            expect(ret[1]).to.deep.equal([2,2])
     describe 'SECOND trace 2 step', ->
         it 'expects move so [1,2] when 2 step', ->
             b.add(fo); b.add(so); b.add(fg); b.add(sx)
@@ -50,8 +50,8 @@ describe '--- 9reading', ->
             b.move_capture(fg, [2,2])
             b.display()
             ret = second.prepare(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
-            expect(ret[1]).to.deep.equal([1,2])            
+            expect(ret[0].name).to.equal('Ou')
+            expect(ret[1]).to.deep.equal([1,2])
     describe 'FIRST trace 3 step', ->
         it 'expects move fo [3,2] when 3 step', ->
             b.add(fo); b.add(so); b.add(fg); b.add(sx)
@@ -59,10 +59,10 @@ describe '--- 9reading', ->
             b.move_capture(so, [1,1])
             b.move_capture(fg, [2,2])
             b.move_capture(so, [1,2])
-            b.display()            
+            b.display()
             ret = first.prepare(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
-            expect(ret[1]).to.deep.equal([3,2])            
+            expect(ret[0].name).to.equal('Ou')
+            expect(ret[1]).to.deep.equal([3,2])
     describe 'SECOND trace 4 step', ->
         it 'expects move sx [2,3] when 4 step', ->
             b.add(fo); b.add(so); b.add(fg); b.add(sx)
@@ -70,11 +70,11 @@ describe '--- 9reading', ->
             b.move_capture(so, [1,1])
             b.move_capture(fg, [2,2])
             b.move_capture(so, [1,2])
-            b.move_capture(fo, [3,2])            
+            b.move_capture(fo, [3,2])
             b.display()
             ret = second.prepare(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ki')
-            expect(ret[1]).to.deep.equal([2,3])            
+            expect(ret[0].name).to.equal('Ki')
+            expect(ret[1]).to.deep.equal([2,3])
     describe 'FIRST trace 5 step', ->
         it 'expects move fg [2,1] when 5 step', ->
             b.add(fo); b.add(so); b.add(fg); b.add(sx)
@@ -83,10 +83,10 @@ describe '--- 9reading', ->
             b.move_capture(fg, [2,2])
             b.move_capture(so, [1,2])
             b.move_capture(fo, [3,2])
-            b.move_capture(sx, [2,3])                        
-            b.display()            
+            b.move_capture(sx, [2,3])
+            b.display()
             ret = first.prepare(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Gi')
+            expect(ret[0].name).to.equal('Gi')
             expect(ret[1]).to.deep.equal([3,1])
             expect(ret[0].status).to.equal(Const.Status.OMOTE)
     describe 'SECOND trace 6 step', ->
@@ -102,8 +102,8 @@ describe '--- 9reading', ->
             fg.status = Const.Status.OMOTE
             b.display()
             ret = second.prepare(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
-            expect(ret[1]).to.deep.equal([1,3])            
+            expect(ret[0].name).to.equal('Ou')
+            expect(ret[1]).to.deep.equal([1,3])
     afterEach ->
         console.log(ret)
         if ret[0]?

@@ -28,7 +28,7 @@ class Board
         return
 
     gameover: ->
-        kings = (v for v in @pieces when v.kind() == 'Ou' && v.turn == Const.FIRST)
+        kings = (v for v in @pieces when v.name == 'Ou' && v.turn == Const.FIRST)
         switch kings.length
             when 2
                 return Const.FIRST
@@ -65,7 +65,7 @@ class Board
         src = ((null for c in [1..@cols]) for r in [1..@rows])
         for v in @pieces
             src[v.posi[0] - 1][v.posi[1] - 1] = v if v.posi.length != 0
-        selected = (v for v in @pieces when v.turn == turn && v.status != Const.Status.MOTIGOMA && v.kind() != exclude)
+        selected = (v for v in @pieces when v.turn == turn && v.status != Const.Status.MOTIGOMA && v.name != exclude)
         for col in [1..@cols]
             for row in [1..@rows]
                 for v in selected
@@ -85,7 +85,7 @@ class Board
             # 駒が存在しているところに駒を打とうとした
             if !dest? && check_potential.call @, piece, d_posi
                 # 二歩チェック
-                if (piece.kind() == 'Fu') && (check_nifu.call @, piece, d_posi)
+                if (piece.name == 'Fu') && (check_nifu.call @, piece, d_posi)
                     # console.log("check0")
                     return false
                 else
@@ -103,7 +103,7 @@ class Board
                     return false
                     # console.log("--- Error in Board.check_move ---")
 
-        for v in getClass(piece.kind()).getD(piece.turn, piece.status)
+        for v in getClass(piece.name).getD(piece.turn, piece.status)
             buf = [].concat(piece.posi)
             buf[0] += v.xd; buf[1] += v.yd
             if (buf[0] == d_posi[0] && buf[1] == d_posi[1])
@@ -140,7 +140,7 @@ class Board
     check_promotion: (piece, d_posi) ->
         # posi = v for v in @pieces when (k ==
         return false unless piece.status == Const.Status.OMOTE
-        return false if piece.kind() in ['Ou', 'Ki']
+        return false if piece.name in ['Ou', 'Ki']
         switch piece.turn
             when Const.FIRST
                 return true if (piece.posi[1] <= Board.promotion_line[0] || d_posi[1] <= Board.promotion_line[0])
@@ -167,7 +167,7 @@ class Board
     check_utifudume: (piece, d_posi) ->
         # console.log("check_utifudume")
         oppo = if piece.turn == Const.FIRST then Const.SECOND else Const.FIRST
-        oppo_king = (v for v in @pieces when v.turn == oppo && v.kind() == 'Ou')[0]
+        oppo_king = (v for v in @pieces when v.turn == oppo && v.name == 'Ou')[0]
         # buf = [].concat(d_posi)
         # buf[0] += getClass(piece.kind()).getD(piece.turn, piece.status)[0].xd
         # buf[1] += getClass(piece.kind()).getD(piece.turn, piece.status)[0].yd
@@ -197,17 +197,17 @@ class Board
         return true
 
     check_nifu = (piece, d_posi) ->
-        return (v for v in @pieces when v.posi? && v.posi[0] == d_posi[0] && v.kind() == 'Fu' && v.status == Const.Status.OMOTE && v.turn == piece.turn)[0]?
+        return (v for v in @pieces when v.posi? && v.posi[0] == d_posi[0] && v.name == 'Fu' && v.status == Const.Status.OMOTE && v.turn == piece.turn)[0]?
 
     # 打った後、指した後に移動可能な場所が無い場合falseを返す
     check_potential = (piece, d_posi) ->
-        for v in getClass(piece.kind()).getD(piece.turn, piece.status)
+        for v in getClass(piece.name).getD(piece.turn, piece.status)
             if ((d_posi[0] + v.xd) > 0) && ((d_posi[1] + v.yd) > 0) && ((d_posi[0] + v.xd) <= @cols) && ((d_posi[1] + v.yd) <= @rows)
                 return true
         return false
 
     check_kiki = (piece, d_posi, src) ->
-        for v in getClass(piece.kind()).getD(piece.turn, piece.status)
+        for v in getClass(piece.name).getD(piece.turn, piece.status)
             buf = [].concat(piece.posi)
             loop
                 buf[0] += v.xd; buf[1] += v.yd

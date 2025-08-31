@@ -43,7 +43,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 2, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '基本四手読み先手', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -53,7 +53,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '基本五手読み先手', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -63,7 +63,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 4, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '基本六手読み先手', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -73,7 +73,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 5, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '基本七手読み先手', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -83,7 +83,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 6, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '基本三手読み後手', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -93,7 +93,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 2, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '基本四手読み後手', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -103,7 +103,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,1])
     describe '基本五手読み後手', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -113,7 +113,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 4, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '基本六手読み後手', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -123,7 +123,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 5, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '基本七手読み後手', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -133,7 +133,7 @@ describe '--- basic', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 6, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     afterEach ->
         console.log(ret)
@@ -184,7 +184,7 @@ describe '--- Fu Tesuji1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '二つの持ち歩先手 depth3 step2', ->
         it 'expects Fu move [3,2] when effective move is exist', ->
@@ -197,7 +197,7 @@ describe '--- Fu Tesuji1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
     describe '二つの持ち歩先手 depth4 step1', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -209,7 +209,7 @@ describe '--- Fu Tesuji1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '二つの持ち歩先手 depth4 step2', ->
         it 'expects Fu move [1,3] when effective move is exist', ->
@@ -222,7 +222,7 @@ describe '--- Fu Tesuji1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([1,3])
     describe '二つの持ち歩後手 depth3 step1', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -234,7 +234,7 @@ describe '--- Fu Tesuji1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '二つの持ち歩後手 depth3 step2', ->
         it 'expects Fu move [3,2] when effective move is exist', ->
@@ -247,7 +247,7 @@ describe '--- Fu Tesuji1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
     describe '二つの持ち歩後手 depth4 step1', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -259,7 +259,7 @@ describe '--- Fu Tesuji1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '二つの持ち歩後手 depth4 step2', ->
         it 'expects Fu move [1,1] when effective move is exist', ->
@@ -272,7 +272,7 @@ describe '--- Fu Tesuji1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([1,1])
     afterEach ->
         console.log(ret)
@@ -322,7 +322,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '歩と香先手 depth3 step2', ->
         it 'expects Fu move [1,2] when effective move is exist', ->
@@ -334,7 +334,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ky')
+            expect(ret[0].name).to.equal('Ky')
             expect(ret[1]).to.deep.equal([1,2])
     describe '歩と香後手 depth4 step1', ->
         it 'expects Fu move [2,2] when effective move is exist', ->
@@ -345,7 +345,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     describe '歩と香後手 depth4 step2', ->
         it 'expects Fu move [3,1] when effective move is exist', ->
@@ -357,7 +357,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ky')
+            expect(ret[0].name).to.equal('Ky')
             expect(ret[1]).to.deep.equal([3,1])
     describe '歩と飛先手 depth4 step1', ->
         it 'expects Hi move [2,1] when effective move is exist', ->
@@ -370,7 +370,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,1])
     describe '歩と飛先手 depth7 step2', ->
         it 'expects Hi move [2,2] when effective move is exist', ->
@@ -381,7 +381,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,2])
     describe '歩と飛先手 depth7 step3', ->
         it 'expects Ou move [2,3] when effective move is exist', ->
@@ -393,7 +393,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([2,3])
     describe '歩と飛先手 depth7 step4', ->
         it 'expects Fu move [3,3] when effective move is exist', ->
@@ -406,7 +406,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,3])
     describe '歩と飛後手 depth4 step1', ->
         it 'expects Hi move [2,3] when effective move is exist', ->
@@ -419,7 +419,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,3])
     describe '歩と飛後手 depth7 step2', ->
         it 'expects Hi move [2,2] when effective move is exist', ->
@@ -430,7 +430,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,2])
     describe '歩と飛後手 depth7 step3', ->
         it 'expects Ou move [2,1] when effective move is exist', ->
@@ -442,7 +442,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([2,1])
     describe '歩と飛後手 depth6 step4', ->
         it 'expects Fu move [1,1] when effective move is exist', ->
@@ -455,7 +455,7 @@ describe '--- tumi Tesuji', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([1,1])
     afterEach ->
         console.log(ret)

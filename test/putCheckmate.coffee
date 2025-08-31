@@ -41,16 +41,16 @@ describe '--- leave alone', ->
             b.move_capture(so, [1,3])
             b.move_capture(fo, [3,2])
             b.move_capture(fm, [3,1])
-            b.move_capture(sm, [1,1])            
+            b.move_capture(sm, [1,1])
             b.move_capture(fh, [2,1])
             fh.status = Const.Status.URA
-            b.move_capture(sh, [1,2])            
+            b.move_capture(sh, [1,2])
             b.move_capture(sf, [2,2])
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 1, Const.MIN_VALUE)
             expect(ret[0]).to.equal(null)
-            expect(ret[1]).to.equal(null)            
+            expect(ret[1]).to.equal(null)
             expect(ret[2]).to.be.above(9999)
     describe 'FIRST put checkmate if getting Ou', ->
         it 'expects Ka move [1,3] put checkmate', ->
@@ -58,16 +58,16 @@ describe '--- leave alone', ->
             b.move_capture(so, [1,3])
             b.move_capture(fo, [3,2])
             b.move_capture(fm, [3,1])
-            b.move_capture(sm, [1,1])            
+            b.move_capture(sm, [1,1])
             b.move_capture(fh, [2,1])
             fh.status = Const.Status.URA
-            b.move_capture(sh, [1,2])            
+            b.move_capture(sh, [1,2])
             b.move_capture(sf, [2,3])
-            sf.status = Const.Status.URA            
+            sf.status = Const.Status.URA
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 0, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,3])
             expect(ret[2]).to.be.above(9999)
     afterEach ->

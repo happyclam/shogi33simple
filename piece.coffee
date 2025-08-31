@@ -49,8 +49,8 @@ class Ou extends Piece
     constructor: (turn, status, posi) ->
         super(turn, status, posi)
         @name = 'Ou'
-    kind: ->
-        @constructor.name
+    # kind: ->
+    #     @constructor.name
     koma: ->
         return "OU"
     omomi: ->
@@ -87,8 +87,8 @@ class Hi extends Piece
     constructor: (turn, status, posi) ->
         super(turn, status, posi)
         @name = 'Hi'
-    kind: ->
-        @constructor.name
+    # kind: ->
+    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "RY" else "HI"
     omomi: ->
@@ -128,8 +128,8 @@ class Ka extends Piece
     constructor: (turn, status, posi) ->
         super(turn, status, posi)
         @name = 'Ka'
-    kind: ->
-        @constructor.name
+    # kind: ->
+    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "UM" else "KA"
     omomi: ->
@@ -169,8 +169,8 @@ class Ki extends Piece
     constructor: (turn, status, posi) ->
         super(turn, status, posi)
         @name = 'Ki'
-    kind: ->
-        @constructor.name
+    # kind: ->
+    #     @constructor.name
     koma: ->
         return "KI"
     omomi: ->
@@ -210,8 +210,8 @@ class Gi extends Piece
     constructor: (turn, status, posi) ->
         super(turn, status, posi)
         @name = 'Gi'
-    kind: ->
-        @constructor.name
+    # kind: ->
+    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "NG" else "GI"
     omomi: ->
@@ -251,9 +251,8 @@ class Ke extends Piece
     constructor: (turn, status, posi) ->
         super(turn, status, posi)
         @name = 'Ke'
-    kind: ->
-        @constructor.name
-
+    # kind: ->
+    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "NK" else "KE"
 
@@ -295,8 +294,8 @@ class Ky extends Piece
     constructor: (turn, status, posi) ->
         super(turn, status, posi)
         @name = 'Ky'
-    kind: ->
-        @constructor.name
+    # kind: ->
+    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "NY" else "KY"
     omomi: ->
@@ -336,8 +335,8 @@ class Fu extends Piece
     constructor: (turn, status, posi) ->
         super(turn, status, posi)
         @name = 'Fu'
-    kind: ->
-        @constructor.name
+    # kind: ->
+    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "TO" else "FU"
     omomi: ->

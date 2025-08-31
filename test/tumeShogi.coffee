@@ -46,7 +46,7 @@ describe '--- 9masuBooks', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ke')
+            expect(ret[0].name).to.equal('Ke')
             expect(ret[1]).to.deep.equal([2,3])
             expect(ret[2]).to.be.above(9999)
     describe '問い２', ->
@@ -59,7 +59,7 @@ describe '--- 9masuBooks', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 5, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,1])
             expect(ret[2]).to.be.above(9999)
     describe 'mine01', ->
@@ -74,7 +74,7 @@ describe '--- 9masuBooks', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([3,2])
             expect(ret[2]).to.be.below(-9999)
     describe 'FIRST don`t miss tumi', ->
@@ -86,7 +86,7 @@ describe '--- 9masuBooks', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 4, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Gi')
+            expect(ret[0].name).to.equal('Gi')
             expect(ret[1][0]).to.be.within(2,3)
             expect(ret[1][1]).to.equal(2)
     # describe 'mine02', ->
@@ -96,7 +96,7 @@ describe '--- 9masuBooks', ->
     #         b.move_capture(so, [1,1])
     #         b.display()
     #         ret = first.think(b, second, 6, Const.MAX_VALUE)
-    #         expect(ret[0].kind()).to.equal('Ka')
+    #         expect(ret[0].name).to.equal('Ka')
     #         expect(ret[1]).to.deep.equal([2,2])
     describe 'mine03', ->
         it 'expects Hi move [3,1] when tumi is exist', ->
@@ -107,7 +107,7 @@ describe '--- 9masuBooks', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 1, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([3,1])
     afterEach ->
         console.log(ret)
@@ -173,15 +173,15 @@ describe '--- utifudume', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,2])
-            # expect(ret[0].kind()).to.equal('Fu')
+            # expect(ret[0].name).to.equal('Fu')
             # expect(ret[1]).to.deep.equal([3,2])
             # expect(ret[2]).to.be.below(-9999)
-            # if ret[0].kind() == 'Fu' && ret[2] <= Const.MIN_VALUE
+            # if ret[0].name == 'Fu' && ret[2] <= Const.MIN_VALUE
             #     console.log("alternatives")
             #     console.log(ret[4])
-            #     expect(ret[4]["koma"].kind()).to.not.equal('Fu')
+            #     expect(ret[4]["koma"].name).to.not.equal('Fu')
     describe 'FIRST escape utifudume alternatives', ->
         it 'expects Fu move [1,2] is judged utifudume', ->
             b.add(fo);b.add(so);b.add(fm);b.add(sh);b.add(sf);b.add(fg);b.add(ff);
@@ -195,15 +195,15 @@ describe '--- utifudume', ->
             first.depth = 3; second.depth = 3
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
-            # expect(ret[0].kind()).to.equal('Fu')
+            # expect(ret[0].name).to.equal('Fu')
             # expect(ret[1]).to.deep.equal([1,2])
             # expect(ret[2]).to.be.above(9999)
-            # if ret[0].kind() == 'Fu' && ret[2] >= Const.MAX_VALUE && first.depth <= 2
+            # if ret[0].name == 'Fu' && ret[2] >= Const.MAX_VALUE && first.depth <= 2
             #     console.log("alternatives")
             #     console.log(ret[4])
-            #     expect(ret[4]["koma"].kind()).to.not.equal('Fu')
+            #     expect(ret[4]["koma"].name).to.not.equal('Fu')
     describe 'FIRST escape utifudume alternatives 2', ->
         it 'expects Fu move [1,2] is judged utifudume', ->
             b.add(fo);b.add(so);b.add(fm);b.add(sh);b.add(sf);b.add(fg);b.add(ff);
@@ -217,17 +217,17 @@ describe '--- utifudume', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
-            expect(ret[4]["koma"].kind()).to.equal('Gi')
+            expect(ret[4]["koma"].name).to.equal('Gi')
             expect(ret[4]["posi"]).to.deep.equal([2,2])
-            # expect(ret[0].kind()).to.equal('Fu')
+            # expect(ret[0].name).to.equal('Fu')
             # expect(ret[1]).to.deep.equal([1,2])
             # expect(ret[2]).to.be.above(9999)
-            # if ret[0].kind() == 'Fu' && ret[2] >= Const.MAX_VALUE && first.depth <= 2
+            # if ret[0].name == 'Fu' && ret[2] >= Const.MAX_VALUE && first.depth <= 2
             #     console.log("alternatives")
             #     console.log(ret[4])
-            #     expect(ret[4]["koma"].kind()).to.not.equal('Fu')
+            #     expect(ret[4]["koma"].name).to.not.equal('Fu')
     describe 'FIRST escape utifudume alternatives 3', ->
         it 'expects Fu move [1,2] is judged utifudume', ->
             b.add(fo);b.add(so);b.add(fm);b.add(sh);b.add(sf);b.add(fg);b.add(ff);
@@ -241,10 +241,10 @@ describe '--- utifudume', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            if ret[0].kind() == 'Fu' && ret[2] >= Const.MAX_VALUE && first.depth <= 2
+            if ret[0].name == 'Fu' && ret[2] >= Const.MAX_VALUE && first.depth <= 2
                 console.log("alternatives")
                 console.log(ret[4])
-                expect(ret[4]["koma"].kind()).to.not.equal('Fu')
+                expect(ret[4]["koma"].name).to.not.equal('Fu')
     describe 'avoid utifudume with spare move', ->
         it 'expects do not move Fu to [1,2]', ->
             b.add(fo);b.add(so);b.add(fh);b.add(sh);b.add(fm);b.add(sm);b.add(ff);b.add(sf)
@@ -258,10 +258,10 @@ describe '--- utifudume', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            if ret[0].kind() == 'Fu' && ret[0].status == Const.Status.MOTIGOMA
+            if ret[0].name == 'Fu' && ret[0].status == Const.Status.MOTIGOMA
                 console.log("alternatives")
                 console.log(ret[4])
-                expect(ret[4]["koma"].kind()).to.not.equal('Fu')
+                expect(ret[4]["koma"].name).to.not.equal('Fu')
     describe 'Do not miss 1 move checkmate', ->
         it 'expects Gi move [2,2] and Nari', ->
             b.add(fo);b.add(so);b.add(sk);b.add(fy);b.add(fg)
@@ -274,7 +274,7 @@ describe '--- utifudume', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Gi')
+            expect(ret[0].name).to.equal('Gi')
             expect(ret[1]).to.deep.equal([2,2])
             expect(ret[3]).to.equal(Const.Status.URA)
     describe 'Do not miss 3 move checkmate', ->
@@ -289,7 +289,7 @@ describe '--- utifudume', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([2,3])
             expect(ret[3]).to.equal(Const.Status.URA)
     describe 'Do not miss 1 move checkmate', ->
@@ -305,7 +305,7 @@ describe '--- utifudume', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([2,2])
     describe 'Do not miss 1 move checkmate', ->
         it 'expects Ka drop [2,3]', ->
@@ -319,7 +319,7 @@ describe '--- utifudume', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 2, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1][0]).to.equal(2)
             expect(ret[3]).to.equal(Const.Status.OMOTE)
     afterEach ->
@@ -375,7 +375,7 @@ describe '--- utifudume2', ->
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
             console.log("Not alternatives")
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
 
     describe 'SECOND escape utifudume without spare move', ->
         it 'expects Fu move [3,2] is judged utifudume', ->
@@ -389,7 +389,7 @@ describe '--- utifudume2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,2])
     describe 'FIRST escape utifudume without spare move', ->
         it 'expects Fu move [1,2] is judged utifudume', ->
@@ -404,7 +404,7 @@ describe '--- utifudume2', ->
             first.depth = 3; second.depth = 3
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
     describe 'FIRST escape utifudume without spare move 2', ->
         it 'expects Fu move [1,2] is judged utifudume', ->
@@ -419,9 +419,9 @@ describe '--- utifudume2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
-            expect(ret[4]["koma"].kind()).to.equal('Gi')
+            expect(ret[4]["koma"].name).to.equal('Gi')
             expect(ret[4]["posi"]).to.deep.equal([2,2])
     describe 'FIRST escape utifudume without spare move 3', ->
         it 'expects Fu move [1,2] is judged utifudume', ->
@@ -436,9 +436,9 @@ describe '--- utifudume2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Gi')
+            expect(ret[0].name).to.equal('Gi')
             expect(ret[1]).to.deep.equal([2,2])
-            expect(ret[4]["koma"].kind()).to.equal('Ka')
+            expect(ret[4]["koma"].name).to.equal('Ka')
             expect(ret[4]["posi"]).to.deep.equal([2,2])
     describe 'avoid utifudume without spare move', ->
         it 'expects do not move Fu to [1,2]', ->
@@ -453,9 +453,9 @@ describe '--- utifudume2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([3,2])
-            expect(ret[4]["koma"].kind()).to.equal('Ka')
+            expect(ret[4]["koma"].name).to.equal('Ka')
             expect(ret[4]["posi"]).to.deep.equal([1,2])
     describe 'Do not miss second win', ->
         it 'expects Ka place [1,2]', ->
@@ -470,7 +470,7 @@ describe '--- utifudume2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,2])
     describe 'Do not miss second win', ->
         it 'expects Ou move [1,2]', ->
@@ -483,7 +483,7 @@ describe '--- utifudume2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])
     describe 'Do not judge utifudume', ->
         it 'expects Fu place [1,2]', ->
@@ -496,7 +496,7 @@ describe '--- utifudume2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([1,2])
     describe 'Do not miss first win', ->
         it 'expects Ka drop [1,3]', ->
@@ -508,7 +508,7 @@ describe '--- utifudume2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 7, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([1,3])
     describe 'Do not miss second win', ->
         it 'expects Ou move [1,2]', ->
@@ -522,7 +522,7 @@ describe '--- utifudume2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 7, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])
     afterEach ->
         console.log(ret)
@@ -574,7 +574,7 @@ describe '--- tumeshogi1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([3,2])
     describe 'second do not miss win depth = 3', ->
         it 'expects Hi place [3,2]', ->
@@ -587,7 +587,7 @@ describe '--- tumeshogi1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([3,2])
     describe 'second do not miss win depth = 2', ->
         it 'expects Hi place [3,2]', ->
@@ -600,7 +600,7 @@ describe '--- tumeshogi1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([3,2])
     describe 'second do not miss 3 move checkmate', ->
         it 'expects Hi place [3,2]', ->
@@ -615,7 +615,7 @@ describe '--- tumeshogi1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,2])
     describe 'first do not miss win', ->
         it 'expects Ka place [3,2]', ->
@@ -631,7 +631,7 @@ describe '--- tumeshogi1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[1]).to.deep.equal([3,2])
     describe 'first do not miss win', ->
         it 'expects Fu place [1,2]', ->
@@ -644,7 +644,7 @@ describe '--- tumeshogi1', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([1,2])
     afterEach ->
         console.log(ret)
@@ -694,7 +694,7 @@ describe '--- tumeshogi2', ->
             first.depth = 4; second.depth = 4
             b.display()
             ret = first.prepare(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[3]).to.equal(Const.Status.URA)            
             expect(ret[1]).to.deep.equal([3,2])
     describe 'first do not miss tumi -2', ->
@@ -707,7 +707,7 @@ describe '--- tumeshogi2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[3]).to.equal(Const.Status.URA)            
             expect(ret[1]).to.deep.equal([3,2])
     describe 'first do not miss tumi -3', ->
@@ -720,7 +720,7 @@ describe '--- tumeshogi2', ->
             first.depth = 2; second.depth = 2
             b.display()
             ret = first.prepare(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[3]).to.equal(Const.Status.URA)            
             expect(ret[1]).to.deep.equal([1,1])
     describe 'first do not miss tumi -4', ->
@@ -734,7 +734,7 @@ describe '--- tumeshogi2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ka')
+            expect(ret[0].name).to.equal('Ka')
             expect(ret[3]).to.equal(Const.Status.URA)            
             expect(ret[1]).to.deep.equal([1,1])
     describe 'first do not miss tumi -5', ->
@@ -748,7 +748,7 @@ describe '--- tumeshogi2', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,3])
     afterEach ->
         console.log(ret)

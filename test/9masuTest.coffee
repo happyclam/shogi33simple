@@ -44,9 +44,9 @@ describe '--- syokyu', ->
             b.move_capture(sg, [2,1])
             b.move_capture(sf, [1,1])
             b.display()
-            first.pre_ahead = 0; second.pre_ahead = 0            
+            first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([1,2])
     describe '桂香テスト', ->
         it 'expects Ky move [3,1] when tumi is exist', ->
@@ -60,7 +60,7 @@ describe '--- syokyu', ->
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
             expect(ret[2]).to.be.below(-9999)
-            # expect(ret[0].kind()).to.equal('Ky')
+            # expect(ret[0].name).to.equal('Ky')
             expect(ret[1]).to.deep.equal([3,3])
     describe '角香テスト', ->
         it 'expects Ky move [1,1] when tumi is exist', ->
@@ -97,7 +97,7 @@ describe '--- syokyu', ->
             first.depth = 6; second.depth = 6
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,1])
             expect(ret[2]).to.be.above(9999)
     describe '初級4-1', ->
@@ -108,7 +108,7 @@ describe '--- syokyu', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([2,2])
     afterEach ->
         console.log(ret)
@@ -158,7 +158,7 @@ describe '--- tyukyu', ->
             first.depth = 5; second.depth = 5
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ki')
+            expect(ret[0].name).to.equal('Ki')
             expect(ret[1]).to.deep.equal([1,3])
     describe '中級3-2', ->
         it 'expects Ou move [1,2]', ->
@@ -171,7 +171,7 @@ describe '--- tyukyu', ->
             second.depth = 7; first.depth = 7
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])
     describe '中級3-1', ->
         it 'expects Ou move [2,1] when effective move is exist', ->
@@ -182,7 +182,7 @@ describe '--- tyukyu', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([2,1])
     describe '中級4', ->
         it 'expects Hi move [2,2]', ->
@@ -192,7 +192,7 @@ describe '--- tyukyu', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Hi')
+            expect(ret[0].name).to.equal('Hi')
             expect(ret[1]).to.deep.equal([2,2])
     describe '上級1-2', ->
         it 'expects Ou move [1,2] when effective move is exist', ->
@@ -203,7 +203,7 @@ describe '--- tyukyu', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])
     # describe '上級1-3', ->
     #     it 'expects Ka move [1,1] when effective move is exist', ->
@@ -213,7 +213,7 @@ describe '--- tyukyu', ->
     #         b.display()
     #         first.depth = 5
     #         ret = first.think(b, second, 5, Const.MIN_VALUE)
-    #         expect(ret[0].kind()).to.equal('Ka')
+    #         expect(ret[0].name).to.equal('Ka')
     #         expect(ret[1]).to.deep.equal([1,1])
     afterEach ->
         console.log(ret)

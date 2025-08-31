@@ -15,7 +15,7 @@ Array::unique = ->
 class BoardGUI extends Board
     @getImg: (piece, fonts) ->
         ret = ""
-        switch piece.kind()
+        switch piece.name
             when "Ou"
                 if piece.turn == Const.FIRST
                     if fonts == 1 then ret = "./img/f_ou_m.svg" else ret = "./img/f_ou.svg"
@@ -447,7 +447,7 @@ class BoardGUI extends Board
                 ids = "_" + searched.toString()
         s_motigoma = {"Hi": 0, "Ka": 0, "Ki": 0, "Gi": 0, "Ke": 0, "Ky": 0, "Fu": 0}
         for v,i in @pieces when v.turn == Const.SECOND && v.status == Const.Status.MOTIGOMA
-            s_motigoma[v.kind()] += 1
+            s_motigoma[v.name] += 1
         if id == null
             for k,v of s_motigoma
                 $('[id=s' + k + ids + ']').text(v.toString())
@@ -480,7 +480,7 @@ class BoardGUI extends Board
         $('[id=b' + @latest[0] + @latest[1] + ']').css('border-style', 'dashed') if @latest? && @latest.length == 2
         f_motigoma = {"Hi": 0, "Ka": 0, "Ki": 0, "Gi": 0, "Ke": 0, "Ky": 0, "Fu": 0}
         for v,i in @pieces when v.turn == Const.FIRST && v.status == Const.Status.MOTIGOMA
-            f_motigoma[v.kind()] += 1
+            f_motigoma[v.name] += 1
         if id == null
             for k,v of f_motigoma
                 $('[id=f' + k + ids + ']').text(v.toString())
@@ -515,7 +515,7 @@ class GameGUI
         rec = []
         for koma in board.pieces
             buf = {}
-            buf["kind"] = koma.kind()
+            buf["kind"] = koma.name
             buf["turn"] = koma.turn
             buf["status"] = koma.status
             buf["posi0"] = koma.posi[0]
@@ -1082,8 +1082,8 @@ class GameGUI
         $('#btnSave').on 'click', (e) =>
             # console.log("btnSave click")
             try
-                chk_f_ou = (v for v in @board.pieces when v.kind() == 'Ou' && v.turn == Const.FIRST)
-                chk_s_ou = (v for v in @board.pieces when v.kind() == 'Ou' && v.turn == Const.SECOND)
+                chk_f_ou = (v for v in @board.pieces when v.name == 'Ou' && v.turn == Const.FIRST)
+                chk_s_ou = (v for v in @board.pieces when v.name == 'Ou' && v.turn == Const.SECOND)
                 if chk_f_ou.length > 1 || chk_s_ou.length > 1
                     throw i18next.t('msg_over_king')
                 if chk_f_ou.length <= 0 || chk_s_ou.length <= 0
@@ -1141,7 +1141,7 @@ class GameGUI
             # ----------------
             @bkup.pieces = []
             for koma in @board.pieces
-                cls = getClass(koma.kind())
+                cls = getClass(koma.name)
                 @bkup.pieces.push(new cls(koma.turn, koma.status, koma.posi))
             @reverse = false
             @board.display(@reverse)
@@ -1252,19 +1252,19 @@ class GameGUI
             # console.log("btnSearch.click")
             @bkup.pieces = []
             for koma in @board.pieces
-                cls = getClass(koma.kind())
+                cls = getClass(koma.name)
                 @bkup.pieces.push(new cls(koma.turn, koma.status, koma.posi))
             @listUp()
 
     boardList: ->
         @searchList = []
         @set_standard()
-        @searchList.push((v.kind() for v in @board.pieces).unique())
+        @searchList.push((v.name for v in @board.pieces).unique())
         # BoardGUI.appLocalize()
         @board.display(@reverse, 0, null)
         for i in [1..145]
             launch.call @, i
-            @searchList.push((v.kind() for v in @board.pieces).unique())
+            @searchList.push((v.name for v in @board.pieces).unique())
             @board.display(@reverse, i, null)
 
     listUp: ->
@@ -1485,7 +1485,7 @@ class GameGUI
             oppo = @second
             threshold = Const.MAX_VALUE
         @board.make_kiki(player.turn)
-        king = (v for v in @board.pieces when v.kind() == 'Ou' && v.turn == @teban.turn)[0]
+        king = (v for v in @board.pieces when v.name == 'Ou' && v.turn == @teban.turn)[0]
 
         if (king.posi.toString() in @board.kiki[player.turn].map (o) -> o.toString())
             $('#popupCheckLeft').popup("open")
@@ -1499,7 +1499,7 @@ class GameGUI
                 dest[0].posi = dest_piece.posi
             return
 
-        if piece.kind() == 'Fu' && move_piece.status == Const.Status.MOTIGOMA
+        if piece.name == 'Fu' && move_piece.status == Const.Status.MOTIGOMA
             ret = []
             player.pre_ahead = 0; oppo.pre_ahead = 0
             ret = player.think(@board, oppo, 1, threshold)
@@ -1531,7 +1531,7 @@ class GameGUI
 
     editMotigoma: (turn, kind, count) ->
         # console.log("editMotigoma")
-        idx = (i for v,i in @board.pieces when v.turn == turn && v.kind() == kind && v.status == Const.Status.MOTIGOMA)
+        idx = (i for v,i in @board.pieces when v.turn == turn && v.name == kind && v.status == Const.Status.MOTIGOMA)
         if count == 7
             @tglDirect = -1
         else if count == 0
@@ -1555,7 +1555,7 @@ class GameGUI
         # console.log("motigoma")
         return unless @startbtn
         $('[id=b' + @pre_posi[0] + @pre_posi[1] + ']').css('background-color', '#FFFACD') if @pre_posi
-        @selected = (v for v in @board.pieces when v.turn == turn && v.kind() == kind && v.status == Const.Status.MOTIGOMA && v.turn == @teban.turn)[0]
+        @selected = (v for v in @board.pieces when v.turn == turn && v.name == kind && v.status == Const.Status.MOTIGOMA && v.turn == @teban.turn)[0]
         if @selected?
             @s_posi = not null
         return
@@ -1594,7 +1594,7 @@ class GameGUI
 
     guide: (piece) ->
         # console.log("GameGUI.guide")
-        for v in getClass(piece.kind()).getD(piece.turn, piece.status)
+        for v in getClass(piece.name).getD(piece.turn, piece.status)
             buf = [].concat(piece.posi)
             buf[0] += v.xd; buf[1] += v.yd
             if v.series
@@ -4977,7 +4977,7 @@ class GameGUI
             @board.fonts = parseInt(localStorage.getItem("radio-fonts33")|0, 10)
             @bkup.pieces = []
             for koma in @board.pieces
-                cls = getClass(koma.kind())
+                cls = getClass(koma.name)
                 @bkup.pieces.push(new cls(koma.turn, koma.status, koma.posi))
             @boardList()
             @board.pieces = []
@@ -5116,10 +5116,10 @@ class GameGUI
 
     is_oute = (piece, d_posi) ->
         oppo = if piece.turn == Const.FIRST then Const.SECOND else Const.FIRST
-        oppo_king = (v for v in @board.pieces when v.turn == oppo && v.kind() == 'Ou')[0]
+        oppo_king = (v for v in @board.pieces when v.turn == oppo && v.name == 'Ou')[0]
         buf = [].concat(d_posi)
-        buf[0] += getClass(piece.kind()).getD(piece.turn, piece.status)[0].xd
-        buf[1] += getClass(piece.kind()).getD(piece.turn, piece.status)[0].yd
+        buf[0] += getClass(piece.name).getD(piece.turn, piece.status)[0].xd
+        buf[1] += getClass(piece.name).getD(piece.turn, piece.status)[0].yd
         return (oppo_king.posi.toString() == buf.toString())
 
     launch = (idx = 0) ->

@@ -15,8 +15,8 @@ describe '--- Player1', ->
     before ->
         b = new Board()
         b.set_standard()
-        ff = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST)[0]
-        sf = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND)[0]
+        ff = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST)[0]
+        sf = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND)[0]
         b.move_capture(ff, [3,2])
         b.move_capture(sf, [2,2])
         b.display()
@@ -49,12 +49,12 @@ describe '--- Player2', ->
     beforeEach ->
         b = new Board()
         b.set_standard()
-        ff = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST)[0]
-        sf = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND)[0]
-        fg = (v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST)[0]
-        sg = (v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.SECOND)[0]
-        fo = (v for v in b.pieces when v.kind() == 'Ou' && v.turn == Const.FIRST)[0]
-        so = (v for v in b.pieces when v.kind() == 'Ou' && v.turn == Const.SECOND)[0]
+        ff = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST)[0]
+        sf = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND)[0]
+        fg = (v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST)[0]
+        sg = (v for v in b.pieces when v.name == 'Gi' && v.turn == Const.SECOND)[0]
+        fo = (v for v in b.pieces when v.name == 'Ou' && v.turn == Const.FIRST)[0]
+        so = (v for v in b.pieces when v.name == 'Ou' && v.turn == Const.SECOND)[0]
     describe 'FIRST escape oute', ->
         it 'expects Ou move [2,3] when oute', ->
             b.move_capture(ff, [3,2])
@@ -131,7 +131,7 @@ describe '--- Player2', ->
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 2, Const.MAX_VALUE)
             expect(ret[1]).to.deep.equal([2,2])
-            expect(ret[0].kind()).to.equal('Gi')
+            expect(ret[0].name).to.equal('Gi')
             console.log(ret)
     afterEach ->
         if b.check_move(ret[0], ret[1])
@@ -153,12 +153,12 @@ describe '--- Player3', ->
     beforeEach ->
         b = new Board()
         b.set_standard()
-        ff = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST)[0]
-        sf = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND)[0]
-        fg = (v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST)[0]
-        sg = (v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.SECOND)[0]
-        fo = (v for v in b.pieces when v.kind() == 'Ou' && v.turn == Const.FIRST)[0]
-        so = (v for v in b.pieces when v.kind() == 'Ou' && v.turn == Const.SECOND)[0]
+        ff = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST)[0]
+        sf = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND)[0]
+        fg = (v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST)[0]
+        sg = (v for v in b.pieces when v.name == 'Gi' && v.turn == Const.SECOND)[0]
+        fo = (v for v in b.pieces when v.name == 'Ou' && v.turn == Const.FIRST)[0]
+        so = (v for v in b.pieces when v.name == 'Ou' && v.turn == Const.SECOND)[0]
     describe 'SECOND don`t miss tumi', ->
         it 'expects Gi move [2,2] when tumi is exist', ->
             b.move_capture(ff, [1,3])
@@ -167,7 +167,7 @@ describe '--- Player3', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 3, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Gi')
+            expect(ret[0].name).to.equal('Gi')
             expect(ret[1][0]).to.be.within(2,3)
             expect(ret[1][1]).to.equal(2)
     describe 'FIRST don`t miss tumi', ->
@@ -178,7 +178,7 @@ describe '--- Player3', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 3, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Gi')
+            expect(ret[0].name).to.equal('Gi')
             expect(ret[1][0]).to.be.within(2,3)
             expect(ret[1][1]).to.equal(2)
     describe 'SECOND escape utifudume', ->
@@ -189,7 +189,7 @@ describe '--- Player3', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 2, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[0].status).to.equal(Const.Status.MOTIGOMA)
             expect(ret[1]).to.not.deep.equal([3,2])
     # describe 'SECOND escape utifudume', ->
@@ -209,7 +209,7 @@ describe '--- Player3', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 2, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])
     describe 'SECOND don`t miss oute houti', ->
         it 'expects Ou move [1,3] when oute 2', ->
@@ -223,7 +223,7 @@ describe '--- Player3', ->
             second.depth = 5; first.depth = 5
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, second.depth, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,3])
     describe 'FIRST don`t miss tumi', ->
         it 'expects Gi move [2,2] and nari when tumi is exist', ->
@@ -232,7 +232,7 @@ describe '--- Player3', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 2, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Gi')
+            expect(ret[0].name).to.equal('Gi')
             expect(ret[1]).to.deep.equal([2,2])
             expect(ret[3]).to.equal(1)
     afterEach ->
@@ -276,7 +276,7 @@ describe '--- Player4', ->
             first.depth = 4; second.depth = 4
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, first.depth, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,2])
     describe 'SECOND put up', ->
         it 'expects Fu move [3,2] when defeat is decided', ->
@@ -294,7 +294,7 @@ describe '--- Player4', ->
             console.log('1:' + JSON.stringify(ret))
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 1, Const.MIN_VALUE)
-            expect(ret[0].kind()).to.equal('Fu')
+            expect(ret[0].name).to.equal('Fu')
             expect(ret[1]).to.deep.equal([3,2])
             console.log('2:' + JSON.stringify(ret))
     describe 'FIRST don`t miss tumi', ->
@@ -308,7 +308,7 @@ describe '--- Player4', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 2, Const.MAX_VALUE)
-            expect(ret[0].kind()).to.equal('Ou')
+            expect(ret[0].name).to.equal('Ou')
             expect(ret[1]).to.deep.equal([1,1])
     describe 'SECOND resign', ->
         it 'expects Piece is null when no move to point', ->

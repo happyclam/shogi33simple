@@ -11,6 +11,11 @@
 * [３三将棋 for Android](https://happyclam.booth.pm/items/6323599)
 * [３三将棋 for PC](https://happyclam.github.io/shogi33simple/)  
 
+# 環境
+```
+$ node -v
+v18.20.3
+```
 
 # JavaScript生成（transpile）
 ```
@@ -87,8 +92,21 @@ Second Win
 
 # テストスクリプト
 ```
-mocha test/tumeShogi.coffee
+$ mocha test/tumeShogi.coffee
 ```
 
 ※「.mocharc.jsonファイル」参照
+
+# 全テスト実行時間計測
+
+```
+$ NODE_OPTIONS="--max-old-space-size=8192" mocha --require coffeescript/register --require test/setup.coffee "test/**/*.coffee"
+
+~~~
+
+Total duration: 24.58 sec
+
+  176 passing (25s)
+
+```
 

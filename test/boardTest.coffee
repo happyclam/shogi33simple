@@ -59,35 +59,35 @@ describe '--- Board2', ->
         b.display()
     describe 'move_capture(fg, [2,2])', ->
         it 'expects [] when motigoma Gi move_capture [2,2]', ->
-            piece = v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST
+            piece = v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST
             expect(b.move_capture(piece, [2,2])).to.deep.equal([])
     describe 'move_capture(fg, [2,2])', ->
         it 'expects [2,2] when Gi moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST
+            piece = v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST
             expect(piece.posi).to.deep.equal([2,2])
     describe 'move_capture(fg, [2,2])', ->
         it 'expects status=OMOTE when Gi moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST
+            piece = v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST
             expect(piece.status).to.equal(Const.Status.OMOTE)
     describe 'move_capture(so, [1,2])', ->
         it 'expects original position when Ou move_capture [1,2]', ->
-            piece = v for v in b.pieces when v.kind() == 'Ou' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Ou' && v.turn == Const.SECOND
             expect(b.move_capture(piece, [1,2])).to.deep.equal([1,1])
     describe 'move_capture(so, [1,2])', ->
         it 'expects [1,2] when Ou moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Ou' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Ou' && v.turn == Const.SECOND
             expect(piece.posi).to.deep.equal([1,2])
     describe 'move_capture(so, [1,2])', ->
         it 'expects status=OMOTE when Ou moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Ou' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Ou' && v.turn == Const.SECOND
             expect(piece.status).to.equal(Const.Status.OMOTE)
     # describe 'move_capture(ff, [1,3]) utifudume check', ->
     #     it 'expects false when Fu move_capture [1,3]', ->
-    #         piece = v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST
+    #         piece = v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST
     #         expect(b.check_utifudume(piece, [1,3])).to.be.true
     describe 'move_capture(ff, [1,3]) utifudume check', ->
         it 'expects status=MOTIGOMA when Fu move failed', ->
-            piece = v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST
+            piece = v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST
             expect(piece.status).to.equal(Const.Status.MOTIGOMA)
     after ->
         b.display()
@@ -102,51 +102,51 @@ describe '--- Board3', ->
         b.display()
     describe 'move_capture(fg, [2,2])', ->
         it 'expects true when motigoma Gi move_capture [2,2]', ->
-            piece = v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST
+            piece = v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST
             expect(b.move_capture(piece, [2,2])).to.deep.equal([])
     describe 'move_capture(fg, [2,2])', ->
         it 'expects [2,2] when motigoma Gi moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST
+            piece = v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST
             expect(piece.posi).to.deep.equal([2,2])
     describe 'move_capture(sf, [3,1])', ->
         it 'expects true when motigoma Fu move_capture [3,1]', ->
-            piece = v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND
             expect(b.move_capture(piece, [3,1])).to.deep.equal([])
     describe 'move_capture(fg, [3,1])', ->
         it 'expects [3,1] when motigoma Fu moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND
             expect(piece.posi).to.deep.equal([3,1])
     describe 'move_capture(fg, [2,1])', ->
         it 'expects original position when Gi move_capture [2,2]', ->
-            piece = v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST
+            piece = v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST
             expect(b.move_capture(piece, [2,1])).to.deep.equal([2,2])
     describe 'move_capture(fg, [2,1])', ->
         it 'expects status=OMOTE when Gi moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST
+            piece = v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST
             expect(piece.status).to.equal(Const.Status.OMOTE)
     describe 'move_capture(sf, [3,2])', ->
         it 'expects original position [3,1] when Fu move_capture [3,2]', ->
-            piece = v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND
             expect(b.move_capture(piece, [3,2])).to.deep.equal([3,1])
     describe 'move_capture(fg, [3,2])', ->
         it 'expects status=OMOTE when Fu moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND
             expect(piece.status).to.equal(Const.Status.OMOTE)
     describe 'check_move(sf, [3,3])', ->
         it 'expects true when Fu check moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND
             expect(b.check_move(piece, [3,3])).to.be.true
     describe 'check_move(sf, [3,3])', ->
         it 'expects status changed URA when check moved', ->
-            piece = v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND
             expect(piece.status).to.equal(Const.Status.URA)
     describe 'move_capture(sf, [3,3])', ->
         it 'expects original position [3,2] when Fu move_capture [3,3]', ->
-            piece = v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND
+            piece = v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND
             expect(b.move_capture(piece, [3,3])).to.deep.equal([3,2])
     describe 'move_capture(sf, [3,3])', ->
         it 'expects captured pieces status changed when Fu moved', ->
-            pieces = (v for v in b.pieces when v.kind() == "Ou" && v.turn == Const.SECOND)
+            pieces = (v for v in b.pieces when v.name == "Ou" && v.turn == Const.SECOND)
             expect(pieces.length).to.equal(2)
     after ->
         b.display()
@@ -160,39 +160,39 @@ describe '--- Board4', ->
         b.display()
     describe 'FIRST move_capture(ff, [3,2])', ->
         it 'expects original position null when motigoma Fu move_capture [3,2]', ->
-            piece = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST)[0]
+            piece = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST)[0]
             expect(b.move_capture(piece, [3,2])).to.deep.equal([])
             b.display()
     describe 'FIRST check_move(ff, [3,1])', ->
         it 'expects true when Fu check moved', ->
-            piece = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST)[0]
+            piece = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST)[0]
             expect(b.check_move(piece, [3,1])).to.be.true
     describe 'FIRST check_move(ff, [3,1])', ->
         it 'expects status==URA when no place to go', ->
-            piece = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST)[0]
+            piece = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST)[0]
             expect(piece.status).to.equal(Const.Status.URA)
             b.display()
     describe 'FIRST move_capture(ff, [3,1])', ->
         it 'expects original position [3,2] when Fu move_capture [3,3]', ->
-            piece = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST)[0]
+            piece = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST)[0]
             expect(b.move_capture(piece, [3,1])).to.deep.equal([3,2])
     describe 'SECOND move_capture(sf, [2,2])', ->
         it 'expects original position [null] when motigoma Fu move_capture [2,2]', ->
-            piece = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND)[0]
+            piece = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND)[0]
             expect(b.move_capture(piece, [2,2])).to.deep.equal([])
             b.display()
     describe 'SECOND check_move(sf, [2,3])', ->
         it 'expects true when Fu check moved', ->
-            piece = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND)[0]
+            piece = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND)[0]
             expect(b.check_move(piece, [2,3])).to.be.true
     describe 'SECOND check_move(sf, [2,3])', ->
         it 'expects status==URA when no place to go', ->
-            piece = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND)[0]
+            piece = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND)[0]
             expect(piece.status).to.equal(Const.Status.URA)
             b.display()
     describe 'move_capture(sf, [2,3])', ->
         it 'expects original position [2,2] when Fu move_capture [2,3]', ->
-            piece = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND)[0]
+            piece = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND)[0]
             expect(b.move_capture(piece, [2,3])).to.deep.equal([2,2])
     after ->
         b.display()
@@ -209,12 +209,12 @@ describe '--- Board5', ->
     beforeEach ->
         b = new Board()
         b.set_standard()
-        ff = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.FIRST)[0]
-        sf = (v for v in b.pieces when v.kind() == 'Fu' && v.turn == Const.SECOND)[0]
-        fg = (v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.FIRST)[0]
-        sg = (v for v in b.pieces when v.kind() == 'Gi' && v.turn == Const.SECOND)[0]
-        fo = (v for v in b.pieces when v.kind() == 'Ou' && v.turn == Const.FIRST)[0]
-        so = (v for v in b.pieces when v.kind() == 'Ou' && v.turn == Const.SECOND)[0]
+        ff = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST)[0]
+        sf = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND)[0]
+        fg = (v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST)[0]
+        sg = (v for v in b.pieces when v.name == 'Gi' && v.turn == Const.SECOND)[0]
+        fo = (v for v in b.pieces when v.name == 'Ou' && v.turn == Const.FIRST)[0]
+        so = (v for v in b.pieces when v.name == 'Ou' && v.turn == Const.SECOND)[0]
     describe '二歩 check1', ->
         it 'expects false when nifu', ->
             ff.turn = Const.SECOND

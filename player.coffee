@@ -14,11 +14,11 @@ class Player
         @pre_ahead = pre_ahead
         ret = @think(board, oppo, @pre_ahead, preValue)
         if @turn == Const.FIRST
-            # @preparation.sort compScoreDescend
-            shellSortDesc.call @, @preparation
+            sortPreparation.call @, @preparation, 'desc'
+            # shellSortDesc.call @, @preparation
         else
-            # @preparation.sort compScoreAscend
-            shellSortAsc.call @, @preparation
+            sortPreparation.call @, @preparation, 'asc'
+            # shellSortAsc.call @, @preparation
         # console.log("@preparation")
         # console.log(@preparation)
         selection = {}
@@ -47,7 +47,9 @@ class Player
         laststatus = null
         score = 0
         kinds = []
-        move_piece = null
+        move_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA)
+        dest_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA)
+        # move_piece = null
         utifudume_flg = null
         src = []
         src = ((null for c in [1..Const.COLS]) for r in [1..Const.ROWS])
@@ -62,15 +64,15 @@ class Player
             if Object.keys(priority).length != 0
                 choice = priority.positions
             if koma.status == Const.Status.MOTIGOMA
-                continue if koma.kind() in kinds
-                kinds.push(koma.kind())
+                continue if koma.name in kinds
+                kinds.push(koma.name)
                 for col in [1..board.cols]
                     for row in [1..board.rows]
                         if Object.keys(priority).length != 0
                             continue unless (w for w in choice when koma.id == w.id && row == w.posi[0] && col == w.posi[1])[0]?
                         dest = src[row - 1][col - 1]
                         continue if dest?
-                        if koma.kind() == 'Fu' && is_utifuOute.call @, board, koma, [row, col]
+                        if koma.name == 'Fu' && is_utifuOute.call @, board, koma, [row, col]
                             if board.check_utifudume(koma, [row, col])
                                 utifudume_flg = null
                                 continue
@@ -79,7 +81,10 @@ class Player
                         else
                             utifudume_flg = null
 
-                        move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi)
+                        # move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi)
+                        move_piece.turn = koma.turn
+                        move_piece.status = koma.status
+                        move_piece.posi = [].concat(koma.posi)
                         if board.check_move(koma, [row, col])
                             board.move_capture(koma, [row, col])
                             result = board.gameover()
@@ -91,7 +96,7 @@ class Player
                                 score = ret[2]
                             else
                                 score = check_tumi.call @, board
-                            @preparation.push {"id": koma.id, "kind": koma.kind(),"s_posi": move_piece.posi, "posi": [row,col], "status": koma.status, "score": score, "weight": koma.omomi()} if limit == @pre_ahead
+                            @preparation.push {"id": koma.id, "kind": koma.name,"s_posi": move_piece.posi, "posi": [row,col], "status": koma.status, "score": score, "weight": koma.omomi()} if limit == @pre_ahead
                             shortCut = false
                             if (score > lastscore && @turn == Const.FIRST) || (score < lastscore && @turn == Const.SECOND)
                                 spare["koma"] = lastkoma
@@ -110,7 +115,7 @@ class Player
                         return [lastkoma, lastposi, lastscore, laststatus, spare] if (score >= Const.MAX_VALUE && @turn == Const.FIRST) || (score <= Const.MIN_VALUE && @turn == Const.SECOND)
                         return [lastkoma, lastposi, lastscore, laststatus, spare] if shortCut
             else
-                for v in getClass(koma.kind()).getD(koma.turn, koma.status)
+                for v in getClass(koma.name).getD(koma.turn, koma.status)
                     buf = [].concat(koma.posi)
                     loop
                         break unless ((buf[0] + v.xd in [1..board.cols]) && (buf[1] + v.yd in [1..board.rows]))
@@ -120,16 +125,22 @@ class Player
                             continue unless (w for w in choice when koma.id == w.id && buf[0] == w.posi[0] && buf[1] == w.posi[1])[0]?
                         dest = src[buf[0] - 1][buf[1] - 1]
                         break if dest? && dest.turn == koma.turn
-                        move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi)
+                        # move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi)
+                        move_piece.turn = koma.turn
+                        move_piece.status = koma.status
+                        move_piece.posi = [].concat(koma.posi)
                         if dest?
-                            dest_piece = new Piece.Piece(dest.turn, dest.status, dest.posi)
+                            # dest_piece = new Piece.Piece(dest.turn, dest.status, dest.posi)
+                            dest_piece.turn = dest.turn
+                            dest_piece.status = dest.status
+                            dest_piece.posi = [].concat(dest.posi)
                         if board.check_move(koma, buf, src[buf[0] - 1][buf[1] - 1])
                             promotion = true if board.check_promotion(koma, buf)
                             board.move_capture(koma, buf, src[buf[0] - 1][buf[1] - 1])
                             loop
                                 result = board.gameover()
-                                if utifudume? && !result && dest? && dest.id == utifudume.id && koma.kind() != 'Ou'
-                                    # console.log(" ===== #{koma.kind()} ===================") if limit <= 0
+                                if utifudume? && !result && dest? && dest.id == utifudume.id && koma.name != 'Ou'
+                                    # console.log(" ===== #{koma.name} ===================") if limit <= 0
                                     # board.display() if limit <= 0
                                     ret = oppo.think(board, @, 0, lastscore, {}, null)
                                     if ret[2] >= Const.MAX_VALUE || ret[2] <= Const.MIN_VALUE
@@ -152,7 +163,7 @@ class Player
                                         score = ret[2]
                                     else
                                         score = check_tumi.call @, board
-                                @preparation.push {"id": koma.id,  "kind": koma.kind(),"s_posi": move_piece.posi, "posi": [].concat(buf), "status": koma.status, "score": score, "weight": koma.omomi()} if limit == @pre_ahead
+                                @preparation.push {"id": koma.id,  "kind": koma.name,"s_posi": move_piece.posi, "posi": [].concat(buf), "status": koma.status, "score": score, "weight": koma.omomi()} if limit == @pre_ahead
                                 shortCut = false
                                 if (score > lastscore && @turn == Const.FIRST) || (score < lastscore && @turn == Const.SECOND)
                                     spare["koma"] = lastkoma
@@ -183,73 +194,21 @@ class Player
                         break unless (!dest? && v.series)
         return [lastkoma, lastposi, lastscore, laststatus, spare]
 
-    compScoreAscend = (a, b) ->
-        return a.score - b.score || a.weight - b.weight
-
-    compScoreDescend = (a, b) ->
-        return b.score - a.score || a.weight - b.weight
-
-    shellSortAsc = (obj) ->
-        h = 1
-        while (h < Math.floor(obj.length / 9))
-            h = h * 3 + 1
-        while(h > 0)
-            i = h
-            while(i < obj.length)
-                j = i
-                while(j >= h)
-                    if (obj[j - h].score > obj[j].score)
-                        t = obj[j]
-                        obj[j] = obj[j - h]
-                        obj[j - h] = t
-                    else if (obj[j - h].score == obj[j].score)
-                        # 重みは常に昇順
-                        if (obj[j - h].weight > obj[j].weight)
-                            t = obj[j]
-                            obj[j] = obj[j - h]
-                            obj[j - h] = t
-                        else if (obj[j - h].weight == obj[j].weight)
-                            if Math.floor(Math.random() * 2) == 0
-                                t = obj[j]
-                                obj[j] = obj[j - h]
-                                obj[j - h] = t
-                    j = j - h
-                i += 1
-            h = Math.floor(h / 3)
-        return obj
-
-    shellSortDesc = (obj) ->
-        h = 1
-        while (h < Math.floor(obj.length / 9))
-            h = h * 3 + 1
-        while(h > 0)
-            i = h
-            while(i < obj.length)
-                j = i
-                while(j >= h)
-                    if (obj[j - h].score < obj[j].score)
-                        t = obj[j]
-                        obj[j] = obj[j - h]
-                        obj[j - h] = t
-                    else if (obj[j - h].score == obj[j].score)
-                        # 重みは常に昇順
-                        if (obj[j - h].weight > obj[j].weight)
-                            t = obj[j]
-                            obj[j] = obj[j - h]
-                            obj[j - h] = t
-                        else if (obj[j - h].weight == obj[j].weight)
-                            if Math.floor(Math.random() * 2) == 0
-                                t = obj[j]
-                                obj[j] = obj[j - h]
-                                obj[j - h] = t
-                    j = j - h
-                i += 1
-            h = Math.floor(h / 3)
-        return obj
+    sortPreparation = (arr, order = 'asc') ->
+        arr.sort (a, b) ->
+            if a.score != b.score
+                if order is 'asc'
+                    a.score - b.score
+                else
+                    b.score - a.score
+            else if a.weight != b.weight
+                a.weight - b.weight
+            else
+                if Math.random() < 0.5 then -1 else 1
 
     is_utifuOute = (board, piece, d_posi) ->
         oppo = if piece.turn == Const.FIRST then Const.SECOND else Const.FIRST
-        oppo_king = (v for v in board.pieces when v.turn == oppo && v.kind() == 'Ou')[0]
+        oppo_king = (v for v in board.pieces when v.turn == oppo && v.name == 'Ou')[0]
         buf = [].concat(d_posi)
         buf[0] += Piece.Fu.getD(piece.turn, piece.status)[0].xd
         buf[1] += Piece.Fu.getD(piece.turn, piece.status)[0].yd
@@ -257,7 +216,7 @@ class Player
 
     check_tumi = (board) ->
         first = 0; second = 0
-        kings = (v for v in board.pieces when v.kind() == 'Ou' && v.turn == Const.FIRST)
+        kings = (v for v in board.pieces when v.name == 'Ou' && v.turn == Const.FIRST)
         switch kings.length
             when 2
                 return Const.MAX_VALUE
@@ -265,10 +224,6 @@ class Player
                 return Const.MIN_VALUE
             else
                 for v in board.pieces
-                    # inc_potential.call @, v, board
-                    # v.coefficient = 0.0
-                    # if @pre_select == 3
-                    #     count_kiki.call @, v, board if v.status != Const.Status.MOTIGOMA
                     first += v.omomi() if v.turn == Const.FIRST
                     second += v.omomi() if v.turn == Const.SECOND
                 return (first - second)
@@ -276,7 +231,7 @@ class Player
     count_kiki = (piece, board) ->
         # console.log("piece = ")
         # console.log(piece)
-        for v in getClass(piece.kind()).getD(piece.turn, piece.status)
+        for v in getClass(piece.name).getD(piece.turn, piece.status)
             buf = [].concat(piece.posi)
             loop
                 buf[0] += v.xd; buf[1] += v.yd
@@ -296,35 +251,5 @@ class Player
         # board.display()
         return
 
-    inc_potential = (piece, board) ->
-        piece.coefficient = 0.0
-        src = []
-        src = ((null for c in [1..Const.COLS]) for r in [1..Const.ROWS])
-        for v in board.pieces
-            src[v.posi[0] - 1][v.posi[1] - 1] = v if v.posi.length != 0
-        for v in getClass(piece.kind()).getD(piece.turn, piece.status)
-            # console.log("kind = #{piece.kind()}, v = #{JSON.stringify(v)}")
-            if piece.posi.length > 0
-                buf = [].concat(piece.posi)
-                buf[0] += v.xd; buf[1] += v.yd
-                continue unless (buf[0] in [1..board.cols]) && (buf[1] in [1..board.rows])
-            else
-                continue
-            if v.series
-                while (buf[0] in [1..board.cols]) && (buf[1] in [1..board.rows])
-                    dest = src[buf[0] - 1][buf[1] - 1]
-                    if dest?
-                        piece.coefficient += 1.0 if (piece.turn != dest.turn)
-                        break
-                    else
-                        piece.coefficient += 1.0
-                    buf[0] += v.xd; buf[1] += v.yd
-            else
-                dest = src[buf[0] - 1][buf[1] - 1]
-                if dest?
-                    piece.coefficient += 1.0 if (piece.turn != dest.turn)
-                else
-                    piece.coefficient += 1.0 if (buf[0] in [1..board.cols]) && (buf[1] in [1..board.rows])
-        return
 
 module.exports = Player

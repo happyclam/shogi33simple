@@ -145,7 +145,7 @@ Board = function () {
           results = [];
           for (j = 0, len = ref.length; j < len; j++) {
             v = ref[j];
-            if (v.kind() === 'Ou' && v.turn === Const.FIRST) {
+            if (v.name === 'Ou' && v.turn === Const.FIRST) {
               results.push(v);
             }
           }
@@ -244,7 +244,7 @@ Board = function () {
           results = [];
           for (k = 0, len1 = ref1.length; k < len1; k++) {
             v = ref1[k];
-            if (v.turn === turn && v.status !== Const.Status.MOTIGOMA && v.kind() !== exclude) {
+            if (v.turn === turn && v.status !== Const.Status.MOTIGOMA && v.name !== exclude) {
               results.push(v);
             }
           }
@@ -288,7 +288,7 @@ Board = function () {
         if (piece.status === Const.Status.MOTIGOMA) {
           if (dest == null && check_potential.call(this, piece, d_posi)) {
             // 二歩チェック
-            if (piece.kind() === 'Fu' && check_nifu.call(this, piece, d_posi)) {
+            if (piece.name === 'Fu' && check_nifu.call(this, piece, d_posi)) {
               // console.log("check0")
               return false;
             } else {
@@ -309,7 +309,7 @@ Board = function () {
             }
           }
         }
-        ref = getClass(piece.kind()).getD(piece.turn, piece.status);
+        ref = getClass(piece.name).getD(piece.turn, piece.status);
         // console.log("--- Error in Board.check_move ---")
         for (j = 0, len = ref.length; j < len; j++) {
           v = ref[j];
@@ -399,7 +399,7 @@ Board = function () {
           // posi = v for v in @pieces when (k ==
           return false;
         }
-        if ((ref = piece.kind()) === 'Ou' || ref === 'Ki') {
+        if ((ref = piece.name) === 'Ou' || ref === 'Ki') {
           return false;
         }
         switch (piece.turn) {
@@ -461,7 +461,7 @@ Board = function () {
           results = [];
           for (j = 0, len = ref.length; j < len; j++) {
             v = ref[j];
-            if (v.turn === oppo && v.kind() === 'Ou') {
+            if (v.turn === oppo && v.name === 'Ou') {
               results.push(v);
             }
           }
@@ -559,7 +559,7 @@ Board = function () {
       results = [];
       for (j = 0, len = ref.length; j < len; j++) {
         v = ref[j];
-        if (v.posi != null && v.posi[0] === d_posi[0] && v.kind() === 'Fu' && v.status === Const.Status.OMOTE && v.turn === piece.turn) {
+        if (v.posi != null && v.posi[0] === d_posi[0] && v.name === 'Fu' && v.status === Const.Status.OMOTE && v.turn === piece.turn) {
           results.push(v);
         }
       }
@@ -570,7 +570,7 @@ Board = function () {
   // 打った後、指した後に移動可能な場所が無い場合falseを返す
   check_potential = function check_potential(piece, d_posi) {
     var j, len, ref, v;
-    ref = getClass(piece.kind()).getD(piece.turn, piece.status);
+    ref = getClass(piece.name).getD(piece.turn, piece.status);
     for (j = 0, len = ref.length; j < len; j++) {
       v = ref[j];
       if (d_posi[0] + v.xd > 0 && d_posi[1] + v.yd > 0 && d_posi[0] + v.xd <= this.cols && d_posi[1] + v.yd <= this.rows) {
@@ -581,7 +581,7 @@ Board = function () {
   };
   check_kiki = function check_kiki(piece, d_posi, src) {
     var buf, j, len, ref, ref1, ref2, ref3, ref4, v;
-    ref = getClass(piece.kind()).getD(piece.turn, piece.status);
+    ref = getClass(piece.name).getD(piece.turn, piece.status);
     for (j = 0, len = ref.length; j < len; j++) {
       v = ref[j];
       buf = [].concat(piece.posi);
@@ -772,7 +772,7 @@ BoardGUI = /*#__PURE__*/function (_Board) {
       for (i = l = 0, len = ref.length; l < len; i = ++l) {
         v = ref[i];
         if (v.turn === Const.SECOND && v.status === Const.Status.MOTIGOMA) {
-          s_motigoma[v.kind()] += 1;
+          s_motigoma[v.name] += 1;
         }
       }
       if (id === null) {
@@ -850,7 +850,7 @@ BoardGUI = /*#__PURE__*/function (_Board) {
       for (i = p = 0, len1 = ref3.length; p < len1; i = ++p) {
         v = ref3[i];
         if (v.turn === Const.FIRST && v.status === Const.Status.MOTIGOMA) {
-          f_motigoma[v.kind()] += 1;
+          f_motigoma[v.name] += 1;
         }
       }
       if (id === null) {
@@ -883,7 +883,7 @@ BoardGUI = /*#__PURE__*/function (_Board) {
     value: function getImg(piece, fonts) {
       var ret;
       ret = "";
-      switch (piece.kind()) {
+      switch (piece.name) {
         case "Ou":
           if (piece.turn === Const.FIRST) {
             if (fonts === 1) {
@@ -2286,7 +2286,7 @@ GameGUI = function () {
               results = [];
               for (l = 0, len = ref.length; l < len; l++) {
                 v = ref[l];
-                if (v.kind() === 'Ou' && v.turn === Const.FIRST) {
+                if (v.name === 'Ou' && v.turn === Const.FIRST) {
                   results.push(v);
                 }
               }
@@ -2298,7 +2298,7 @@ GameGUI = function () {
               results = [];
               for (l = 0, len = ref.length; l < len; l++) {
                 v = ref[l];
-                if (v.kind() === 'Ou' && v.turn === Const.SECOND) {
+                if (v.name === 'Ou' && v.turn === Const.SECOND) {
                   results.push(v);
                 }
               }
@@ -2381,7 +2381,7 @@ GameGUI = function () {
           ref = _this3.board.pieces;
           for (l = 0, len = ref.length; l < len; l++) {
             koma = ref[l];
-            cls = getClass(koma.kind());
+            cls = getClass(koma.name);
             _this3.bkup.pieces.push(new cls(koma.turn, koma.status, koma.posi));
           }
           _this3.reverse = false;
@@ -2551,7 +2551,7 @@ GameGUI = function () {
           ref = _this3.board.pieces;
           for (n = 0, len2 = ref.length; n < len2; n++) {
             koma = ref[n];
-            cls = getClass(koma.kind());
+            cls = getClass(koma.name);
             _this3.bkup.pieces.push(new cls(koma.turn, koma.status, koma.posi));
           }
           return _this3.listUp();
@@ -2569,7 +2569,7 @@ GameGUI = function () {
           results = [];
           for (l = 0, len = ref.length; l < len; l++) {
             v = ref[l];
-            results.push(v.kind());
+            results.push(v.name);
           }
           return results;
         }.call(this).unique());
@@ -2584,7 +2584,7 @@ GameGUI = function () {
             results1 = [];
             for (m = 0, len = ref.length; m < len; m++) {
               v = ref[m];
-              results1.push(v.kind());
+              results1.push(v.name);
             }
             return results1;
           }.call(this).unique());
@@ -2977,7 +2977,7 @@ GameGUI = function () {
           results = [];
           for (l = 0, len = ref.length; l < len; l++) {
             v = ref[l];
-            if (v.kind() === 'Ou' && v.turn === this.teban.turn) {
+            if (v.name === 'Ou' && v.turn === this.teban.turn) {
               results.push(v);
             }
           }
@@ -2998,7 +2998,7 @@ GameGUI = function () {
           }
           return;
         }
-        if (piece.kind() === 'Fu' && move_piece.status === Const.Status.MOTIGOMA) {
+        if (piece.name === 'Fu' && move_piece.status === Const.Status.MOTIGOMA) {
           ret = [];
           player.pre_ahead = 0;
           oppo.pre_ahead = 0;
@@ -3044,7 +3044,7 @@ GameGUI = function () {
           results = [];
           for (i = l = 0, len = ref.length; l < len; i = ++l) {
             v = ref[i];
-            if (v.turn === turn && v.kind() === kind && v.status === Const.Status.MOTIGOMA) {
+            if (v.turn === turn && v.name === kind && v.status === Const.Status.MOTIGOMA) {
               results.push(i);
             }
           }
@@ -3092,7 +3092,7 @@ GameGUI = function () {
           results = [];
           for (l = 0, len = ref.length; l < len; l++) {
             v = ref[l];
-            if (v.turn === turn && v.kind() === kind && v.status === Const.Status.MOTIGOMA && v.turn === this.teban.turn) {
+            if (v.turn === turn && v.name === kind && v.status === Const.Status.MOTIGOMA && v.turn === this.teban.turn) {
               results.push(v);
             }
           }
@@ -3172,7 +3172,7 @@ GameGUI = function () {
       key: "guide",
       value: function guide(piece) {
         var buf, dest, l, len, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, v, w;
-        ref = getClass(piece.kind()).getD(piece.turn, piece.status);
+        ref = getClass(piece.name).getD(piece.turn, piece.status);
         // console.log("GameGUI.guide")
         for (l = 0, len = ref.length; l < len; l++) {
           v = ref[l];
@@ -7832,7 +7832,7 @@ GameGUI = function () {
           ref = _this5.board.pieces;
           for (l = 0, len = ref.length; l < len; l++) {
             koma = ref[l];
-            cls = getClass(koma.kind());
+            cls = getClass(koma.name);
             _this5.bkup.pieces.push(new cls(koma.turn, koma.status, koma.posi));
           }
           _this5.boardList();
@@ -8057,7 +8057,7 @@ GameGUI = function () {
         for (l = 0, len = ref.length; l < len; l++) {
           koma = ref[l];
           buf = {};
-          buf["kind"] = koma.kind();
+          buf["kind"] = koma.name;
           buf["turn"] = koma.turn;
           buf["status"] = koma.status;
           buf["posi0"] = koma.posi[0];
@@ -8086,15 +8086,15 @@ GameGUI = function () {
       results = [];
       for (l = 0, len = ref.length; l < len; l++) {
         v = ref[l];
-        if (v.turn === oppo && v.kind() === 'Ou') {
+        if (v.turn === oppo && v.name === 'Ou') {
           results.push(v);
         }
       }
       return results;
     }.call(this)[0];
     buf = [].concat(d_posi);
-    buf[0] += getClass(piece.kind()).getD(piece.turn, piece.status)[0].xd;
-    buf[1] += getClass(piece.kind()).getD(piece.turn, piece.status)[0].yd;
+    buf[0] += getClass(piece.name).getD(piece.turn, piece.status)[0].xd;
+    buf[1] += getClass(piece.name).getD(piece.turn, piece.status)[0].yd;
     return oppo_king.posi.toString() === buf.toString();
   };
   launch = function launch() {
@@ -56767,13 +56767,11 @@ Ou = function () {
       _this.name = 'Ou';
       return _this;
     }
+
+    // kind: ->
+    //     @constructor.name
     _inherits(Ou, _Piece);
     return _createClass(Ou, [{
-      key: "kind",
-      value: function kind() {
-        return this.constructor.name;
-      }
-    }, {
       key: "koma",
       value: function koma() {
         return "OU";
@@ -56853,13 +56851,11 @@ Hi = function () {
       _this2.name = 'Hi';
       return _this2;
     }
+
+    // kind: ->
+    //     @constructor.name
     _inherits(Hi, _Piece2);
     return _createClass(Hi, [{
-      key: "kind",
-      value: function kind() {
-        return this.constructor.name;
-      }
-    }, {
       key: "koma",
       value: function koma() {
         if (this.status === Const.Status.URA) {
@@ -56943,13 +56939,11 @@ Ka = function () {
       _this3.name = 'Ka';
       return _this3;
     }
+
+    // kind: ->
+    //     @constructor.name
     _inherits(Ka, _Piece3);
     return _createClass(Ka, [{
-      key: "kind",
-      value: function kind() {
-        return this.constructor.name;
-      }
-    }, {
       key: "koma",
       value: function koma() {
         if (this.status === Const.Status.URA) {
@@ -57033,13 +57027,11 @@ Ki = function () {
       _this4.name = 'Ki';
       return _this4;
     }
+
+    // kind: ->
+    //     @constructor.name
     _inherits(Ki, _Piece4);
     return _createClass(Ki, [{
-      key: "kind",
-      value: function kind() {
-        return this.constructor.name;
-      }
-    }, {
       key: "koma",
       value: function koma() {
         return "KI";
@@ -57119,13 +57111,11 @@ Gi = function () {
       _this5.name = 'Gi';
       return _this5;
     }
+
+    // kind: ->
+    //     @constructor.name
     _inherits(Gi, _Piece5);
     return _createClass(Gi, [{
-      key: "kind",
-      value: function kind() {
-        return this.constructor.name;
-      }
-    }, {
       key: "koma",
       value: function koma() {
         if (this.status === Const.Status.URA) {
@@ -57209,13 +57199,11 @@ Ke = function () {
       _this6.name = 'Ke';
       return _this6;
     }
+
+    // kind: ->
+    //     @constructor.name
     _inherits(Ke, _Piece6);
     return _createClass(Ke, [{
-      key: "kind",
-      value: function kind() {
-        return this.constructor.name;
-      }
-    }, {
       key: "koma",
       value: function koma() {
         if (this.status === Const.Status.URA) {
@@ -57299,13 +57287,11 @@ Ky = function () {
       _this7.name = 'Ky';
       return _this7;
     }
+
+    // kind: ->
+    //     @constructor.name
     _inherits(Ky, _Piece7);
     return _createClass(Ky, [{
-      key: "kind",
-      value: function kind() {
-        return this.constructor.name;
-      }
-    }, {
       key: "koma",
       value: function koma() {
         if (this.status === Const.Status.URA) {
@@ -57389,13 +57375,11 @@ Fu = function () {
       _this8.name = 'Fu';
       return _this8;
     }
+
+    // kind: ->
+    //     @constructor.name
     _inherits(Fu, _Piece8);
     return _createClass(Fu, [{
-      key: "kind",
-      value: function kind() {
-        return this.constructor.name;
-      }
-    }, {
       key: "koma",
       value: function koma() {
         if (this.status === Const.Status.URA) {
@@ -57515,7 +57499,7 @@ var Const,
 Const = __webpack_require__(/*! ./const */ "./const.coffee");
 Piece = __webpack_require__(/*! ./piece */ "./piece.coffee");
 Player = function () {
-  var check_tumi, compScoreAscend, compScoreDescend, count_kiki, inc_potential, is_utifuOute, shellSortAsc, shellSortDesc;
+  var check_tumi, count_kiki, is_utifuOute, sortPreparation;
   var Player = /*#__PURE__*/function () {
     // @depthプロパティはthink,prepareメソッドに渡す引数limitより大きな数値である必要がある
     // 読みの深さとしての属性（@depth）は許容量、実際の読みの深さとして渡すlimit引数の関係
@@ -57533,31 +57517,31 @@ Player = function () {
       key: "prepare",
       value: function prepare(board, oppo, limit, preValue) {
         var pre_ahead = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 3;
-        var buf, k, len, ref, ret, selection, v, w, x;
+        var buf, i, len, ref, ret, selection, v, w, x;
         this.preparation = [];
         this.pre_ahead = pre_ahead;
         ret = this.think(board, oppo, this.pre_ahead, preValue);
         if (this.turn === Const.FIRST) {
-          // @preparation.sort compScoreDescend
-          shellSortDesc.call(this, this.preparation);
+          sortPreparation.call(this, this.preparation, 'desc');
         } else {
-          // @preparation.sort compScoreAscend
-          shellSortAsc.call(this, this.preparation);
+          // shellSortDesc.call @, @preparation
+          sortPreparation.call(this, this.preparation, 'asc');
         }
+        // shellSortAsc.call @, @preparation
         // console.log("@preparation")
         // console.log(@preparation)
         selection = {};
         selection["pieces"] = [];
         selection["positions"] = [];
         ref = this.preparation.slice(0, +this.pre_select + 1 || 9e9);
-        for (k = 0, len = ref.length; k < len; k++) {
-          v = ref[k];
+        for (i = 0, len = ref.length; i < len; i++) {
+          v = ref[i];
           buf = function () {
-            var l, len1, ref1, results;
+            var j, len1, ref1, results;
             ref1 = board.pieces;
             results = [];
-            for (l = 0, len1 = ref1.length; l < len1; l++) {
-              w = ref1[l];
+            for (j = 0, len1 = ref1.length; j < len1; j++) {
+              w = ref1[j];
               if (w.id === v.id) {
                 results.push(w);
               }
@@ -57566,11 +57550,11 @@ Player = function () {
           }();
           if (buf.length > 0) {
             if (function () {
-              var l, len1, ref1, results;
+              var j, len1, ref1, results;
               ref1 = selection.pieces;
               results = [];
-              for (l = 0, len1 = ref1.length; l < len1; l++) {
-                x = ref1[l];
+              for (j = 0, len1 = ref1.length; j < len1; j++) {
+                x = ref1[j];
                 if (x.id === v.id) {
                   results.push(x);
                 }
@@ -57584,11 +57568,11 @@ Player = function () {
               });
             }
             if (function () {
-              var l, len1, ref1, results;
+              var j, len1, ref1, results;
               ref1 = selection.positions;
               results = [];
-              for (l = 0, len1 = ref1.length; l < len1; l++) {
-                x = ref1[l];
+              for (j = 0, len1 = ref1.length; j < len1; j++) {
+                x = ref1[j];
                 if (x.id === v.id && x.posi === v.posi) {
                   results.push(x);
                 }
@@ -57614,7 +57598,7 @@ Player = function () {
       value: function think(board, oppo, limit, preValue) {
         var priority = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
         var utifudume = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
-        var buf, c, choice, col, dest, dest_piece, k, kinds, koma, l, lastkoma, lastposi, lastscore, laststatus, len, len1, len2, m, move_piece, n, p, promotion, r, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, result, ret, row, score, selections, shortCut, spare, src, utifudume_flg, v, w;
+        var buf, c, choice, col, dest, dest_piece, i, j, k, kinds, koma, l, lastkoma, lastposi, lastscore, laststatus, len, len1, len2, m, move_piece, promotion, r, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, result, ret, row, score, selections, shortCut, spare, src, utifudume_flg, v, w;
         spare = {};
         lastscore = this.turn === Const.FIRST ? Const.MIN_VALUE : Const.MAX_VALUE;
         lastposi = null;
@@ -57622,17 +57606,19 @@ Player = function () {
         laststatus = null;
         score = 0;
         kinds = [];
-        move_piece = null;
+        move_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA);
+        dest_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA);
+        // move_piece = null
         utifudume_flg = null;
         src = [];
         src = function () {
-          var k, ref, results;
+          var i, ref, results;
           results = [];
-          for (r = k = 1, ref = Const.ROWS; 1 <= ref ? k <= ref : k >= ref; r = 1 <= ref ? ++k : --k) {
+          for (r = i = 1, ref = Const.ROWS; 1 <= ref ? i <= ref : i >= ref; r = 1 <= ref ? ++i : --i) {
             results.push(function () {
-              var l, ref1, results1;
+              var j, ref1, results1;
               results1 = [];
-              for (c = l = 1, ref1 = Const.COLS; 1 <= ref1 ? l <= ref1 : l >= ref1; c = 1 <= ref1 ? ++l : --l) {
+              for (c = j = 1, ref1 = Const.COLS; 1 <= ref1 ? j <= ref1 : j >= ref1; c = 1 <= ref1 ? ++j : --j) {
                 results1.push(null);
               }
               return results1;
@@ -57641,8 +57627,8 @@ Player = function () {
           return results;
         }();
         ref = board.pieces;
-        for (k = 0, len = ref.length; k < len; k++) {
-          v = ref[k];
+        for (i = 0, len = ref.length; i < len; i++) {
+          v = ref[i];
           if (v.posi.length !== 0) {
             src[v.posi[0] - 1][v.posi[1] - 1] = v;
           }
@@ -57652,8 +57638,8 @@ Player = function () {
         } else {
           selections = board.pieces;
         }
-        for (l = 0, len1 = selections.length; l < len1; l++) {
-          koma = selections[l];
+        for (j = 0, len1 = selections.length; j < len1; j++) {
+          koma = selections[j];
           if (!(koma.turn === this.turn)) {
             continue;
           }
@@ -57662,18 +57648,18 @@ Player = function () {
             choice = priority.positions;
           }
           if (koma.status === Const.Status.MOTIGOMA) {
-            if (ref1 = koma.kind(), indexOf.call(kinds, ref1) >= 0) {
+            if (ref1 = koma.name, indexOf.call(kinds, ref1) >= 0) {
               continue;
             }
-            kinds.push(koma.kind());
-            for (col = m = 1, ref2 = board.cols; 1 <= ref2 ? m <= ref2 : m >= ref2; col = 1 <= ref2 ? ++m : --m) {
-              for (row = n = 1, ref3 = board.rows; 1 <= ref3 ? n <= ref3 : n >= ref3; row = 1 <= ref3 ? ++n : --n) {
+            kinds.push(koma.name);
+            for (col = k = 1, ref2 = board.cols; 1 <= ref2 ? k <= ref2 : k >= ref2; col = 1 <= ref2 ? ++k : --k) {
+              for (row = l = 1, ref3 = board.rows; 1 <= ref3 ? l <= ref3 : l >= ref3; row = 1 <= ref3 ? ++l : --l) {
                 if (Object.keys(priority).length !== 0) {
                   if (function () {
-                    var len2, p, results;
+                    var len2, m, results;
                     results = [];
-                    for (p = 0, len2 = choice.length; p < len2; p++) {
-                      w = choice[p];
+                    for (m = 0, len2 = choice.length; m < len2; m++) {
+                      w = choice[m];
                       if (koma.id === w.id && row === w.posi[0] && col === w.posi[1]) {
                         results.push(w);
                       }
@@ -57687,7 +57673,7 @@ Player = function () {
                 if (dest != null) {
                   continue;
                 }
-                if (koma.kind() === 'Fu' && is_utifuOute.call(this, board, koma, [row, col])) {
+                if (koma.name === 'Fu' && is_utifuOute.call(this, board, koma, [row, col])) {
                   if (board.check_utifudume(koma, [row, col])) {
                     utifudume_flg = null;
                     continue;
@@ -57697,7 +57683,10 @@ Player = function () {
                 } else {
                   utifudume_flg = null;
                 }
-                move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi);
+                // move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi)
+                move_piece.turn = koma.turn;
+                move_piece.status = koma.status;
+                move_piece.posi = [].concat(koma.posi);
                 if (board.check_move(koma, [row, col])) {
                   board.move_capture(koma, [row, col]);
                   result = board.gameover();
@@ -57714,7 +57703,7 @@ Player = function () {
                   if (limit === this.pre_ahead) {
                     this.preparation.push({
                       "id": koma.id,
-                      "kind": koma.kind(),
+                      "kind": koma.name,
                       "s_posi": move_piece.posi,
                       "posi": [row, col],
                       "status": koma.status,
@@ -57749,21 +57738,21 @@ Player = function () {
               }
             }
           } else {
-            ref4 = getClass(koma.kind()).getD(koma.turn, koma.status);
-            for (p = 0, len2 = ref4.length; p < len2; p++) {
-              v = ref4[p];
+            ref4 = getClass(koma.name).getD(koma.turn, koma.status);
+            for (m = 0, len2 = ref4.length; m < len2; m++) {
+              v = ref4[m];
               buf = [].concat(koma.posi);
               while (true) {
                 if (!((ref5 = buf[0] + v.xd, indexOf.call(function () {
                   var results = [];
-                  for (var q = 1, ref6 = board.cols; 1 <= ref6 ? q <= ref6 : q >= ref6; 1 <= ref6 ? q++ : q--) {
-                    results.push(q);
+                  for (var n = 1, ref6 = board.cols; 1 <= ref6 ? n <= ref6 : n >= ref6; 1 <= ref6 ? n++ : n--) {
+                    results.push(n);
                   }
                   return results;
                 }.apply(this), ref5) >= 0) && (ref7 = buf[1] + v.yd, indexOf.call(function () {
                   var results = [];
-                  for (var q = 1, ref8 = board.rows; 1 <= ref8 ? q <= ref8 : q >= ref8; 1 <= ref8 ? q++ : q--) {
-                    results.push(q);
+                  for (var n = 1, ref8 = board.rows; 1 <= ref8 ? n <= ref8 : n >= ref8; 1 <= ref8 ? n++ : n--) {
+                    results.push(n);
                   }
                   return results;
                 }.apply(this), ref7) >= 0))) {
@@ -57774,10 +57763,10 @@ Player = function () {
                 buf[1] += v.yd;
                 if (Object.keys(priority).length !== 0) {
                   if (function () {
-                    var len3, q, results;
+                    var len3, n, results;
                     results = [];
-                    for (q = 0, len3 = choice.length; q < len3; q++) {
-                      w = choice[q];
+                    for (n = 0, len3 = choice.length; n < len3; n++) {
+                      w = choice[n];
                       if (koma.id === w.id && buf[0] === w.posi[0] && buf[1] === w.posi[1]) {
                         results.push(w);
                       }
@@ -57791,9 +57780,15 @@ Player = function () {
                 if (dest != null && dest.turn === koma.turn) {
                   break;
                 }
-                move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi);
+                // move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi)
+                move_piece.turn = koma.turn;
+                move_piece.status = koma.status;
+                move_piece.posi = [].concat(koma.posi);
                 if (dest != null) {
-                  dest_piece = new Piece.Piece(dest.turn, dest.status, dest.posi);
+                  // dest_piece = new Piece.Piece(dest.turn, dest.status, dest.posi)
+                  dest_piece.turn = dest.turn;
+                  dest_piece.status = dest.status;
+                  dest_piece.posi = [].concat(dest.posi);
                 }
                 if (board.check_move(koma, buf, src[buf[0] - 1][buf[1] - 1])) {
                   if (board.check_promotion(koma, buf)) {
@@ -57802,8 +57797,8 @@ Player = function () {
                   board.move_capture(koma, buf, src[buf[0] - 1][buf[1] - 1]);
                   while (true) {
                     result = board.gameover();
-                    if (utifudume != null && !result && dest != null && dest.id === utifudume.id && koma.kind() !== 'Ou') {
-                      // console.log(" ===== #{koma.kind()} ===================") if limit <= 0
+                    if (utifudume != null && !result && dest != null && dest.id === utifudume.id && koma.name !== 'Ou') {
+                      // console.log(" ===== #{koma.name} ===================") if limit <= 0
                       // board.display() if limit <= 0
                       ret = oppo.think(board, this, 0, lastscore, {}, null);
                       if (ret[2] >= Const.MAX_VALUE || ret[2] <= Const.MIN_VALUE) {
@@ -57835,7 +57830,7 @@ Player = function () {
                     if (limit === this.pre_ahead) {
                       this.preparation.push({
                         "id": koma.id,
-                        "kind": koma.kind(),
+                        "kind": koma.name,
                         "s_posi": move_piece.posi,
                         "posi": [].concat(buf),
                         "status": koma.status,
@@ -57892,96 +57887,36 @@ Player = function () {
     }]);
   }();
   ;
-  compScoreAscend = function compScoreAscend(a, b) {
-    return a.score - b.score || a.weight - b.weight;
-  };
-  compScoreDescend = function compScoreDescend(a, b) {
-    return b.score - a.score || a.weight - b.weight;
-  };
-  shellSortAsc = function shellSortAsc(obj) {
-    var h, i, j, t;
-    h = 1;
-    while (h < Math.floor(obj.length / 9)) {
-      h = h * 3 + 1;
-    }
-    while (h > 0) {
-      i = h;
-      while (i < obj.length) {
-        j = i;
-        while (j >= h) {
-          if (obj[j - h].score > obj[j].score) {
-            t = obj[j];
-            obj[j] = obj[j - h];
-            obj[j - h] = t;
-          } else if (obj[j - h].score === obj[j].score) {
-            // 重みは常に昇順
-            if (obj[j - h].weight > obj[j].weight) {
-              t = obj[j];
-              obj[j] = obj[j - h];
-              obj[j - h] = t;
-            } else if (obj[j - h].weight === obj[j].weight) {
-              if (Math.floor(Math.random() * 2) === 0) {
-                t = obj[j];
-                obj[j] = obj[j - h];
-                obj[j - h] = t;
-              }
-            }
-          }
-          j = j - h;
+  sortPreparation = function sortPreparation(arr) {
+    var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'asc';
+    return arr.sort(function (a, b) {
+      if (a.score !== b.score) {
+        if (order === 'asc') {
+          return a.score - b.score;
+        } else {
+          return b.score - a.score;
         }
-        i += 1;
-      }
-      h = Math.floor(h / 3);
-    }
-    return obj;
-  };
-  shellSortDesc = function shellSortDesc(obj) {
-    var h, i, j, t;
-    h = 1;
-    while (h < Math.floor(obj.length / 9)) {
-      h = h * 3 + 1;
-    }
-    while (h > 0) {
-      i = h;
-      while (i < obj.length) {
-        j = i;
-        while (j >= h) {
-          if (obj[j - h].score < obj[j].score) {
-            t = obj[j];
-            obj[j] = obj[j - h];
-            obj[j - h] = t;
-          } else if (obj[j - h].score === obj[j].score) {
-            // 重みは常に昇順
-            if (obj[j - h].weight > obj[j].weight) {
-              t = obj[j];
-              obj[j] = obj[j - h];
-              obj[j - h] = t;
-            } else if (obj[j - h].weight === obj[j].weight) {
-              if (Math.floor(Math.random() * 2) === 0) {
-                t = obj[j];
-                obj[j] = obj[j - h];
-                obj[j - h] = t;
-              }
-            }
-          }
-          j = j - h;
+      } else if (a.weight !== b.weight) {
+        return a.weight - b.weight;
+      } else {
+        if (Math.random() < 0.5) {
+          return -1;
+        } else {
+          return 1;
         }
-        i += 1;
       }
-      h = Math.floor(h / 3);
-    }
-    return obj;
+    });
   };
   is_utifuOute = function is_utifuOute(board, piece, d_posi) {
     var buf, oppo, oppo_king, v;
     oppo = piece.turn === Const.FIRST ? Const.SECOND : Const.FIRST;
     oppo_king = function () {
-      var k, len, ref, results;
+      var i, len, ref, results;
       ref = board.pieces;
       results = [];
-      for (k = 0, len = ref.length; k < len; k++) {
-        v = ref[k];
-        if (v.turn === oppo && v.kind() === 'Ou') {
+      for (i = 0, len = ref.length; i < len; i++) {
+        v = ref[i];
+        if (v.turn === oppo && v.name === 'Ou') {
           results.push(v);
         }
       }
@@ -57993,16 +57928,16 @@ Player = function () {
     return oppo_king.posi[0] === buf[0] && oppo_king.posi[1] === buf[1];
   };
   check_tumi = function check_tumi(board) {
-    var first, k, kings, len, ref, second, v;
+    var first, i, kings, len, ref, second, v;
     first = 0;
     second = 0;
     kings = function () {
-      var k, len, ref, results;
+      var i, len, ref, results;
       ref = board.pieces;
       results = [];
-      for (k = 0, len = ref.length; k < len; k++) {
-        v = ref[k];
-        if (v.kind() === 'Ou' && v.turn === Const.FIRST) {
+      for (i = 0, len = ref.length; i < len; i++) {
+        v = ref[i];
+        if (v.name === 'Ou' && v.turn === Const.FIRST) {
           results.push(v);
         }
       }
@@ -58015,13 +57950,9 @@ Player = function () {
         return Const.MIN_VALUE;
       default:
         ref = board.pieces;
-        for (k = 0, len = ref.length; k < len; k++) {
-          v = ref[k];
+        for (i = 0, len = ref.length; i < len; i++) {
+          v = ref[i];
           if (v.turn === Const.FIRST) {
-            // inc_potential.call @, v, board
-            // v.coefficient = 0.0
-            // if @pre_select == 3
-            //     count_kiki.call @, v, board if v.status != Const.Status.MOTIGOMA
             first += v.omomi();
           }
           if (v.turn === Const.SECOND) {
@@ -58032,37 +57963,37 @@ Player = function () {
     }
   };
   count_kiki = function count_kiki(piece, board) {
-    var buf, dest, k, len, o, ref, ref1, ref2, ref3, ref4, v;
-    ref = getClass(piece.kind()).getD(piece.turn, piece.status);
+    var buf, dest, i, len, o, ref, ref1, ref2, ref3, ref4, v;
+    ref = getClass(piece.name).getD(piece.turn, piece.status);
     // console.log("piece = ")
     // console.log(piece)
-    for (k = 0, len = ref.length; k < len; k++) {
-      v = ref[k];
+    for (i = 0, len = ref.length; i < len; i++) {
+      v = ref[i];
       buf = [].concat(piece.posi);
       while (true) {
         buf[0] += v.xd;
         buf[1] += v.yd;
         if (!((ref1 = buf[0], indexOf.call(function () {
           var results = [];
-          for (var l = 1, ref2 = board.cols; 1 <= ref2 ? l <= ref2 : l >= ref2; 1 <= ref2 ? l++ : l--) {
-            results.push(l);
+          for (var j = 1, ref2 = board.cols; 1 <= ref2 ? j <= ref2 : j >= ref2; 1 <= ref2 ? j++ : j--) {
+            results.push(j);
           }
           return results;
         }.apply(this), ref1) >= 0) && (ref3 = buf[1], indexOf.call(function () {
           var results = [];
-          for (var l = 1, ref4 = board.rows; 1 <= ref4 ? l <= ref4 : l >= ref4; 1 <= ref4 ? l++ : l--) {
-            results.push(l);
+          for (var j = 1, ref4 = board.rows; 1 <= ref4 ? j <= ref4 : j >= ref4; 1 <= ref4 ? j++ : j--) {
+            results.push(j);
           }
           return results;
         }.apply(this), ref3) >= 0))) {
           break;
         }
         dest = function () {
-          var l, len1, ref5, results;
+          var j, len1, ref5, results;
           ref5 = board.pieces;
           results = [];
-          for (l = 0, len1 = ref5.length; l < len1; l++) {
-            o = ref5[l];
+          for (j = 0, len1 = ref5.length; j < len1; j++) {
+            o = ref5[j];
             if (o.posi != null && o.posi[0] === buf[0] && o.posi[1] === buf[1]) {
               results.push(o);
             }
@@ -58086,115 +58017,11 @@ Player = function () {
       }
     }
   };
-
-  // console.log("piece.coefficient = #{piece.coefficient}")
-  // board.display()
-  inc_potential = function inc_potential(piece, board) {
-    var buf, c, dest, k, l, len, len1, r, ref, ref1, ref10, ref11, ref12, ref13, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, src, v;
-    piece.coefficient = 0.0;
-    src = [];
-    src = function () {
-      var k, ref, results;
-      results = [];
-      for (r = k = 1, ref = Const.ROWS; 1 <= ref ? k <= ref : k >= ref; r = 1 <= ref ? ++k : --k) {
-        results.push(function () {
-          var l, ref1, results1;
-          results1 = [];
-          for (c = l = 1, ref1 = Const.COLS; 1 <= ref1 ? l <= ref1 : l >= ref1; c = 1 <= ref1 ? ++l : --l) {
-            results1.push(null);
-          }
-          return results1;
-        }());
-      }
-      return results;
-    }();
-    ref = board.pieces;
-    for (k = 0, len = ref.length; k < len; k++) {
-      v = ref[k];
-      if (v.posi.length !== 0) {
-        src[v.posi[0] - 1][v.posi[1] - 1] = v;
-      }
-    }
-    ref1 = getClass(piece.kind()).getD(piece.turn, piece.status);
-    for (l = 0, len1 = ref1.length; l < len1; l++) {
-      v = ref1[l];
-      // console.log("kind = #{piece.kind()}, v = #{JSON.stringify(v)}")
-      if (piece.posi.length > 0) {
-        buf = [].concat(piece.posi);
-        buf[0] += v.xd;
-        buf[1] += v.yd;
-        if (!((ref2 = buf[0], indexOf.call(function () {
-          var results = [];
-          for (var m = 1, ref3 = board.cols; 1 <= ref3 ? m <= ref3 : m >= ref3; 1 <= ref3 ? m++ : m--) {
-            results.push(m);
-          }
-          return results;
-        }.apply(this), ref2) >= 0) && (ref4 = buf[1], indexOf.call(function () {
-          var results = [];
-          for (var m = 1, ref5 = board.rows; 1 <= ref5 ? m <= ref5 : m >= ref5; 1 <= ref5 ? m++ : m--) {
-            results.push(m);
-          }
-          return results;
-        }.apply(this), ref4) >= 0))) {
-          continue;
-        }
-      } else {
-        continue;
-      }
-      if (v.series) {
-        while ((ref6 = buf[0], indexOf.call(function () {
-          var results = [];
-          for (var m = 1, ref7 = board.cols; 1 <= ref7 ? m <= ref7 : m >= ref7; 1 <= ref7 ? m++ : m--) {
-            results.push(m);
-          }
-          return results;
-        }.apply(this), ref6) >= 0) && (ref8 = buf[1], indexOf.call(function () {
-          var results = [];
-          for (var m = 1, ref9 = board.rows; 1 <= ref9 ? m <= ref9 : m >= ref9; 1 <= ref9 ? m++ : m--) {
-            results.push(m);
-          }
-          return results;
-        }.apply(this), ref8) >= 0)) {
-          dest = src[buf[0] - 1][buf[1] - 1];
-          if (dest != null) {
-            if (piece.turn !== dest.turn) {
-              piece.coefficient += 1.0;
-            }
-            break;
-          } else {
-            piece.coefficient += 1.0;
-          }
-          buf[0] += v.xd;
-          buf[1] += v.yd;
-        }
-      } else {
-        dest = src[buf[0] - 1][buf[1] - 1];
-        if (dest != null) {
-          if (piece.turn !== dest.turn) {
-            piece.coefficient += 1.0;
-          }
-        } else {
-          if ((ref10 = buf[0], indexOf.call(function () {
-            var results = [];
-            for (var m = 1, ref11 = board.cols; 1 <= ref11 ? m <= ref11 : m >= ref11; 1 <= ref11 ? m++ : m--) {
-              results.push(m);
-            }
-            return results;
-          }.apply(this), ref10) >= 0) && (ref12 = buf[1], indexOf.call(function () {
-            var results = [];
-            for (var m = 1, ref13 = board.rows; 1 <= ref13 ? m <= ref13 : m >= ref13; 1 <= ref13 ? m++ : m--) {
-              results.push(m);
-            }
-            return results;
-          }.apply(this), ref12) >= 0)) {
-            piece.coefficient += 1.0;
-          }
-        }
-      }
-    }
-  };
   return Player;
 }.call(this);
+
+// console.log("piece.coefficient = #{piece.coefficient}")
+// board.display()
 module.exports = Player;
 
 /***/ }),

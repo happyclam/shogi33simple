@@ -102,7 +102,6 @@ $ mocha test/tumeShogi.coffee
 ```
 $ NODE_OPTIONS="--max-old-space-size=8192" mocha --require coffeescript/register --require test/setup.coffee "test/**/*.coffee"
 
-~~~
 
 Total duration: 24.58 sec
 

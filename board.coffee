@@ -1,19 +1,43 @@
 Const = require('./const')
 Piece = require('./piece')
 
-class Board
+class Board extends Array
     @promotion_line = [1, 3]
-    constructor: ->
-        @rows = Const.COLS
-        @cols = Const.ROWS
-        # @pieces = ((null for c in [1..Const.COLS]) for r in [1..Const.ROWS])
+    constructor: (rows = Const.ROWS, cols = Const.COLS) ->
+        super()
+        @rows = rows
+        @cols = cols
+        for r in [0...@rows]
+            @[r] = new Array(@cols).fill(null)
         @pieces = []
+        @pieceIndex = {}
         @kiki = {}
+        @board = @
 
-        # @kiki[Const.FIRST] = []
-        # @kiki[Const.SECOND] = []
+    clear: ->
+        for r in [0...@rows]
+            @[r] = new Array(@cols).fill(null)
+    setPiece: (piece, row, col) ->
+        @[row - 1][col - 1] = piece
+        @pieceIndex[piece.id] = [row, col]
+        return piece
+
+    getPiece: (row, col) ->
+        @[row - 1][col - 1]
+
+    getPiecePosition: (piece) ->
+        @pieceIndex[piece.id]
+
+    cloneBoard: ->
+        # 盤面だけシャローコピー
+        clone = new Board(@rows, @cols)
+        for v in @pieces
+            clone[v.posi[0] - 1][v.posi[1] - 1] = v if v.posi.length != 0
+        return clone
 
     set_standard: ->
+        @clear()
+        @pieceIndex = {}
         @pieces = []
         @pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]))
         @pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA))
@@ -24,6 +48,8 @@ class Board
         return
 
     add: (piece) ->
+        # if piece.status != Const.Status.MOTIGOMA
+        #     @setPiece(piece, piece.posi[0], piece.posi[1])
         @pieces.push(piece)
         return
 
@@ -156,12 +182,14 @@ class Board
         if dest?
             dest.status = Const.Status.MOTIGOMA
             dest.setTurn(piece.turn)
+            # @board[dest.posi[0] - 1][dest.posi[1] - 1] = null
             dest.posi = []
         else
             if piece.status == Const.Status.MOTIGOMA
                 piece.status = Const.Status.OMOTE
         s_posi = [].concat(piece.posi)
         piece.posi = [].concat(d_posi)
+        # @setPiece(piece, d_posi[0], d_posi[1])
         return s_posi
 
     check_utifudume: (piece, d_posi) ->

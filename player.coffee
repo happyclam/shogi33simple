@@ -49,12 +49,8 @@ class Player
         kinds = []
         move_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA)
         dest_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA)
-        # move_piece = null
         utifudume_flg = null
-        src = []
-        src = ((null for c in [1..Const.COLS]) for r in [1..Const.ROWS])
-        for v in board.pieces
-            src[v.posi[0] - 1][v.posi[1] - 1] = v if v.posi.length != 0
+        src = board.cloneBoard()
         if Object.keys(priority).length != 0
             selections = priority.pieces
         else
@@ -81,7 +77,6 @@ class Player
                         else
                             utifudume_flg = null
 
-                        # move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi)
                         move_piece.turn = koma.turn
                         move_piece.status = koma.status
                         move_piece.posi = [].concat(koma.posi)
@@ -125,12 +120,10 @@ class Player
                             continue unless (w for w in choice when koma.id == w.id && buf[0] == w.posi[0] && buf[1] == w.posi[1])[0]?
                         dest = src[buf[0] - 1][buf[1] - 1]
                         break if dest? && dest.turn == koma.turn
-                        # move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi)
                         move_piece.turn = koma.turn
                         move_piece.status = koma.status
                         move_piece.posi = [].concat(koma.posi)
                         if dest?
-                            # dest_piece = new Piece.Piece(dest.turn, dest.status, dest.posi)
                             dest_piece.turn = dest.turn
                             dest_piece.status = dest.status
                             dest_piece.posi = [].concat(dest.posi)

@@ -19,8 +19,7 @@ class Course
         @yd = yd
 
 class Piece
-    constructor: (@turn, @status, @posi = null) ->
-        @posi = if @posi? then @posi.concat() else []
+    constructor: (@turn, @status) ->
         @id = uniqueId.call @
         @coefficient = 0.0
     setTurn: (turn) ->
@@ -46,11 +45,9 @@ class Ou extends Piece
     @getD: (turn, status) ->
         return _direction[status][turn]
 
-    constructor: (turn, status, posi) ->
-        super(turn, status, posi)
+    constructor: (turn, status) ->
+        super(turn, status)
         @name = 'Ou'
-    # kind: ->
-    #     @constructor.name
     koma: ->
         return "OU"
     omomi: ->
@@ -84,11 +81,9 @@ class Hi extends Piece
     @getD: (turn, status) ->
         return _direction[status][turn]
 
-    constructor: (turn, status, posi) ->
-        super(turn, status, posi)
+    constructor: (turn, status) ->
+        super(turn, status)
         @name = 'Hi'
-    # kind: ->
-    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "RY" else "HI"
     omomi: ->
@@ -125,11 +120,9 @@ class Ka extends Piece
     @getD: (turn, status) ->
         return _direction[status][turn]
 
-    constructor: (turn, status, posi) ->
-        super(turn, status, posi)
+    constructor: (turn, status) ->
+        super(turn, status)
         @name = 'Ka'
-    # kind: ->
-    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "UM" else "KA"
     omomi: ->
@@ -166,11 +159,9 @@ class Ki extends Piece
     @getD: (turn, status) ->
         return _direction[status][turn]
 
-    constructor: (turn, status, posi) ->
-        super(turn, status, posi)
+    constructor: (turn, status) ->
+        super(turn, status)
         @name = 'Ki'
-    # kind: ->
-    #     @constructor.name
     koma: ->
         return "KI"
     omomi: ->
@@ -207,11 +198,9 @@ class Gi extends Piece
     @getD: (turn, status) ->
         return _direction[status][turn]
 
-    constructor: (turn, status, posi) ->
-        super(turn, status, posi)
+    constructor: (turn, status) ->
+        super(turn, status)
         @name = 'Gi'
-    # kind: ->
-    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "NG" else "GI"
     omomi: ->
@@ -248,11 +237,9 @@ class Ke extends Piece
     @getD: (turn, status) ->
         return _direction[status][turn]
 
-    constructor: (turn, status, posi) ->
-        super(turn, status, posi)
+    constructor: (turn, status) ->
+        super(turn, status)
         @name = 'Ke'
-    # kind: ->
-    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "NK" else "KE"
 
@@ -291,11 +278,9 @@ class Ky extends Piece
     @getD: (turn, status) ->
         return _direction[status][turn]
 
-    constructor: (turn, status, posi) ->
-        super(turn, status, posi)
+    constructor: (turn, status) ->
+        super(turn, status)
         @name = 'Ky'
-    # kind: ->
-    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "NY" else "KY"
     omomi: ->
@@ -332,11 +317,9 @@ class Fu extends Piece
     @getD: (turn, status) ->
         return _direction[status][turn]
 
-    constructor: (turn, status, posi) ->
-        super(turn, status, posi)
+    constructor: (turn, status) ->
+        super(turn, status)
         @name = 'Fu'
-    # kind: ->
-    #     @constructor.name
     koma: ->
         return if @status == Const.Status.URA then "TO" else "FU"
     omomi: ->

@@ -1,5 +1,6 @@
 Const = require('./const')
 Piece = require('./piece')
+Util = require('./util')
 
 class Player
     # @depthプロパティはthink,prepareメソッドに渡す引数limitより大きな数値である必要がある
@@ -39,34 +40,25 @@ class Player
         # console.log("ret = #{JSON.stringify(ret)}")
         return ret
 
-    think: (board, oppo, limit, preValue, priority = {}, utifudume = null) ->
-        spare = {}
-        lastscore = if @turn == Const.FIRST then Const.MIN_VALUE else Const.MAX_VALUE
-        lastposi = null
-        lastkoma = null
-        laststatus = null
+    think: (board, oppo, limit, preValue, utifudume = null) ->
+        # console.log("limit = #{limit}")
+        # board.display()
+        if @turn == Const.FIRST
+            bestMove = new Util.BestMove(null, [], Const.MIN_VALUE, Const.Status.OMOTE)
+        else
+            bestMove = new Util.BestMove(null, [], Const.MAX_VALUE, Const.Status.OMOTE)
         score = 0
         kinds = []
-        move_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA)
-        dest_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA)
         utifudume_flg = null
-        src = board.cloneBoard()
-        if Object.keys(priority).length != 0
-            selections = priority.pieces
-        else
-            selections = board.pieces
-        for koma in selections when koma.turn == @turn
-            # 同じ駒でも指す場所が複数になるので、この段階では複数の候補となる
-            if Object.keys(priority).length != 0
-                choice = priority.positions
+        for koma in board.getPieces(@turn)
+            # console.log("koma = #{JSON.stringify(koma)}")
             if koma.status == Const.Status.MOTIGOMA
-                continue if koma.name in kinds
                 kinds.push(koma.name)
-                for col in [1..board.cols]
-                    for row in [1..board.rows]
-                        if Object.keys(priority).length != 0
-                            continue unless (w for w in choice when koma.id == w.id && row == w.posi[0] && col == w.posi[1])[0]?
-                        dest = src[row - 1][col - 1]
+                for row in [1..board.rows]
+                    for col in [1..board.cols]
+                        # if Object.keys(priority).length != 0
+                        #     continue unless (w for w in choice when koma.id == w.id)[0]?
+                        dest = board.getPiecePosition(row, col)
                         continue if dest?
                         if koma.name == 'Fu' && is_utifuOute.call @, board, koma, [row, col]
                             if board.check_utifudume(koma, [row, col])
@@ -77,96 +69,81 @@ class Player
                         else
                             utifudume_flg = null
 
-                        move_piece.turn = koma.turn
-                        move_piece.status = koma.status
-                        move_piece.posi = [].concat(koma.posi)
-                        if board.check_move(koma, [row, col])
-                            board.move_capture(koma, [row, col])
+                        check = board.check_move(koma, [row, col])
+                        if check[0]
+                            # console.log("move_capture: 82")
+                            diff = board.move_capture(koma, [row, col], check[1])
                             result = board.gameover()
                             if limit > 0 && !result
-                                if @pre_ahead == -1 && limit > 4
-                                    ret = oppo.prepare(board, @, limit - 1, if oppo.turn == Const.FIRST then Const.MAX_VALUE else Const.MIN_VALUE)
-                                else
-                                    ret = oppo.think(board, @, limit - 1, lastscore, {}, utifudume_flg)
-                                score = ret[2]
+                                # if @pre_ahead == -1 && limit > 4
+                                #     ret = oppo.prepare(board, @, limit - 1, if oppo.turn == Const.FIRST then Const.MAX_VALUE else Const.MIN_VALUE)
+                                # else
+                                #     ret = oppo.think(board, @, limit - 1, bestMove.lastscore, {}, utifudume_flg)
+                                ret = oppo.think(board, @, limit - 1, bestMove.lastscore, utifudume_flg)
+                                score = ret.lastscore
                             else
                                 score = check_tumi.call @, board
-                            @preparation.push {"id": koma.id, "kind": koma.name,"s_posi": move_piece.posi, "posi": [row,col], "status": koma.status, "score": score, "weight": koma.omomi()} if limit == @pre_ahead
+                            # @preparation.push {"id": koma.id, "kind": koma.name,"s_posi": move_posi, "posi": [row,col], "status": koma.status, "score": score, "weight": koma.omomi()} if limit == @pre_ahead
                             shortCut = false
-                            if (score > lastscore && @turn == Const.FIRST) || (score < lastscore && @turn == Const.SECOND)
-                                spare["koma"] = lastkoma
-                                spare["posi"] = [].concat(lastposi)
-                                spare["score"] = lastscore
-                                spare["status"] = laststatus
-                                lastkoma = koma
-                                lastscore = score
-                                lastposi = [].concat([row, col])
-                                laststatus = koma.status
+                            if (score > bestMove.lastscore && @turn == Const.FIRST) || (score < bestMove.lastscore && @turn == Const.SECOND)
+                                # console.log("uti bestMove = #{JSON.stringify(bestMove)}")
+                                bestMove.update(koma, [].concat([row, col]), score, koma.status)
+                                # console.log("uti bestMove = #{JSON.stringify(bestMove)}")
                                 if ((preValue < score && @turn == Const.FIRST) || (preValue > score && @turn == Const.SECOND))
                                     shortCut = true
-                        koma.turn = move_piece.turn
-                        koma.status = move_piece.status
-                        koma.posi = move_piece.posi
-                        return [lastkoma, lastposi, lastscore, laststatus, spare] if (score >= Const.MAX_VALUE && @turn == Const.FIRST) || (score <= Const.MIN_VALUE && @turn == Const.SECOND)
-                        return [lastkoma, lastposi, lastscore, laststatus, spare] if shortCut
+                            # console.log("revert_move: 103")
+                            board.revert_move(diff)
+                            # board.display()
+                        return bestMove if (score >= Const.MAX_VALUE && @turn == Const.FIRST) || (score <= Const.MIN_VALUE && @turn == Const.SECOND)
+                        return bestMove if shortCut
             else
                 for v in getClass(koma.name).getD(koma.turn, koma.status)
-                    buf = [].concat(koma.posi)
+                    buf = [].concat(board.getPiecePosition(koma))
                     loop
                         break unless ((buf[0] + v.xd in [1..board.cols]) && (buf[1] + v.yd in [1..board.rows]))
                         promotion = false
                         buf[0] += v.xd; buf[1] += v.yd
-                        if Object.keys(priority).length != 0
-                            continue unless (w for w in choice when koma.id == w.id && buf[0] == w.posi[0] && buf[1] == w.posi[1])[0]?
-                        dest = src[buf[0] - 1][buf[1] - 1]
+                        # if Object.keys(priority).length != 0
+                        #     continue unless (w for w in choice when koma.id == w.id)[0]?
+                        dest = board.getPiecePosition(buf[0], buf[1])
                         break if dest? && dest.turn == koma.turn
-                        move_piece.turn = koma.turn
-                        move_piece.status = koma.status
-                        move_piece.posi = [].concat(koma.posi)
-                        if dest?
-                            dest_piece.turn = dest.turn
-                            dest_piece.status = dest.status
-                            dest_piece.posi = [].concat(dest.posi)
-                        if board.check_move(koma, buf, src[buf[0] - 1][buf[1] - 1])
+                        check = board.check_move(koma, buf)
+                        if check[0]
                             promotion = true if board.check_promotion(koma, buf)
-                            board.move_capture(koma, buf, src[buf[0] - 1][buf[1] - 1])
+                            # console.log("move_capture: 119")
+                            diff = board.move_capture(koma, buf, check[1])
                             loop
                                 result = board.gameover()
                                 if utifudume? && !result && dest? && dest.id == utifudume.id && koma.name != 'Ou'
                                     # console.log(" ===== #{koma.name} ===================") if limit <= 0
                                     # board.display() if limit <= 0
-                                    ret = oppo.think(board, @, 0, lastscore, {}, null)
-                                    if ret[2] >= Const.MAX_VALUE || ret[2] <= Const.MIN_VALUE
-                                        score = ret[2] * -1
+                                    ret = oppo.think(board, @, 0, bestMove.lastscore, {}, null)
+                                    if ret.lastscore >= Const.MAX_VALUE || ret.lastscore <= Const.MIN_VALUE
+                                        score = ret.lastscore * -1
                                     else
                                         if limit > 0
-                                            if @pre_ahead == -1 && limit > 4
-                                                ret = oppo.prepare(board, @, limit - 1, if oppo.turn == Const.FIRST then Const.MAX_VALUE else Const.MIN_VALUE)
-                                            else
-                                                ret = oppo.think(board, @, limit - 1, lastscore, {}, null)
-                                            score = ret[2]
+                                            # if @pre_ahead == -1 && limit > 4
+                                            #     ret = oppo.prepare(board, @, limit - 1, if oppo.turn == Const.FIRST then Const.MAX_VALUE else Const.MIN_VALUE)
+                                            # else
+                                            #     ret = oppo.think(board, @, limit - 1, bestMove.lastscore, {}, null)
+                                            ret = oppo.think(board, @, limit - 1, bestMove.lastscore)
+                                            score = ret.lastscore
                                         else
                                             score = check_tumi.call @, board
                                 else
                                     if limit > 0 && !result
-                                        if @pre_ahead == -1 && limit > 4
-                                            ret = oppo.prepare(board, @, limit - 1, if oppo.turn == Const.FIRST then Const.MAX_VALUE else Const.MIN_VALUE)
-                                        else
-                                            ret = oppo.think(board, @, limit - 1, lastscore, {}, null)
-                                        score = ret[2]
+                                        # if @pre_ahead == -1 && limit > 4
+                                        #     ret = oppo.prepare(board, @, limit - 1, if oppo.turn == Const.FIRST then Const.MAX_VALUE else Const.MIN_VALUE)
+                                        # else
+                                        #     ret = oppo.think(board, @, limit - 1, bestMove.lastscore, {}, null)
+                                        ret = oppo.think(board, @, limit - 1, bestMove.lastscore)
+                                        score = ret.lastscore
                                     else
                                         score = check_tumi.call @, board
-                                @preparation.push {"id": koma.id,  "kind": koma.name,"s_posi": move_piece.posi, "posi": [].concat(buf), "status": koma.status, "score": score, "weight": koma.omomi()} if limit == @pre_ahead
+                                # @preparation.push {"id": koma.id,  "kind": koma.name,"s_posi": move_posi, "posi": [].concat(buf), "status": koma.status, "score": score, "weight": koma.omomi()} if limit == @pre_ahead
                                 shortCut = false
-                                if (score > lastscore && @turn == Const.FIRST) || (score < lastscore && @turn == Const.SECOND)
-                                    spare["koma"] = lastkoma
-                                    spare["posi"] = [].concat(lastposi)
-                                    spare["score"] = lastscore
-                                    spare["status"] = laststatus
-                                    lastkoma = koma
-                                    lastscore = score
-                                    lastposi = [].concat(buf)
-                                    laststatus = koma.status
+                                if (score > bestMove.lastscore && @turn == Const.FIRST) || (score < bestMove.lastscore && @turn == Const.SECOND)
+                                    bestMove.update(koma, [].concat(buf), score, koma.status)
                                     if ((preValue < score && @turn == Const.FIRST) || (preValue > score && @turn == Const.SECOND))
                                         shortCut = true
                                 # 駒が成れる場合は成ってからもう一度評価する
@@ -175,17 +152,13 @@ class Player
                                     koma.status = Const.Status.URA
                                 else
                                     break
-                        koma.turn = move_piece.turn
-                        koma.status = move_piece.status
-                        koma.posi = move_piece.posi
-                        if dest?
-                            dest.turn = dest_piece.turn
-                            dest.status = dest_piece.status
-                            dest.posi = dest_piece.posi
-                        return [lastkoma, lastposi, lastscore, laststatus, spare] if (score >= Const.MAX_VALUE && @turn == Const.FIRST) || (score <= Const.MIN_VALUE && @turn == Const.SECOND)
-                        return [lastkoma, lastposi, lastscore, laststatus, spare] if shortCut
+                            # console.log("revert_move: 164")
+                            board.revert_move(diff)
+                            # board.display()
+                        return bestMove if (score >= Const.MAX_VALUE && @turn == Const.FIRST) || (score <= Const.MIN_VALUE && @turn == Const.SECOND)
+                        return bestMove if shortCut
                         break unless (!dest? && v.series)
-        return [lastkoma, lastposi, lastscore, laststatus, spare]
+        return bestMove
 
     sortPreparation = (arr, order = 'asc') ->
         arr.sort (a, b) ->
@@ -201,48 +174,29 @@ class Player
 
     is_utifuOute = (board, piece, d_posi) ->
         oppo = if piece.turn == Const.FIRST then Const.SECOND else Const.FIRST
-        oppo_king = (v for v in board.pieces when v.turn == oppo && v.name == 'Ou')[0]
+        oppo_king = (v for v in board.getPieces(oppo) when v.name=='Ou')[0]
+        return false unless oppo_king
+        posi = board.getPiecePosition(oppo_king)
+        return false unless posi
         buf = [].concat(d_posi)
         buf[0] += Piece.Fu.getD(piece.turn, piece.status)[0].xd
         buf[1] += Piece.Fu.getD(piece.turn, piece.status)[0].yd
-        return (oppo_king.posi[0] == buf[0] && oppo_king.posi[1] == buf[1])
+        return (posi[0] == buf[0] && posi[1] == buf[1])
 
     check_tumi = (board) ->
         first = 0; second = 0
-        kings = (v for v in board.pieces when v.name == 'Ou' && v.turn == Const.FIRST)
-        switch kings.length
-            when 2
-                return Const.MAX_VALUE
-            when 0
-                return Const.MIN_VALUE
-            else
-                for v in board.pieces
-                    first += v.omomi() if v.turn == Const.FIRST
-                    second += v.omomi() if v.turn == Const.SECOND
-                return (first - second)
-
-    count_kiki = (piece, board) ->
-        # console.log("piece = ")
-        # console.log(piece)
-        for v in getClass(piece.name).getD(piece.turn, piece.status)
-            buf = [].concat(piece.posi)
-            loop
-                buf[0] += v.xd; buf[1] += v.yd
-                break unless (buf[0] in [1..board.cols] && buf[1] in [1..board.rows])
-                dest = (o for o in board.pieces when o.posi? && o.posi[0] == buf[0] && o.posi[1] == buf[1])[0]
-                # console.log("dest = #{dest}")
-                if dest
-                    if dest.turn == piece.turn
-                        break
-                    else
-                        piece.coefficient += 1.0
-                        break
-                else
-                    piece.coefficient += 1.0
-                break unless v.series
-        # console.log("piece.coefficient = #{piece.coefficient}")
-        # board.display()
-        return
+        firstKing  = board.motigoma[Const.FIRST].Ou?.length
+        secondKing  = board.motigoma[Const.SECOND].Ou?.length
+        if firstKing > 0
+            return Const.MAX_VALUE
+        else if secondKing > 0
+            return Const.MIN_VALUE
+        else
+            for koma in board.getPieces(Const.FIRST)
+                first += koma.omomi()
+            for koma in board.getPieces(Const.SECOND)
+                second += koma.omomi()
+            return (first - second)
 
 
 module.exports = Player

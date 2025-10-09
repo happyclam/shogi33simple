@@ -16,7 +16,7 @@ describe '--- leave alone', ->
         first = new Player(Const.FIRST, false)
         second = new Player(Const.SECOND, false)
     beforeEach ->
-        b = new Board()
+        b = new Board(3, 3)
         b.pieces = []
         fo = new Piece.Ou(Const.FIRST, Const.Status.MOTIGOMA)
         fh = new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA)
@@ -37,7 +37,7 @@ describe '--- leave alone', ->
 
     describe 'SECOND resigned when checkmate', ->
         it 'expects no move when checkmate', ->
-            b.add(fo);b.add(so);b.add(fm);b.add(sm);b.add(sh);b.add(sf);b.add(fh);b.add(ff);
+            b.addMotigoma(fo, Const.FIRST);b.addMotigoma(so, Const.SECOND);b.addMotigoma(fm, Const.FIRST);b.addMotigoma(sm, Const.SECOND);b.addMotigoma(sh, Const.SECOND);b.addMotigoma(sf, Const.SECOND);b.addMotigoma(fh, Const.FIRST);b.addMotigoma(ff, Const.FIRST);
             b.move_capture(so, [1,3])
             b.move_capture(fo, [3,2])
             b.move_capture(fm, [3,1])
@@ -49,12 +49,13 @@ describe '--- leave alone', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = second.think(b, first, 1, Const.MIN_VALUE)
-            expect(ret[0]).to.equal(null)
-            expect(ret[1]).to.equal(null)
-            expect(ret[2]).to.be.above(9999)
+            console.log("ret = #{JSON.stringify(ret)}")
+            expect(ret.lastkoma).to.equal(null)
+            expect(ret.lastposi).to.deep.equal([])
+            expect(ret.lastscore).to.be.above(9999)
     describe 'FIRST put checkmate if getting Ou', ->
         it 'expects Ka move [1,3] put checkmate', ->
-            b.add(fo);b.add(so);b.add(fm);b.add(sm);b.add(sh);b.add(sf);b.add(fh);b.add(ff);
+            b.addMotigoma(fo, Const.FIRST);b.addMotigoma(so, Const.SECOND);b.addMotigoma(fm, Const.FIRST);b.addMotigoma(sm, Const.SECOND);b.addMotigoma(sh, Const.SECOND);b.addMotigoma(sf, Const.SECOND);b.addMotigoma(fh, Const.FIRST);b.addMotigoma(ff, Const.FIRST);
             b.move_capture(so, [1,3])
             b.move_capture(fo, [3,2])
             b.move_capture(fm, [3,1])
@@ -67,9 +68,9 @@ describe '--- leave alone', ->
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
             ret = first.think(b, second, 0, Const.MAX_VALUE)
-            expect(ret[0].name).to.equal('Ka')
-            expect(ret[1]).to.deep.equal([1,3])
-            expect(ret[2]).to.be.above(9999)
+            expect(ret.lastkoma.name).to.equal('Ka')
+            expect(ret.lastposi).to.deep.equal([1,3])
+            expect(ret.lastscore).to.be.above(9999)
     afterEach ->
         console.log(ret)
         if ret[0]?

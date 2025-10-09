@@ -5,9 +5,9 @@ Board = require('./board')
 Player = require('./player')
 
 Array::unique = ->
-  output = {}
-  output[@[key]] = @[key] for key in [0...@length]
-  value for key, value of output
+    output = {}
+    output[@[key]] = @[key] for key in [0...@length]
+    value for key, value of output
 
 startTime = new Date().getTime()
 first = new Player(Const.FIRST, false)
@@ -27,13 +27,17 @@ _sortCoordinate = (a, b) ->
 # 局面を比較するためHashを生成
 make_hash = (board) ->
     rec = []
-    for koma in board.pieces
+    for koma in board.getPieces(Const.FIRST)
         buf = {}
         buf["kind"] = koma.name
         buf["turn"] = koma.turn
         buf["status"] = koma.status
-        buf["posi0"] = koma.posi[0]
-        buf["posi1"] = koma.posi[1]
+        rec.push(buf)
+    for koma in board.getPieces(Const.SECOND)
+        buf = {}
+        buf["kind"] = koma.name
+        buf["turn"] = koma.turn
+        buf["status"] = koma.status
         rec.push(buf)
     rec.sort _sortCoordinate
     return crypto.createHash('md5').update(JSON.stringify(rec)).digest("hex")
@@ -2970,106 +2974,89 @@ make_hash = (board) ->
 # b.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1,2]))
 
 # tumi test
-# b.pieces = []
-# b.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [1,1]))
-# b.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [3,3]))
-# b.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.OMOTE, [1,3]))
-# b.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.OMOTE, [2,3]))
-# b.pieces.push(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA))
-# b.pieces.push(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA))
+# b.setPiece(new Piece.Ou(Const.FIRST, Const.Status.OMOTE), 1, 1)
+# b.setPiece(new Piece.Ou(Const.SECOND, Const.Status.OMOTE), 3, 3)
+# b.setPiece(new Piece.Hi(Const.FIRST, Const.Status.OMOTE), 1, 3)
+# b.setPiece(new Piece.Hi(Const.SECOND, Const.Status.OMOTE), 2, 3)
+# b.addMotigoma(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA), Const.FIRST)
+# b.addMotigoma(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA), Const.SECOND)
 
 # 後手７手読み（５手詰め）
-b.pieces = []
-b.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3,3]))
-b.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1,1]))
-b.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA))
-b.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA))
-b.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2,2]))
-
+b.setPiece(new Piece.Ou(Const.FIRST, Const.Status.OMOTE), 3, 3)
+b.setPiece(new Piece.Ou(Const.SECOND, Const.Status.OMOTE), 1, 1)
+b.addMotigoma(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA), Const.FIRST)
+b.addMotigoma(new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA), Const.SECOND)
+b.setPiece(new Piece.Fu(Const.SECOND, Const.Status.OMOTE), 2, 2)
 
 b.display()
 first.depth = 7
 second.depth = 7
 ret = []
 loop
-    if first.human
-        human_move = false
-        until human_move
-            process.stdout.write("指し手（駒,筋,段,成／不成,）を入力後、Ctrl+D\n")
-            process.stdout.write("入力例(Gi,2,1,1,):")
-            input = require('fs').readFileSync('/dev/stdin', 'utf8')
-
-            koma = input.split(',')[0]
-            col = input.split(',')[1]
-            row = input.split(',')[2]
-            nari = input.split(',')[3]
-            ret = []
-            ret[0] = (v for v in b.pieces when v.name == koma && v.turn == first.turn)[0]
-            continue unless ret[0]
-            ret[1] = [parseInt(col, 10), parseInt(row, 10)]
-            ret[2] = 0
-            ret[3] = if parseInt(nari, 10) >= 1 then 1 else 0
-            # if b.check_move(ret[0], ret[1]) && (b.check_utifudume(ret[0], ret[1]) == false)
-            if b.check_move(ret[0], ret[1])
-                # console.log(ret)
-                # console.log("--- ---------------")
-                s_posi = b.move_capture(ret[0], ret[1])
-                ret[0].status = ret[3]
-                human_move = true
-                # md5hash = crypto.createHash('md5').update(JSON.stringify(b.pieces)).digest("hex")
-                md5hash = make_hash(b)
-    else
-        temp = []; ret = []
-        # 対人戦の場合は相手玉を取るまで指す
-        # unless ret[0]
-        for i in [1,2,4,first.depth].unique()
-            temp = []
-            if i > 9
-                temp = first.prepare(b, second, i, Const.MAX_VALUE)
-                # first.pre_ahead = 0; second.pre_ahead = 0
-                # temp = first.think(b, second, i, Const.MAX_VALUE)
-            else
-                first.pre_ahead = 0; second.pre_ahead = 0
-                temp = first.think(b, second, i, Const.MAX_VALUE)
-            # console.log("first: i = #{i}: temp = #{JSON.stringify(temp)}")
-            if temp[0]?
-                ret = [].concat(temp)
-                break if temp[0]? && (temp[2] >= Const.MAX_VALUE || temp[2] <= Const.MIN_VALUE)
-            else
-                break
-        if ret[0]
-            # # 一手詰み、三手詰みチェック
-            # tumi2 = []
-            # tumi2 = first.think(b, second, 2, Const.MAX_VALUE)
-            # console.log("tumi2")
-            # console.log(tumi2)
-            # tumi4 = []
-            # tumi4 = first.think(b, second, 4, Const.MAX_VALUE)
-            # console.log("tumi4")
-            # console.log(tumi4)
-            # 一手詰み、三手詰みがあれば差し替える
-            # if tumi2[0] && (tumi2[2] >= Const.MAX_VALUE || tumi2[2] <= Const.MIN_VALUE)
-            #     if b.check_move(tumi2[0], tumi2[1])
-            #         s_posi = b.move_capture(tumi2[0], tumi2[1])
-            #         tumi2[0].status = tumi2[3]
-            # else if tumi4[0] && (tumi4[2] >= Const.MAX_VALUE || tumi4[2] <= Const.MIN_VALUE)
-            #     if b.check_move(tumi4[0], tumi4[1])
-            #         s_posi = b.move_capture(tumi4[0], tumi4[1])
-            #         tumi4[0].status = tumi4[3]
-            # else
-            if b.check_move(ret[0], ret[1])
-                s_posi = b.move_capture(ret[0], ret[1])
-                ret[0].status = ret[3]
-            # md5hash = crypto.createHash('md5').update(JSON.stringify(b.pieces)).digest("hex")
-            md5hash = make_hash(b)
+    temp = null
+    ret = null
+    for i in [1,2,4,first.depth].unique()
+        if i > 9
+            temp = first.prepare(b, second, i, Const.MAX_VALUE)
+            # first.pre_ahead = 0; second.pre_ahead = 0
+            # temp = first.think(b, second, i, Const.MAX_VALUE)
         else
-            console.log("Second Win")
+            first.pre_ahead = 0; second.pre_ahead = 0
+            temp = first.think(b, second, i, Const.MAX_VALUE)
+        # console.log("first: i = #{i}: temp = #{JSON.stringify(temp)}")
+        # console.log("board = #{JSON.stringify(b)}")
+        if temp.lastkoma?
+            ret = temp
+            break if temp.lastkoma? && (temp.lastscore >= Const.MAX_VALUE || temp.lastscore <= Const.MIN_VALUE)
+        else
             break
+    # console.log("ret = #{JSON.stringify(ret)}")
+    if ret?
+        check = b.check_move(ret.lastkoma, ret.lastposi)
+        if check[0]
+            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false
+            snapshot = b.move_capture(ret.lastkoma, ret.lastposi, nari)
+        md5hash = make_hash(b.cloneBoard())
+    else
+        console.log("Second Win")
+        break
     counter += 1
-    state.push({"turn": ret[0].turn, "s_posi": s_posi, "move": [].concat(ret)})
-    # console.log("first hash = #{JSON.stringify(b.pieces)}")
-    # duplication.push(crypto.createHash('md5').update(JSON.stringify(b.pieces)).digest("hex"))
-    md5hash = make_hash(b)
+    state.push({"turn": ret.lastturn, "s_posi": snapshot.s_posi, "move": JSON.stringify(ret.lastposi)})
+    md5hash = make_hash(b.cloneBoard())
+    duplication.push(md5hash)
+    b.display()
+    sennitite = (v for v in duplication when v == md5hash)
+    if sennitite.length >= 4
+        console.log("--- 千日手 ---")
+        break
+    temp = null
+    ret = null
+    for i in [1,2,4,second.depth].unique()
+        if i > 9
+            temp = second.prepare(b, first, i, Const.MIN_VALUE)
+            # first.pre_ahead = 0; second.pre_ahead = 0
+            # temp = second.think(b, first, i, Const.MIN_VALUE)
+        else
+            first.pre_ahead = 0; second.pre_ahead = 0
+            temp = second.think(b, first, i, Const.MIN_VALUE)
+        # console.log("second: i = #{i}: temp = #{JSON.stringify(temp)}")
+        if temp.lastkoma?
+            ret = temp
+            break if temp.lastkoma? && (temp.lastscore >= Const.MAX_VALUE || temp.lastscore <= Const.MIN_VALUE)
+        else
+            break
+    if ret?
+        check = b.check_move(ret.lastkoma, ret.lastposi)
+        if check[0]
+            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false
+            snapshot = b.move_capture(ret.lastkoma, ret.lastposi, nari)
+        md5hash = make_hash(b.cloneBoard())
+    else
+        console.log("First Win")
+        break
+    counter += 1
+    state.push({"turn": ret.lastturn, "s_posi": snapshot.s_posi, "move": JSON.stringify(ret.lastposi)})
+    md5hash = make_hash(b.cloneBoard())
     duplication.push(md5hash)
     b.display()
     sennitite = (v for v in duplication when v == md5hash)
@@ -3077,97 +3064,10 @@ loop
         console.log("--- 千日手 ---")
         break
 
-    if second.human
-        human_move = false
-        until human_move
-            process.stdout.write("指し手（駒,筋,段,成／不成,）を入力後、Ctrl+D\n")
-            process.stdout.write("入力例(Gi,2,1,1,):")
-            input = require('fs').readFileSync('/dev/stdin', 'utf8')
-
-            koma = input.split(',')[0]
-            col = input.split(',')[1]
-            row = input.split(',')[2]
-            nari = input.split(',')[3]
-            ret = []
-            ret[0] = (v for v in b.pieces when v.name == koma && v.turn == second.turn)[0]
-            continue unless ret[0]
-            ret[1] = [parseInt(col, 10), parseInt(row, 10)]
-            ret[2] = 0
-            ret[3] = if parseInt(nari, 10) >= 1 then 1 else 0
-            # if b.check_move(ret[0], ret[1]) && b.check_utifudume(ret[0], ret[1]) == false
-            if b.check_move(ret[0], ret[1])
-                s_posi = b.move_capture(ret[0], ret[1])
-                ret[0].status = ret[3]
-                human_move = true
-                # md5hash = crypto.createHash('md5').update(JSON.stringify(b.pieces)).digest("hex")
-                md5hash = make_hash(b)
-    else
-        temp = []; ret = []
-        # 対人戦の場合は相手玉を取るまで指す
-        # unless ret[0]
-        for i in [1,2,4,second.depth].unique()
-            temp = []
-            if i > 9
-                temp = second.prepare(b, first, i, Const.MIN_VALUE)
-                # first.pre_ahead = 0; second.pre_ahead = 0
-                # temp = second.think(b, first, i, Const.MIN_VALUE)
-            else
-                first.pre_ahead = 0; second.pre_ahead = 0
-                temp = second.think(b, first, i, Const.MIN_VALUE)
-            # console.log("second: i = #{i}: temp = #{JSON.stringify(temp)}")
-            if temp[0]?
-                ret = [].concat(temp)
-                break if temp[0]? && (temp[2] >= Const.MAX_VALUE || temp[2] <= Const.MIN_VALUE)
-            else
-                break
-        if ret[0]
-            # # 一手詰み、三手詰みチェック
-            # tumi2 = []
-            # tumi2 = second.think(b, first, 2, Const.MIN_VALUE)
-            # console.log("tumi2")
-            # console.log(tumi2)
-            # tumi4 = []
-            # tumi4 = second.think(b, first, 4, Const.MIN_VALUE)
-            # console.log("tumi4")
-            # console.log(tumi4)
-            # 一手詰み、三手詰みがあれば差し替える
-            # if tumi2[0] && (tumi2[2] >= Const.MAX_VALUE || tumi2[2] <= Const.MIN_VALUE)
-            #     if b.check_move(tumi2[0], tumi2[1])
-            #         s_posi = b.move_capture(tumi2[0], tumi2[1])
-            #         tumi2[0].status = tumi2[3]
-            # else if tumi4[0] && (tumi4[2] >= Const.MAX_VALUE || tumi4[2] <= Const.MIN_VALUE)
-            #     if b.check_move(tumi4[0], tumi4[1])
-            #         s_posi = b.move_capture(tumi4[0], tumi4[1])
-            #         tumi4[0].status = tumi4[3]
-            # else
-            if b.check_move(ret[0], ret[1])
-                s_posi = b.move_capture(ret[0], ret[1])
-                ret[0].status = ret[3]
-            # md5hash = crypto.createHash('md5').update(JSON.stringify(b.pieces)).digest("hex")
-            md5hash = make_hash(b)
-        else
-            console.log("First Win")
-            break
-    counter += 1
-    state.push({"turn": ret[0].turn, "s_posi": s_posi, "move": [].concat(ret)})
-    # console.log("second hash = #{JSON.stringify(b.pieces)}")
-    # duplication.push(crypto.createHash('md5').update(JSON.stringify(b.pieces)).digest("hex"))
-    md5hash = make_hash(b)
-    duplication.push(md5hash)
-    b.display()
-    sennitite = (v for v in duplication when v == md5hash)
-    if sennitite.length >= 4
-        console.log("--- 千日手 ---")
-        break
-
-# for v in state
-#     console.log("turn = #{v.turn}")
-#     console.log("s_posi = #{v.s_posi}")
-#     console.log(v.move)
 console.log(counter)
 # console.log(JSON.stringify(b.pieces))
 # md5hash = crypto.createHash('md5').update(JSON.stringify(b.pieces)).digest("hex")
-md5hash = make_hash(b)
+#md5hash = make_hash(b.cloneBoard())
 # console.log(md5hash)
 # console.log(duplication)
 elapsed = new Date().getTime() - startTime

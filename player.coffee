@@ -59,7 +59,7 @@ class Player
                     for col in [1..board.cols]
                         # if Object.keys(priority).length != 0
                         #     continue unless (w for w in choice when koma.id == w.id)[0]?
-                        dest = board.getPiecePosition(row, col)
+                        dest = board.getPiece(row, col)
                         continue if dest?
                         if koma.name == 'Fu' && is_utifuOute.call @, board, koma, [row, col]
                             if board.check_utifudume(koma, [row, col])
@@ -106,7 +106,7 @@ class Player
                         buf[0] += v.xd; buf[1] += v.yd
                         # if Object.keys(priority).length != 0
                         #     continue unless (w for w in choice when koma.id == w.id)[0]?
-                        dest = board.getPiecePosition(buf[0], buf[1])
+                        dest = board.getPiece(buf[0], buf[1])
                         break if dest? && dest.turn == koma.turn
                         check = board.check_move(koma, buf)
                         if check[0]

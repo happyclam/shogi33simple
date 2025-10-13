@@ -87,7 +87,7 @@ X
 X
 Second Win
 8
-経過時間: 1689ミリ秒
+経過時間: 1338ミリ秒
 
 ```
 
@@ -99,7 +99,6 @@ $ mocha test/fu_tesuji.coffee -g "Fu Tesuji1"
 $ mocha test/kiki.coffee
 $ mocha test/movediff.coffee
 $ mocha test/playerTest.coffee
-$ mocha test/playerTest2.coffee
 $ mocha test/putCheckmate.coffee
 
 ```

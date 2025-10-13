@@ -53,6 +53,7 @@ class Player
         for koma in board.getPieces(@turn)
             # console.log("koma = #{JSON.stringify(koma)}")
             if koma.status == Const.Status.MOTIGOMA
+                continue if koma.name in kinds
                 kinds.push(koma.name)
                 for row in [1..board.rows]
                     for col in [1..board.cols]

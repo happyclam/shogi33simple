@@ -32,12 +32,16 @@ make_hash = (board) ->
         buf["kind"] = koma.name
         buf["turn"] = koma.turn
         buf["status"] = koma.status
+        buf["posi0"] = board.getPiecePosition(koma)[0]
+        buf["posi1"] = board.getPiecePosition(koma)[1]
         rec.push(buf)
     for koma in board.getPieces(Const.SECOND)
         buf = {}
         buf["kind"] = koma.name
         buf["turn"] = koma.turn
         buf["status"] = koma.status
+        buf["posi0"] = board.getPiecePosition(koma)[0]
+        buf["posi1"] = board.getPiecePosition(koma)[1]
         rec.push(buf)
     rec.sort _sortCoordinate
     return crypto.createHash('md5').update(JSON.stringify(rec)).digest("hex")

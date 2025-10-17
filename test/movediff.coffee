@@ -54,7 +54,7 @@ describe 'BestMove', ->
       board.move_capture(fOu, [2, 2])
       sOu = board.getPiece(1, 1)
       snapshot = board.move_capture(sOu, [2, 2])
-      # console.log("pieceIndex = #{JSON.stringify(board.pieceIndex)}")      
+      # console.log("pieceIndex = #{JSON.stringify(board.pieceIndex)}")
       # console.log("board = #{JSON.stringify(board)}")
       # console.log("snapshot = #{JSON.stringify(snapshot)}")
       board.revert_move(snapshot)

@@ -2968,14 +2968,16 @@ make_hash = (board) ->
 # b.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA))
 # b.pieces.push(new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA))
 
+# 長手数の攻防
 # KaFu ---
-# b.pieces = []
-# b.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3,3]))
-# b.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1,1]))
-# b.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [3,1]))
-# b.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [1,3]))
-# b.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3,2]))
-# b.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1,2]))
+# b.setPiece(new Piece.Ou(Const.FIRST, Const.Status.OMOTE), 3, 3)
+# b.setPiece(new Piece.Ou(Const.SECOND, Const.Status.OMOTE), 1, 1)
+# b.setPiece(new Piece.Ka(Const.FIRST, Const.Status.OMOTE), 3, 1)
+# b.setPiece(new Piece.Ka(Const.SECOND, Const.Status.OMOTE), 1, 3)
+# b.setPiece(new Piece.Fu(Const.FIRST, Const.Status.OMOTE), 3, 2)
+# b.setPiece(new Piece.Fu(Const.SECOND, Const.Status.OMOTE), 1, 2)
+# first.depth = 10
+# second.depth = 10
 
 # tumi test
 # b.setPiece(new Piece.Ou(Const.FIRST, Const.Status.OMOTE), 1, 1)
@@ -2984,6 +2986,8 @@ make_hash = (board) ->
 # b.setPiece(new Piece.Hi(Const.SECOND, Const.Status.OMOTE), 2, 3)
 # b.addMotigoma(new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA), Const.FIRST)
 # b.addMotigoma(new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA), Const.SECOND)
+# first.depth = 7
+# second.depth = 7
 
 # 後手７手読み（５手詰め）
 b.setPiece(new Piece.Ou(Const.FIRST, Const.Status.OMOTE), 3, 3)
@@ -2991,11 +2995,11 @@ b.setPiece(new Piece.Ou(Const.SECOND, Const.Status.OMOTE), 1, 1)
 b.addMotigoma(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA), Const.FIRST)
 b.addMotigoma(new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA), Const.SECOND)
 b.setPiece(new Piece.Fu(Const.SECOND, Const.Status.OMOTE), 2, 2)
-
-b.display()
 first.depth = 7
 second.depth = 7
-ret = []
+
+b.display()
+ret = null
 loop
     temp = null
     ret = null

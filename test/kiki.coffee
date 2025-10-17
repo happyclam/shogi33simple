@@ -9,7 +9,7 @@ Player = require('../player.coffee')
 describe '=== touch check', ->
     b = null
     first = null; second = null;
-    ret = []
+    ret = null
     before ->
         first = new Player(Const.FIRST, false)
         second = new Player(Const.SECOND, false)

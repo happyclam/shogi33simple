@@ -1,3 +1,6 @@
+Const = require('./const')
+Piece = require('./piece')
+
 class MoveDiff
     constructor: (@piece, @s_posi, @dest, @d_posi, @pieceStatus, @destTurn, @destStatus) ->
 

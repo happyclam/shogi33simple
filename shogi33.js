@@ -94,6 +94,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
@@ -112,44 +113,93 @@ function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? O
 var Board,
   Const,
   Piece,
+  Util,
   indexOf = [].indexOf;
 Const = __webpack_require__(/*! ./const */ "./const.coffee");
 Piece = __webpack_require__(/*! ./piece */ "./piece.coffee");
+Util = __webpack_require__(/*! ./util */ "./util.coffee");
+Array.prototype.unique = function () {
+  var i, key, output, ref, results, value;
+  output = {};
+  for (key = i = 0, ref = this.length; 0 <= ref ? i < ref : i > ref; key = 0 <= ref ? ++i : --i) {
+    output[this[key]] = this[key];
+  }
+  results = [];
+  for (key in output) {
+    value = output[key];
+    results.push(value);
+  }
+  return results;
+};
 Board = function () {
-  var check_kiki, check_nifu, check_potential;
+  var check_nifu, check_potential;
   var Board = /*#__PURE__*/function (_Array) {
     function Board() {
       var _this;
       var rows = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Const.ROWS;
       var cols = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Const.COLS;
       _classCallCheck(this, Board);
-      var j, r, ref;
+      var i, r, ref;
       _this = _callSuper(this, Board);
       _this.rows = rows;
       _this.cols = cols;
-      for (r = j = 0, ref = _this.rows; 0 <= ref ? j < ref : j > ref; r = 0 <= ref ? ++j : --j) {
+      for (r = i = 0, ref = _this.rows; 0 <= ref ? i < ref : i > ref; r = 0 <= ref ? ++i : --i) {
         _this[r] = new Array(_this.cols).fill(null);
       }
-      _this.pieces = [];
+      _this.motigoma = {};
+      _this.motigoma[Const.FIRST] = {};
+      _this.motigoma[Const.SECOND] = {};
       _this.pieceIndex = {};
       _this.kiki = {};
-      _this.board = _this;
       return _this;
     }
+
+    // @board = @
+
+    // clear: ->
+    //     for r in [0...@rows]
+    //         @[r] = new Array(@cols).fill(null)
     _inherits(Board, _Array);
     return _createClass(Board, [{
-      key: "clear",
-      value: function clear() {
-        var j, r, ref, results;
-        results = [];
-        for (r = j = 0, ref = this.rows; 0 <= ref ? j < ref : j > ref; r = 0 <= ref ? ++j : --j) {
-          results.push(this[r] = new Array(this.cols).fill(null));
+      key: "getPieces",
+      value: function getPieces(turn) {
+        var col, i, j, k, kind, len, p, piece, pieces, ps, ref, ref1, ref2, row;
+        pieces = [];
+        for (row = i = 0, ref = this.rows; 0 <= ref ? i < ref : i > ref; row = 0 <= ref ? ++i : --i) {
+          for (col = j = 0, ref1 = this.cols; 0 <= ref1 ? j < ref1 : j > ref1; col = 0 <= ref1 ? ++j : --j) {
+            piece = this[row][col];
+            if (piece != null && piece.turn === turn) {
+              pieces.push(piece);
+            }
+          }
         }
-        return results;
+        ref2 = this.motigoma[turn];
+        for (kind in ref2) {
+          ps = ref2[kind];
+          for (k = 0, len = ps.length; k < len; k++) {
+            p = ps[k];
+            pieces.push(p);
+          }
+        }
+        return pieces;
       }
     }, {
       key: "setPiece",
       value: function setPiece(piece, row, col) {
+        // テスト用コード
+        // if @[row - 1][col - 1]?
+        //     console.log("piece = #{JSON.stringify(piece)}")
+        //     console.log("pieceIndex = #{JSON.stringify(@pieceIndex)}")
+        //     console.log("row = #{row}, col = #{col}")
+        //     @display()
+        //     throw new Error("setPiece [#{row}, #{col}] is occupied")
+        // unique = (1 for k, v of @pieceIndex when v[0] == row && v[1] == col).length
+        // if unique > 1
+        //     console.log("piece = #{JSON.stringify(piece)}")
+        //     console.log("pieceIndex = #{JSON.stringify(@pieceIndex)}")
+        //     console.log("row = #{row}, col = #{col}")
+        //     @display()
+        //     throw new Error("setPiece piece [id:#{piece.id}, turn:#{piece.turn}, name:#{piece.name}] is already exist")
         this[row - 1][col - 1] = piece;
         this.pieceIndex[piece.id] = [row, col];
         return piece;
@@ -165,109 +215,162 @@ Board = function () {
         return this.pieceIndex[piece.id];
       }
     }, {
-      key: "cloneBoard",
-      value: function cloneBoard() {
-        var clone, j, len, ref, v;
-        // 盤面だけシャローコピー
-        clone = new Board(this.rows, this.cols);
-        ref = this.pieces;
-        for (j = 0, len = ref.length; j < len; j++) {
-          v = ref[j];
-          if (v.posi.length !== 0) {
-            clone[v.posi[0] - 1][v.posi[1] - 1] = v;
+      key: "addMotigoma",
+      value: function addMotigoma(piece, turn) {
+        var base, name1;
+        if ((base = this.motigoma[turn])[name1 = piece.name] == null) {
+          base[name1] = [];
+        }
+        this.motigoma[turn][piece.name].push(piece);
+        // 引数のturnとpiece.turnの矛盾が無いようpiece.turnを引数で上書き
+        piece.setTurn(turn);
+        piece.status = Const.Status.MOTIGOMA;
+        return this.pieceIndex[piece.id] = [];
+      }
+    }, {
+      key: "removeMotigoma",
+      value: function removeMotigoma(piece) {
+        var index;
+        if (!this.motigoma[piece.turn][piece.name]) {
+          throw new Error("removeMotigoma [id:".concat(piece.id, ", turn:").concat(piece.turn, ", name:").concat(piece.name, "] isn't exist"));
+        }
+        index = this.motigoma[piece.turn][piece.name].findIndex(function (p) {
+          return p.id === piece.id;
+        });
+        this.motigoma[piece.turn][piece.name].splice(index, 1);
+        if (this.motigoma[piece.turn][piece.name].length === 0) {
+          return delete this.motigoma[piece.turn][piece.name];
+        }
+      }
+
+      // delete @pieceIndex[piece.id]
+    }, {
+      key: "isMotigoma",
+      value: function isMotigoma(piece) {
+        return this.pieceIndex[piece.id].length === 0;
+      }
+    }, {
+      key: "getMotigoma",
+      value: function getMotigoma(turn, name) {
+        var piece, v;
+        piece = function () {
+          var i, len, ref, results;
+          ref = this.motigoma[turn][name];
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            v = ref[i];
+            if (v.name === name) {
+              results.push(v);
+            }
+          }
+          return results;
+        }.call(this)[0];
+        if (piece != null) {
+          return piece;
+        } else {
+          throw new Error("turn: ".concat(turn, ", name: ").concat(name, "] isn't exist"));
+        }
+      }
+    }, {
+      key: "countMotigoma",
+      value: function countMotigoma() {
+        var counts, i, kind, len, pieces, ref, ref1, turn;
+        counts = {};
+        counts[Const.FIRST] = {};
+        counts[Const.SECOND] = {};
+        ref = [Const.FIRST, Const.SECOND];
+        for (i = 0, len = ref.length; i < len; i++) {
+          turn = ref[i];
+          ref1 = this.motigoma[turn];
+          for (kind in ref1) {
+            pieces = ref1[kind];
+            counts[turn][kind] = pieces.length;
           }
         }
+        return counts;
+      }
+    }, {
+      key: "cloneBoard",
+      value: function cloneBoard() {
+        var c, clone, i, j, k, kind, len, pieces, r, ref, ref1, ref2, ref3, turn;
+        clone = new Board(this.rows, this.cols);
+        for (r = i = 0, ref = this.rows; 0 <= ref ? i < ref : i > ref; r = 0 <= ref ? ++i : --i) {
+          for (c = j = 0, ref1 = this.cols; 0 <= ref1 ? j < ref1 : j > ref1; c = 0 <= ref1 ? ++j : --j) {
+            clone[r][c] = this[r][c];
+          }
+        }
+        clone.motigoma = {};
+        ref2 = [Const.FIRST, Const.SECOND];
+        for (k = 0, len = ref2.length; k < len; k++) {
+          turn = ref2[k];
+          clone.motigoma[turn] = {};
+          ref3 = this.motigoma[turn];
+          for (kind in ref3) {
+            pieces = ref3[kind];
+            clone.motigoma[turn][kind] = pieces.slice();
+          }
+        }
+        clone.pieceIndex = Object.assign({}, this.pieceIndex);
         return clone;
       }
     }, {
       key: "set_standard",
       value: function set_standard() {
-        this.clear();
+        // @clear()
+        this.motigoma = _defineProperty(_defineProperty({}, Const.FIRST, {}), Const.SECOND, {});
         this.pieceIndex = {};
-        this.pieces = [];
-        this.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3, 3]));
-        this.pieces.push(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA));
-        this.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA));
-        this.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1, 1]));
-        this.pieces.push(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA));
-        this.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA));
-      }
-    }, {
-      key: "add",
-      value: function add(piece) {
-        // if piece.status != Const.Status.MOTIGOMA
-        //     @setPiece(piece, piece.posi[0], piece.posi[1])
-        this.pieces.push(piece);
+        this.setPiece(new Piece.Ou(Const.FIRST, Const.Status.OMOTE), 3, 3);
+        this.addMotigoma(new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA), Const.FIRST);
+        this.addMotigoma(new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA), Const.FIRST);
+        this.setPiece(new Piece.Ou(Const.SECOND, Const.Status.OMOTE), 1, 1);
+        this.addMotigoma(new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA), Const.SECOND);
+        this.addMotigoma(new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA), Const.SECOND);
       }
     }, {
       key: "gameover",
       value: function gameover() {
-        var kings, v;
-        kings = function () {
-          var j, len, ref, results;
-          ref = this.pieces;
-          results = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            v = ref[j];
-            if (v.name === 'Ou' && v.turn === Const.FIRST) {
-              results.push(v);
-            }
-          }
-          return results;
-        }.call(this);
-        switch (kings.length) {
-          case 2:
-            return Const.FIRST;
-          case 0:
-            return Const.SECOND;
-          default:
-            return false;
+        var ref, ref1;
+        if (((ref = this.motigoma[Const.FIRST].Ou) != null ? ref.length : void 0) > 0) {
+          return Const.FIRST;
+        } else if (((ref1 = this.motigoma[Const.SECOND].Ou) != null ? ref1.length : void 0) > 0) {
+          return Const.SECOND;
+        } else {
+          return false;
         }
       }
     }, {
       key: "display",
       value: function display() {
-        var col, i, j, k, koma, l, len, len1, m, n, ref, ref1, ref2, ref3, ref4, row, v;
-        ref = this.pieces;
-        // console.log(@pieces)
-        // console.log(@motigoma)
-        for (i = j = 0, len = ref.length; j < len; i = ++j) {
-          v = ref[i];
-          if (v.turn === Const.SECOND && v.status === Const.Status.MOTIGOMA) {
-            if (v != null) {
-              process.stdout.write(v.caption());
+        var col, i, j, k, kind, koma, l, len, len1, m, piece, pieces, ref, ref1, ref2, ref3, ref4, row;
+        ref = this.motigoma[Const.SECOND];
+        for (kind in ref) {
+          pieces = ref[kind];
+          for (i = 0, len = pieces.length; i < len; i++) {
+            piece = pieces[i];
+            if (piece != null) {
+              process.stdout.write(piece.caption());
             }
           }
         }
         process.stdout.write("\n");
-        for (col = k = ref1 = this.cols; ref1 <= 1 ? k <= 1 : k >= 1; col = ref1 <= 1 ? ++k : --k) {
+        for (col = j = ref1 = this.cols; ref1 <= 1 ? j <= 1 : j >= 1; col = ref1 <= 1 ? ++j : --j) {
           process.stdout.write(" " + col.toString());
         }
         process.stdout.write("\n");
-        for (row = l = 1, ref2 = this.rows; 1 <= ref2 ? l <= ref2 : l >= ref2; row = 1 <= ref2 ? ++l : --l) {
-          for (col = m = ref3 = this.cols; m >= 1; col = m += -1) {
-            koma = function () {
-              var len1, n, ref4, results;
-              ref4 = this.pieces;
-              results = [];
-              for (n = 0, len1 = ref4.length; n < len1; n++) {
-                v = ref4[n];
-                if (v.posi != null && v.posi[0] === col && v.posi[1] === row) {
-                  results.push(v);
-                }
-              }
-              return results;
-            }.call(this);
-            process.stdout.write("|" + (koma.length !== 0 ? koma[0].caption() : " "));
+        for (row = k = 1, ref2 = this.rows; 1 <= ref2 ? k <= ref2 : k >= ref2; row = 1 <= ref2 ? ++k : --k) {
+          for (col = l = ref3 = this.cols; l >= 1; col = l += -1) {
+            koma = this[col - 1][row - 1];
+            process.stdout.write("|" + (koma != null ? koma.caption() : " "));
           }
           process.stdout.write("|" + row.toString() + "\n");
         }
-        ref4 = this.pieces;
-        for (i = n = 0, len1 = ref4.length; n < len1; i = ++n) {
-          v = ref4[i];
-          if (v.turn === Const.FIRST && v.status === Const.Status.MOTIGOMA) {
-            if (v != null) {
-              process.stdout.write(v.caption());
+        ref4 = this.motigoma[Const.FIRST];
+        for (kind in ref4) {
+          pieces = ref4[kind];
+          for (m = 0, len1 = pieces.length; m < len1; m++) {
+            piece = pieces[m];
+            if (piece != null) {
+              process.stdout.write(piece.caption());
             }
           }
         }
@@ -277,171 +380,156 @@ Board = function () {
       key: "make_kiki",
       value: function make_kiki(turn) {
         var exclude = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-        var c, col, j, k, l, len, len1, m, r, ref, ref1, ref2, row, selected, src, v;
+        var buf, c, i, j, k, len, piece, r, ref, ref1, ref2, ref3, ref4, ref5, ref6, v;
+        // @kiki[turn] = ((0 for c in [0...@cols]) for r in [0...@rows])
         this.kiki[turn] = [];
-        src = [];
-        src = function () {
-          var j, ref, results;
-          results = [];
-          for (r = j = 1, ref = this.rows; 1 <= ref ? j <= ref : j >= ref; r = 1 <= ref ? ++j : --j) {
-            results.push(function () {
-              var k, ref1, results1;
-              results1 = [];
-              for (c = k = 1, ref1 = this.cols; 1 <= ref1 ? k <= ref1 : k >= ref1; c = 1 <= ref1 ? ++k : --k) {
-                results1.push(null);
-              }
-              return results1;
-            }.call(this));
-          }
-          return results;
-        }.call(this);
-        ref = this.pieces;
-        for (j = 0, len = ref.length; j < len; j++) {
-          v = ref[j];
-          if (v.posi.length !== 0) {
-            src[v.posi[0] - 1][v.posi[1] - 1] = v;
-          }
-        }
-        selected = function () {
-          var k, len1, ref1, results;
-          ref1 = this.pieces;
-          results = [];
-          for (k = 0, len1 = ref1.length; k < len1; k++) {
-            v = ref1[k];
-            if (v.turn === turn && v.status !== Const.Status.MOTIGOMA && v.name !== exclude) {
-              results.push(v);
+        for (r = i = 0, ref = this.rows; 0 <= ref ? i < ref : i > ref; r = 0 <= ref ? ++i : --i) {
+          for (c = j = 0, ref1 = this.cols; 0 <= ref1 ? j < ref1 : j > ref1; c = 0 <= ref1 ? ++j : --j) {
+            piece = this[r][c];
+            if (!(piece != null && piece.turn === turn && piece.name !== exclude)) {
+              continue;
             }
-          }
-          return results;
-        }.call(this);
-        for (col = k = 1, ref1 = this.cols; 1 <= ref1 ? k <= ref1 : k >= ref1; col = 1 <= ref1 ? ++k : --k) {
-          for (row = l = 1, ref2 = this.rows; 1 <= ref2 ? l <= ref2 : l >= ref2; row = 1 <= ref2 ? ++l : --l) {
-            for (m = 0, len1 = selected.length; m < len1; m++) {
-              v = selected[m];
-              if (check_kiki.call(this, v, [row, col], src)) {
-                this.kiki[turn].push([row, col]);
-                break;
+            ref2 = getClass(piece.name).getD(piece.turn, piece.status);
+            for (k = 0, len = ref2.length; k < len; k++) {
+              v = ref2[k];
+              buf = [r + 1, c + 1];
+              while (true) {
+                buf[0] += v.xd;
+                buf[1] += v.yd;
+                if (!((ref3 = buf[0], indexOf.call(function () {
+                  var results = [];
+                  for (var l = 1, ref4 = this.cols; 1 <= ref4 ? l <= ref4 : l >= ref4; 1 <= ref4 ? l++ : l--) {
+                    results.push(l);
+                  }
+                  return results;
+                }.apply(this), ref3) >= 0) && (ref5 = buf[1], indexOf.call(function () {
+                  var results = [];
+                  for (var l = 1, ref6 = this.rows; 1 <= ref6 ? l <= ref6 : l >= ref6; 1 <= ref6 ? l++ : l--) {
+                    results.push(l);
+                  }
+                  return results;
+                }.apply(this), ref5) >= 0))) {
+                  break;
+                }
+                // @kiki[turn][buf[0] - 1][buf[1] - 1] = 1
+                this.kiki[turn].push([buf[0], buf[1]]);
+                if (this[buf[0] - 1][buf[1] - 1] != null || !v.series) {
+                  break;
+                }
               }
             }
           }
         }
+        return this.kiki[turn] = this.kiki[turn].unique();
       }
+
+      // 戻り値; [着手可能(true/false), 強制成(true/false)]
+      // 強制成は、着手可能がfalseのときは意味を持たない
+      // 強制成は成れるかどうかではなく成らなければならない時だけtrueを返す
     }, {
       key: "check_move",
       value: function check_move(piece, d_posi) {
-        var d_piece = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-        var buf, dest, force_promo, j, len, o, ref, ref1, ref2, ref3, ref4, v;
+        var buf, dest, force_promo, i, len, ref, ref1, ref2, ref3, ref4, s_posi, v;
         // console.log("check_move")
+        // console.log("piece = #{JSON.stringify(piece)}")
         force_promo = false;
-        if (d_piece != null) {
-          dest = d_piece;
-        } else {
-          dest = function () {
-            var j, len, ref, results;
-            ref = this.pieces;
-            results = [];
-            for (j = 0, len = ref.length; j < len; j++) {
-              v = ref[j];
-              if (v.posi != null && v.posi[0] === d_posi[0] && v.posi[1] === d_posi[1]) {
-                results.push(v);
-              }
-            }
-            return results;
-          }.call(this)[0];
-        }
+        dest = this.getPiece(d_posi[0], d_posi[1]);
+        s_posi = this.getPiecePosition(piece);
+        // console.log("s_posi = #{s_posi}")
+        // console.log("dest = #{dest}")
+        // console.log("piece.id = #{piece.id}")
+        // console.log("piece = #{JSON.stringify(piece)}")
+        // console.log("motigoma[FIRST]= #{JSON.stringify(@motigoma[piece.turn])}")
+        // console.log("pieceIndex= #{JSON.stringify(@pieceIndex)}")
         if (piece.status === Const.Status.MOTIGOMA) {
           if (dest == null && check_potential.call(this, piece, d_posi)) {
             // 二歩チェック
             if (piece.name === 'Fu' && check_nifu.call(this, piece, d_posi)) {
               // console.log("check0")
-              return false;
+              return [false, false];
             } else {
               // console.log("check-1")
-              return true;
+              return [true, false];
             }
           } else {
             // console.log("check00")
-            return false;
+            return [false, false];
           }
         } else {
           if (!check_potential.call(this, piece, d_posi)) {
             if (this.check_promotion(piece, d_posi)) {
               force_promo = true;
             } else {
-              // console.log("check00-1")
-              return false;
+              return [false, false];
             }
           }
         }
         ref = getClass(piece.name).getD(piece.turn, piece.status);
-        // console.log("--- Error in Board.check_move ---")
-        for (j = 0, len = ref.length; j < len; j++) {
-          v = ref[j];
-          buf = [].concat(piece.posi);
+        for (i = 0, len = ref.length; i < len; i++) {
+          v = ref[i];
+          buf = [].concat(s_posi);
           buf[0] += v.xd;
           buf[1] += v.yd;
           if (buf[0] === d_posi[0] && buf[1] === d_posi[1]) {
             if (dest != null) {
               if (piece.turn !== dest.turn) {
-                if (force_promo) {
-                  piece.status = Const.Status.URA;
-                }
+                // piece.status = Const.Status.URA if force_promo
                 // console.log("check1")
-                return true;
+                if (force_promo) {
+                  return [true, true];
+                } else {
+                  return [true, false];
+                }
               }
             } else {
-              if (force_promo) {
-                piece.status = Const.Status.URA;
-              }
+              // piece.status = Const.Status.URA if force_promo
               // console.log("check2")
-              return true;
+              if (force_promo) {
+                return [true, true];
+              } else {
+                return [true, false];
+              }
             }
           }
           if (v.series) {
             while ((ref1 = buf[0], indexOf.call(function () {
               var results = [];
-              for (var k = 1, ref2 = this.cols; 1 <= ref2 ? k <= ref2 : k >= ref2; 1 <= ref2 ? k++ : k--) {
-                results.push(k);
+              for (var j = 1, ref2 = this.cols; 1 <= ref2 ? j <= ref2 : j >= ref2; 1 <= ref2 ? j++ : j--) {
+                results.push(j);
               }
               return results;
             }.apply(this), ref1) >= 0) && (ref3 = buf[1], indexOf.call(function () {
               var results = [];
-              for (var k = 1, ref4 = this.rows; 1 <= ref4 ? k <= ref4 : k >= ref4; 1 <= ref4 ? k++ : k--) {
-                results.push(k);
+              for (var j = 1, ref4 = this.rows; 1 <= ref4 ? j <= ref4 : j >= ref4; 1 <= ref4 ? j++ : j--) {
+                results.push(j);
               }
               return results;
             }.apply(this), ref3) >= 0)) {
               if (buf[0] === d_posi[0] && buf[1] === d_posi[1]) {
                 if (dest == null) {
-                  if (force_promo) {
-                    piece.status = Const.Status.URA;
-                  }
+                  // piece.status = Const.Status.URA if force_promo
                   // console.log("check3")
-                  return true;
+                  if (force_promo) {
+                    return [true, true];
+                  } else {
+                    return [true, false];
+                  }
                 } else {
                   if (piece.turn !== dest.turn) {
-                    if (force_promo) {
-                      piece.status = Const.Status.URA;
-                    }
+                    // piece.status = Const.Status.URA if force_promo
                     // console.log("check4")
-                    return true;
+                    if (force_promo) {
+                      return [true, true];
+                    } else {
+                      return [true, false];
+                    }
                   } else {
+                    // console.log("check5")
                     break;
                   }
                 }
               } else {
-                if (function () {
-                  var k, len1, ref1, results;
-                  ref1 = this.pieces;
-                  results = [];
-                  for (k = 0, len1 = ref1.length; k < len1; k++) {
-                    o = ref1[k];
-                    if (o.posi != null && o.posi[0] === buf[0] && o.posi[1] === buf[1]) {
-                      results.push(o);
-                    }
-                  }
-                  return results;
-                }.call(this)[0] != null) {
+                if (this[buf[0] - 1][buf[1] - 1] != null) {
                   break;
                 }
               }
@@ -450,30 +538,30 @@ Board = function () {
             }
           }
         }
-        // console.log("check5")
-        return false;
+        // console.log("check6")
+        return [false, false];
       }
 
-      // 成れるかどうか判定
+      // # 成れるかどうか判定
     }, {
       key: "check_promotion",
       value: function check_promotion(piece, d_posi) {
-        var ref;
+        var posi, ref;
         if (piece.status !== Const.Status.OMOTE) {
-          // posi = v for v in @pieces when (k ==
           return false;
         }
         if ((ref = piece.name) === 'Ou' || ref === 'Ki') {
           return false;
         }
+        posi = this.getPiecePosition(piece);
         switch (piece.turn) {
           case Const.FIRST:
-            if (piece.posi[1] <= Board.promotion_line[0] || d_posi[1] <= Board.promotion_line[0]) {
+            if (posi[1] <= Board.promotion_line[0] || d_posi[1] <= Board.promotion_line[0]) {
               return true;
             }
             break;
           case Const.SECOND:
-            if (piece.posi[1] >= Board.promotion_line[1] || d_posi[1] >= Board.promotion_line[1]) {
+            if (posi[1] >= Board.promotion_line[1] || d_posi[1] >= Board.promotion_line[1]) {
               return true;
             }
         }
@@ -482,73 +570,108 @@ Board = function () {
     }, {
       key: "move_capture",
       value: function move_capture(piece, d_posi) {
-        var d_piece = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-        var dest, s_posi, v;
-        if (d_piece != null) {
-          dest = d_piece;
+        var promote = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+        var dest, destStatus, destTurn, pieceStatus, s_posi;
+        pieceStatus = piece.status;
+        if (this.isMotigoma(piece)) {
+          s_posi = [];
+          this.removeMotigoma(piece);
+          piece.status = Const.Status.OMOTE;
+          if (this[d_posi[0] - 1][d_posi[1] - 1] != null) {
+            throw new Error("move_capture [".concat(d_posi, "] is occupied"));
+          }
         } else {
-          dest = function () {
-            var j, len, ref, results;
-            ref = this.pieces;
-            results = [];
-            for (j = 0, len = ref.length; j < len; j++) {
-              v = ref[j];
-              if (v.posi != null && v.posi[0] === d_posi[0] && v.posi[1] === d_posi[1]) {
-                results.push(v);
-              }
-            }
-            return results;
-          }.call(this)[0];
+          s_posi = this.getPiecePosition(piece);
+          if (s_posi == null) {
+            throw new Error("move_capture piece [id:".concat(piece.id, ", turn:").concat(piece.turn, ", name:").concat(piece.name, "] isn't exist"));
+          }
+          this[s_posi[0] - 1][s_posi[1] - 1] = null;
         }
+        dest = this[d_posi[0] - 1][d_posi[1] - 1];
+        destTurn = dest != null ? dest.turn : void 0;
+        destStatus = dest != null ? dest.status : void 0;
         if (dest != null) {
           dest.status = Const.Status.MOTIGOMA;
           dest.setTurn(piece.turn);
-          // @board[dest.posi[0] - 1][dest.posi[1] - 1] = null
-          dest.posi = [];
-        } else {
-          if (piece.status === Const.Status.MOTIGOMA) {
-            piece.status = Const.Status.OMOTE;
-          }
+          this.addMotigoma(dest, piece.turn);
+          this[d_posi[0] - 1][d_posi[1] - 1] = null;
         }
-        s_posi = [].concat(piece.posi);
-        piece.posi = [].concat(d_posi);
-        // @setPiece(piece, d_posi[0], d_posi[1])
-        return s_posi;
+        this.setPiece(piece, d_posi[0], d_posi[1]);
+        if (promote) {
+          piece.status = Const.Status.URA;
+        }
+        return new Util.MoveDiff(piece, s_posi, dest, d_posi, pieceStatus, destTurn, destStatus);
+      }
+
+      // console.log("xxx move_capture")
+      // result = new Util.MoveDiff(piece, s_posi, dest, d_posi, pieceStatus, destTurn, destStatus)
+      // console.log("xxx move_capture = #{JSON.stringify(result)}")
+      // console.log("xxx motigoma[FIRST] = #{JSON.stringify(@motigoma[Const.FIRST])}")
+      // console.log("xxx motigoma[SECOND] = #{JSON.stringify(@motigoma[Const.SECOND])}")
+      // return result
+    }, {
+      key: "revert_move",
+      value: function revert_move(diff) {
+        var d_posi, dest, destStatus, destTurn, piece, pieceStatus, s_posi;
+        // console.log("xxx revert_diff = #{JSON.stringify(diff)}")
+        // console.log("xxx motigoma[FIRST] = #{JSON.stringify(@motigoma[Const.FIRST])}")
+        // console.log("xxx motigoma[SECOND] = #{JSON.stringify(@motigoma[Const.SECOND])}")
+        piece = diff.piece;
+        s_posi = diff.s_posi;
+        dest = diff.dest;
+        d_posi = diff.d_posi;
+        pieceStatus = diff.pieceStatus;
+        destTurn = diff.destTurn;
+        destStatus = diff.destStatus;
+        this[d_posi[0] - 1][d_posi[1] - 1] = null;
+        if (s_posi.length === 0) {
+          this.addMotigoma(piece, piece.turn);
+          piece.status = Const.Status.MOTIGOMA;
+          this[d_posi[0] - 1][d_posi[1] - 1] = null;
+          this.pieceIndex[piece.id] = [];
+        } else {
+          piece.status = pieceStatus;
+          // @[s_posi[0] - 1][s_posi[1] - 1] = piece
+          // @pieceIndex[piece.id] = s_posi
+          this.setPiece(piece, s_posi[0], s_posi[1]);
+        }
+        if (dest != null) {
+          this.removeMotigoma(dest);
+          // @[d_posi[0] - 1][d_posi[1] - 1] = dest
+          // @pieceIndex[dest.id] = d_posi
+          dest.turn = destTurn;
+          dest.status = destStatus;
+          return this.setPiece(dest, d_posi[0], d_posi[1]);
+        }
       }
     }, {
       key: "check_utifudume",
       value: function check_utifudume(piece, d_posi) {
-        var dest, j, len, o, oppo, oppo_king, org, ref, ref1, ref2, ref3, ref4, v, w;
-        // console.log("check_utifudume")
+        var c, check, dest, i, j, k, len, o, oppo, oppo_king, org, p, r, ref, ref1, ref2, ref3, ref4, ref5, ref6, v;
         oppo = piece.turn === Const.FIRST ? Const.SECOND : Const.FIRST;
         oppo_king = function () {
-          var j, len, ref, results;
-          ref = this.pieces;
+          var i, len, ref, results;
+          ref = this.getPieces(oppo);
           results = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            v = ref[j];
-            if (v.turn === oppo && v.name === 'Ou') {
+          for (i = 0, len = ref.length; i < len; i++) {
+            v = ref[i];
+            if (v.name === 'Ou') {
               results.push(v);
             }
           }
           return results;
         }.call(this)[0];
-        // buf = [].concat(d_posi)
-        // buf[0] += getClass(piece.kind()).getD(piece.turn, piece.status)[0].xd
-        // buf[1] += getClass(piece.kind()).getD(piece.turn, piece.status)[0].yd
-        //1,打ち歩による王手
-        // check = piece.status == Const.Status.MOTIGOMA && piece.kind() == 'Fu' && oppo_king.posi[0] == buf[0] && oppo_king.posi[1] == buf[1]
-        // console.log("check1")
-        // return false unless check
-
+        if (!oppo_king) {
+          throw new Error("check_utifudume: piece = ".concat(JSON.stringify(piece), ", d_posi = ").concat(d_posi, " isn't exist"));
+        }
         //2,打ち歩を玉以外の味方の駒で取ることが出来ない
         this.make_kiki(oppo, 'Ou');
         if (function () {
-          var j, len, ref, results;
+          var i, len, ref, results;
           ref = this.kiki[oppo];
           results = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            o = ref[j];
+          for (i = 0, len = ref.length; i < len; i++) {
+            o = ref[i];
             if (o[0] === d_posi[0] && o[1] === d_posi[1]) {
               results.push(o);
             }
@@ -560,32 +683,33 @@ Board = function () {
         }
         //3,玉が逃げることも出来ないし、打たれた歩に相手の駒の利きがある（玉で取ることも出来ない）
         this.make_kiki(piece.turn);
-        org = [].concat(oppo_king.posi);
+        // console.log("kiki = #{JSON.stringify(@kiki)}")
+        org = [].concat(this.getPiecePosition(oppo_king));
         ref = Piece.Ou.getD(oppo_king.turn, oppo_king.status);
-        for (j = 0, len = ref.length; j < len; j++) {
-          v = ref[j];
+        for (i = 0, len = ref.length; i < len; i++) {
+          v = ref[i];
           dest = [org[0] + v.xd, org[1] + v.yd];
           if (!((ref1 = dest[0], indexOf.call(function () {
             var results = [];
-            for (var k = 1, ref2 = this.cols; 1 <= ref2 ? k <= ref2 : k >= ref2; 1 <= ref2 ? k++ : k--) {
-              results.push(k);
+            for (var j = 1, ref2 = this.cols; 1 <= ref2 ? j <= ref2 : j >= ref2; 1 <= ref2 ? j++ : j--) {
+              results.push(j);
             }
             return results;
           }.apply(this), ref1) >= 0) && (ref3 = dest[1], indexOf.call(function () {
             var results = [];
-            for (var k = 1, ref4 = this.rows; 1 <= ref4 ? k <= ref4 : k >= ref4; 1 <= ref4 ? k++ : k--) {
-              results.push(k);
+            for (var j = 1, ref4 = this.rows; 1 <= ref4 ? j <= ref4 : j >= ref4; 1 <= ref4 ? j++ : j--) {
+              results.push(j);
             }
             return results;
           }.apply(this), ref3) >= 0))) {
             continue;
           }
           if (function () {
-            var k, len1, ref5, results;
+            var j, len1, ref5, results;
             ref5 = this.kiki[piece.turn];
             results = [];
-            for (k = 0, len1 = ref5.length; k < len1; k++) {
-              o = ref5[k];
+            for (j = 0, len1 = ref5.length; j < len1; j++) {
+              o = ref5[j];
               if (o[0] === dest[0] && o[1] === dest[1]) {
                 results.push(o);
               }
@@ -594,23 +718,24 @@ Board = function () {
           }.call(this)[0] != null) {
             continue;
           } else {
-            if (function () {
-              var k, len1, ref5, results;
-              ref5 = this.pieces;
-              results = [];
-              for (k = 0, len1 = ref5.length; k < len1; k++) {
-                w = ref5[k];
-                if (w.posi != null && w.posi[0] === dest[0] && w.posi[1] === dest[1]) {
-                  results.push(w);
+            // unless (w for w in @pieces when w.posi? && w.posi[0] == dest[0] && w.posi[1] == dest[1])[0]?
+            //     return false
+            check = false;
+            for (r = j = 0, ref5 = this.rows; 0 <= ref5 ? j < ref5 : j > ref5; r = 0 <= ref5 ? ++j : --j) {
+              for (c = k = 0, ref6 = this.cols; 0 <= ref6 ? k < ref6 : k > ref6; c = 0 <= ref6 ? ++k : --k) {
+                p = this[r][c];
+                if (p != null && r + 1 === dest[0] && c + 1 === dest[1]) {
+                  check = true;
+                  break;
                 }
               }
-              return results;
-            }.call(this)[0] == null) {
-              return false;
+              if (check) {
+                break;
+              }
             }
+            return check;
           }
         }
-        // console.log("check4")
         return true;
       }
     }]);
@@ -618,73 +743,49 @@ Board = function () {
   ;
   Board.promotion_line = [1, 3];
   check_nifu = function check_nifu(piece, d_posi) {
-    var v;
-    return function () {
-      var j, len, ref, results;
-      ref = this.pieces;
-      results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        v = ref[j];
-        if (v.posi != null && v.posi[0] === d_posi[0] && v.name === 'Fu' && v.status === Const.Status.OMOTE && v.turn === piece.turn) {
-          results.push(v);
-        }
+    var c, i, p, ref;
+    for (c = i = 0, ref = this.cols; 0 <= ref ? i < ref : i > ref; c = 0 <= ref ? ++i : --i) {
+      p = this[d_posi[0] - 1][c - 1];
+      if (p != null && p.name === 'Fu' && p.status === Const.Status.OMOTE && p.turn === piece.turn) {
+        // console.log("p = #{JSON.stringify(p)}")
+        return true;
       }
-      return results;
-    }.call(this)[0] != null;
+    }
+    return false;
   };
-
-  // 打った後、指した後に移動可能な場所が無い場合falseを返す
   check_potential = function check_potential(piece, d_posi) {
-    var j, len, ref, v;
+    var i, len, ref, v;
     ref = getClass(piece.name).getD(piece.turn, piece.status);
-    for (j = 0, len = ref.length; j < len; j++) {
-      v = ref[j];
+    // console.log("piece = #{JSON.stringify(piece)}")
+    // console.log("d_posi = #{d_posi}")
+    for (i = 0, len = ref.length; i < len; i++) {
+      v = ref[i];
       if (d_posi[0] + v.xd > 0 && d_posi[1] + v.yd > 0 && d_posi[0] + v.xd <= this.cols && d_posi[1] + v.yd <= this.rows) {
         return true;
       }
     }
     return false;
   };
-  check_kiki = function check_kiki(piece, d_posi, src) {
-    var buf, j, len, ref, ref1, ref2, ref3, ref4, v;
-    ref = getClass(piece.name).getD(piece.turn, piece.status);
-    for (j = 0, len = ref.length; j < len; j++) {
-      v = ref[j];
-      buf = [].concat(piece.posi);
-      while (true) {
-        buf[0] += v.xd;
-        buf[1] += v.yd;
-        if (!((ref1 = buf[0], indexOf.call(function () {
-          var results = [];
-          for (var k = 1, ref2 = this.cols; 1 <= ref2 ? k <= ref2 : k >= ref2; 1 <= ref2 ? k++ : k--) {
-            results.push(k);
-          }
-          return results;
-        }.apply(this), ref1) >= 0) && (ref3 = buf[1], indexOf.call(function () {
-          var results = [];
-          for (var k = 1, ref4 = this.rows; 1 <= ref4 ? k <= ref4 : k >= ref4; 1 <= ref4 ? k++ : k--) {
-            results.push(k);
-          }
-          return results;
-        }.apply(this), ref3) >= 0))) {
-          break;
-        }
-        if (buf[0] === d_posi[0] && buf[1] === d_posi[1]) {
-          return true;
-        }
-        if (src[buf[0] - 1][buf[1] - 1] != null) {
-          // break if (o for o in @pieces when o.posi? && o.posi[0] == buf[0] && o.posi[1] == buf[1])[0]?
-          break;
-        }
-        if (!v.series) {
-          break;
-        }
-      }
-    }
-    return false;
-  };
   return Board;
 }.call(this);
+
+// # 打った後、指した後に移動可能な場所が無い場合falseを返す
+// check_potential = (piece, d_posi) ->
+//     for v in getClass(piece.name).getD(piece.turn, piece.status)
+//         if ((d_posi[0] + v.xd) > 0) && ((d_posi[1] + v.yd) > 0) && ((d_posi[0] + v.xd) <= @cols) && ((d_posi[1] + v.yd) <= @rows)
+//             return true
+//     return false
+
+// check_kiki = (piece, d_posi, src) ->
+//     for v in getClass(piece.name).getD(piece.turn, piece.status)
+//         buf = [].concat(piece.posi)
+//         loop
+//             buf[0] += v.xd; buf[1] += v.yd
+//             break unless buf[0] in [1..@cols] && buf[1] in [1..@rows]
+//             return true if buf[0] == d_posi[0] && buf[1] == d_posi[1]
+//             break if src[buf[0] - 1][buf[1] - 1]?
+//             break unless v.series
+//     return false
 module.exports = Board;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
@@ -56793,12 +56894,9 @@ Piece = function () {
   var uniqueId;
   var Piece = /*#__PURE__*/function () {
     function Piece(turn1, status1) {
-      var posi1 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
       _classCallCheck(this, Piece);
       this.turn = turn1;
       this.status = status1;
-      this.posi = posi1;
-      this.posi = this.posi != null ? this.posi.concat() : [];
       this.id = uniqueId.call(this);
       this.coefficient = 0.0;
     }
@@ -56812,6 +56910,12 @@ Piece = function () {
     }]);
   }();
   ;
+
+  // clone: ->
+  //     cloned = new @constructor(@turn, @status)
+  //     cloned.id = @id
+  //     cloned.coefficient = @coefficient
+  //     return cloned
   uniqueId = function uniqueId() {
     var length = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8;
     var id;
@@ -56826,16 +56930,13 @@ Piece = function () {
 Ou = function () {
   var _direction;
   var Ou = /*#__PURE__*/function (_Piece) {
-    function Ou(turn, status, posi) {
+    function Ou(turn, status) {
       var _this;
       _classCallCheck(this, Ou);
-      _this = _callSuper(this, Ou, [turn, status, posi]);
+      _this = _callSuper(this, Ou, [turn, status]);
       _this.name = 'Ou';
       return _this;
     }
-
-    // kind: ->
-    //     @constructor.name
     _inherits(Ou, _Piece);
     return _createClass(Ou, [{
       key: "koma",
@@ -56910,16 +57011,13 @@ Ou = function () {
 Hi = function () {
   var _direction;
   var Hi = /*#__PURE__*/function (_Piece2) {
-    function Hi(turn, status, posi) {
+    function Hi(turn, status) {
       var _this2;
       _classCallCheck(this, Hi);
-      _this2 = _callSuper(this, Hi, [turn, status, posi]);
+      _this2 = _callSuper(this, Hi, [turn, status]);
       _this2.name = 'Hi';
       return _this2;
     }
-
-    // kind: ->
-    //     @constructor.name
     _inherits(Hi, _Piece2);
     return _createClass(Hi, [{
       key: "koma",
@@ -56998,16 +57096,13 @@ Hi = function () {
 Ka = function () {
   var _direction;
   var Ka = /*#__PURE__*/function (_Piece3) {
-    function Ka(turn, status, posi) {
+    function Ka(turn, status) {
       var _this3;
       _classCallCheck(this, Ka);
-      _this3 = _callSuper(this, Ka, [turn, status, posi]);
+      _this3 = _callSuper(this, Ka, [turn, status]);
       _this3.name = 'Ka';
       return _this3;
     }
-
-    // kind: ->
-    //     @constructor.name
     _inherits(Ka, _Piece3);
     return _createClass(Ka, [{
       key: "koma",
@@ -57086,16 +57181,13 @@ Ka = function () {
 Ki = function () {
   var _direction;
   var Ki = /*#__PURE__*/function (_Piece4) {
-    function Ki(turn, status, posi) {
+    function Ki(turn, status) {
       var _this4;
       _classCallCheck(this, Ki);
-      _this4 = _callSuper(this, Ki, [turn, status, posi]);
+      _this4 = _callSuper(this, Ki, [turn, status]);
       _this4.name = 'Ki';
       return _this4;
     }
-
-    // kind: ->
-    //     @constructor.name
     _inherits(Ki, _Piece4);
     return _createClass(Ki, [{
       key: "koma",
@@ -57170,16 +57262,13 @@ Ki = function () {
 Gi = function () {
   var _direction;
   var Gi = /*#__PURE__*/function (_Piece5) {
-    function Gi(turn, status, posi) {
+    function Gi(turn, status) {
       var _this5;
       _classCallCheck(this, Gi);
-      _this5 = _callSuper(this, Gi, [turn, status, posi]);
+      _this5 = _callSuper(this, Gi, [turn, status]);
       _this5.name = 'Gi';
       return _this5;
     }
-
-    // kind: ->
-    //     @constructor.name
     _inherits(Gi, _Piece5);
     return _createClass(Gi, [{
       key: "koma",
@@ -57258,16 +57347,13 @@ Gi = function () {
 Ke = function () {
   var _direction;
   var Ke = /*#__PURE__*/function (_Piece6) {
-    function Ke(turn, status, posi) {
+    function Ke(turn, status) {
       var _this6;
       _classCallCheck(this, Ke);
-      _this6 = _callSuper(this, Ke, [turn, status, posi]);
+      _this6 = _callSuper(this, Ke, [turn, status]);
       _this6.name = 'Ke';
       return _this6;
     }
-
-    // kind: ->
-    //     @constructor.name
     _inherits(Ke, _Piece6);
     return _createClass(Ke, [{
       key: "koma",
@@ -57346,16 +57432,13 @@ Ke = function () {
 Ky = function () {
   var _direction;
   var Ky = /*#__PURE__*/function (_Piece7) {
-    function Ky(turn, status, posi) {
+    function Ky(turn, status) {
       var _this7;
       _classCallCheck(this, Ky);
-      _this7 = _callSuper(this, Ky, [turn, status, posi]);
+      _this7 = _callSuper(this, Ky, [turn, status]);
       _this7.name = 'Ky';
       return _this7;
     }
-
-    // kind: ->
-    //     @constructor.name
     _inherits(Ky, _Piece7);
     return _createClass(Ky, [{
       key: "koma",
@@ -57434,16 +57517,13 @@ Ky = function () {
 Fu = function () {
   var _direction;
   var Fu = /*#__PURE__*/function (_Piece8) {
-    function Fu(turn, status, posi) {
+    function Fu(turn, status) {
       var _this8;
       _classCallCheck(this, Fu);
-      _this8 = _callSuper(this, Fu, [turn, status, posi]);
+      _this8 = _callSuper(this, Fu, [turn, status]);
       _this8.name = 'Fu';
       return _this8;
     }
-
-    // kind: ->
-    //     @constructor.name
     _inherits(Fu, _Piece8);
     return _createClass(Fu, [{
       key: "koma",
@@ -57561,11 +57641,13 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 var Const,
   Piece,
   Player,
+  Util,
   indexOf = [].indexOf;
 Const = __webpack_require__(/*! ./const */ "./const.coffee");
 Piece = __webpack_require__(/*! ./piece */ "./piece.coffee");
+Util = __webpack_require__(/*! ./util */ "./util.coffee");
 Player = function () {
-  var check_tumi, count_kiki, is_utifuOute, sortPreparation;
+  var check_tumi, is_utifuOute, sortPreparation;
   var Player = /*#__PURE__*/function () {
     // @depthプロパティはthink,prepareメソッドに渡す引数limitより大きな数値である必要がある
     // 読みの深さとしての属性（@depth）は許容量、実際の読みの深さとして渡すlimit引数の関係
@@ -57578,22 +57660,21 @@ Player = function () {
       this.pre_ahead = 0;
       this.pre_select = 4;
       this.preparation = [];
+      this.oppo = this.turn === Const.FIRST ? Const.SECOND : Const.FIRST;
     }
     return _createClass(Player, [{
       key: "prepare",
       value: function prepare(board, oppo, limit, preValue) {
         var pre_ahead = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 3;
-        var buf, i, len, ref, ret, selection, v, w, x;
+        var buf, i, len, ref, ret, selection, v, v_posi, w, x;
         this.preparation = [];
         this.pre_ahead = pre_ahead;
         ret = this.think(board, oppo, this.pre_ahead, preValue);
         if (this.turn === Const.FIRST) {
           sortPreparation.call(this, this.preparation, 'desc');
         } else {
-          // shellSortDesc.call @, @preparation
           sortPreparation.call(this, this.preparation, 'asc');
         }
-        // shellSortAsc.call @, @preparation
         // console.log("@preparation")
         // console.log(@preparation)
         selection = {};
@@ -57602,9 +57683,10 @@ Player = function () {
         ref = this.preparation.slice(0, +this.pre_select + 1 || 9e9);
         for (i = 0, len = ref.length; i < len; i++) {
           v = ref[i];
+          // buf = (w for w in board.pieces when w.id == v.id)
           buf = function () {
             var j, len1, ref1, results;
-            ref1 = board.pieces;
+            ref1 = board.getPieces(this.turn);
             results = [];
             for (j = 0, len1 = ref1.length; j < len1; j++) {
               w = ref1[j];
@@ -57613,7 +57695,7 @@ Player = function () {
               }
             }
             return results;
-          }();
+          }.call(this);
           if (buf.length > 0) {
             if (function () {
               var j, len1, ref1, results;
@@ -57630,21 +57712,24 @@ Player = function () {
               selection.pieces.push(buf[0]);
               selection.positions.push({
                 id: v.id,
-                posi: v.posi
+                posi: board.getPiecePosition(v)
               });
             }
+            v_posi = JSON.stringify(board.getPiecePosition(v));
             if (function () {
               var j, len1, ref1, results;
               ref1 = selection.positions;
               results = [];
               for (j = 0, len1 = ref1.length; j < len1; j++) {
                 x = ref1[j];
-                if (x.id === v.id && x.posi === v.posi) {
+                if (x.id === v.id && x.posi === v_posi) {
+                  // if (x for x in selection.positions when x.id == v.id && x.posi == v.posi).length == 0
                   results.push(x);
                 }
               }
               return results;
             }().length === 0) {
+              // selection.positions.push({id: v.id, posi: v.posi})
               selection.positions.push({
                 id: v.id,
                 posi: v.posi
@@ -57664,29 +57749,25 @@ Player = function () {
       value: function think(board, oppo, limit, preValue) {
         var priority = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
         var utifudume = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
-        var buf, choice, col, dest, dest_piece, i, j, k, kinds, koma, l, lastkoma, lastposi, lastscore, laststatus, len, len1, move_piece, promotion, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, result, ret, row, score, selections, shortCut, spare, src, utifudume_flg, v, w;
-        spare = {};
-        lastscore = this.turn === Const.FIRST ? Const.MIN_VALUE : Const.MAX_VALUE;
-        lastposi = null;
-        lastkoma = null;
-        laststatus = null;
+        var bestMove, buf, check, choice, col, dest, diff, i, j, k, kinds, koma, l, len, len1, promotion, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, result, ret, row, score, selections, shortCut, utifudume_flg, v, w;
+        // console.log("limit = #{limit}")
+        // board.display()
+        if (this.turn === Const.FIRST) {
+          bestMove = new Util.BestMove(null, [], Const.MIN_VALUE, Const.Status.OMOTE);
+        } else {
+          bestMove = new Util.BestMove(null, [], Const.MAX_VALUE, Const.Status.OMOTE);
+        }
         score = 0;
         kinds = [];
-        move_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA);
-        dest_piece = new Piece.Piece(Const.First, Const.Status.MOTIGOMA);
         utifudume_flg = null;
-        src = board.cloneBoard();
         if (Object.keys(priority).length !== 0) {
           selections = priority.pieces;
         } else {
-          selections = board.pieces;
+          selections = board.getPieces(this.turn);
         }
         for (i = 0, len = selections.length; i < len; i++) {
           koma = selections[i];
-          if (!(koma.turn === this.turn)) {
-            continue;
-          }
-          // 同じ駒でも指す場所が複数になるので、この段階では複数の候補となる
+          // console.log("koma = #{JSON.stringify(koma)}")
           if (Object.keys(priority).length !== 0) {
             choice = priority.positions;
           }
@@ -57703,7 +57784,7 @@ Player = function () {
                     results = [];
                     for (l = 0, len1 = choice.length; l < len1; l++) {
                       w = choice[l];
-                      if (koma.id === w.id && row === w.posi[0] && col === w.posi[1]) {
+                      if (koma.id === w.id) {
                         results.push(w);
                       }
                     }
@@ -57712,7 +57793,7 @@ Player = function () {
                     continue;
                   }
                 }
-                dest = src[row - 1][col - 1];
+                dest = board.getPiece(row, col);
                 if (dest != null) {
                   continue;
                 }
@@ -57726,19 +57807,18 @@ Player = function () {
                 } else {
                   utifudume_flg = null;
                 }
-                move_piece.turn = koma.turn;
-                move_piece.status = koma.status;
-                move_piece.posi = [].concat(koma.posi);
-                if (board.check_move(koma, [row, col])) {
-                  board.move_capture(koma, [row, col]);
+                check = board.check_move(koma, [row, col]);
+                if (check[0]) {
+                  // console.log("move_capture: 82")
+                  diff = board.move_capture(koma, [row, col], check[1]);
                   result = board.gameover();
                   if (limit > 0 && !result) {
                     if (this.pre_ahead === -1 && limit > 4) {
                       ret = oppo.prepare(board, this, limit - 1, oppo.turn === Const.FIRST ? Const.MAX_VALUE : Const.MIN_VALUE);
                     } else {
-                      ret = oppo.think(board, this, limit - 1, lastscore, {}, utifudume_flg);
+                      ret = oppo.think(board, this, limit - 1, bestMove.lastscore, {}, utifudume_flg);
                     }
-                    score = ret[2];
+                    score = ret.lastscore;
                   } else {
                     score = check_tumi.call(this, board);
                   }
@@ -57746,7 +57826,7 @@ Player = function () {
                     this.preparation.push({
                       "id": koma.id,
                       "kind": koma.name,
-                      "s_posi": move_piece.posi,
+                      "s_posi": diff.s_posi,
                       "posi": [row, col],
                       "status": koma.status,
                       "score": score,
@@ -57754,28 +57834,23 @@ Player = function () {
                     });
                   }
                   shortCut = false;
-                  if (score > lastscore && this.turn === Const.FIRST || score < lastscore && this.turn === Const.SECOND) {
-                    spare["koma"] = lastkoma;
-                    spare["posi"] = [].concat(lastposi);
-                    spare["score"] = lastscore;
-                    spare["status"] = laststatus;
-                    lastkoma = koma;
-                    lastscore = score;
-                    lastposi = [].concat([row, col]);
-                    laststatus = koma.status;
+                  if (score > bestMove.lastscore && this.turn === Const.FIRST || score < bestMove.lastscore && this.turn === Const.SECOND) {
+                    // console.log("uti bestMove = #{JSON.stringify(bestMove)}")
+                    bestMove.update(koma, [].concat([row, col]), score, koma.status);
+                    // console.log("uti bestMove = #{JSON.stringify(bestMove)}")
                     if (preValue < score && this.turn === Const.FIRST || preValue > score && this.turn === Const.SECOND) {
                       shortCut = true;
                     }
                   }
+                  // console.log("revert_move: 103")
+                  board.revert_move(diff);
                 }
-                koma.turn = move_piece.turn;
-                koma.status = move_piece.status;
-                koma.posi = move_piece.posi;
                 if (score >= Const.MAX_VALUE && this.turn === Const.FIRST || score <= Const.MIN_VALUE && this.turn === Const.SECOND) {
-                  return [lastkoma, lastposi, lastscore, laststatus, spare];
+                  // board.display()
+                  return bestMove;
                 }
                 if (shortCut) {
-                  return [lastkoma, lastposi, lastscore, laststatus, spare];
+                  return bestMove;
                 }
               }
             }
@@ -57783,7 +57858,7 @@ Player = function () {
             ref3 = getClass(koma.name).getD(koma.turn, koma.status);
             for (l = 0, len1 = ref3.length; l < len1; l++) {
               v = ref3[l];
-              buf = [].concat(koma.posi);
+              buf = [].concat(board.getPiecePosition(koma));
               while (true) {
                 if (!((ref4 = buf[0] + v.xd, indexOf.call(function () {
                   var results = [];
@@ -57818,39 +57893,33 @@ Player = function () {
                     continue;
                   }
                 }
-                dest = src[buf[0] - 1][buf[1] - 1];
+                dest = board.getPiece(buf[0], buf[1]);
                 if (dest != null && dest.turn === koma.turn) {
                   break;
                 }
-                move_piece.turn = koma.turn;
-                move_piece.status = koma.status;
-                move_piece.posi = [].concat(koma.posi);
-                if (dest != null) {
-                  dest_piece.turn = dest.turn;
-                  dest_piece.status = dest.status;
-                  dest_piece.posi = [].concat(dest.posi);
-                }
-                if (board.check_move(koma, buf, src[buf[0] - 1][buf[1] - 1])) {
+                check = board.check_move(koma, buf);
+                if (check[0]) {
                   if (board.check_promotion(koma, buf)) {
                     promotion = true;
                   }
-                  board.move_capture(koma, buf, src[buf[0] - 1][buf[1] - 1]);
+                  // console.log("move_capture: 119")
+                  diff = board.move_capture(koma, buf, check[1]);
                   while (true) {
                     result = board.gameover();
                     if (utifudume != null && !result && dest != null && dest.id === utifudume.id && koma.name !== 'Ou') {
                       // console.log(" ===== #{koma.name} ===================") if limit <= 0
                       // board.display() if limit <= 0
-                      ret = oppo.think(board, this, 0, lastscore, {}, null);
-                      if (ret[2] >= Const.MAX_VALUE || ret[2] <= Const.MIN_VALUE) {
-                        score = ret[2] * -1;
+                      ret = oppo.think(board, this, 0, bestMove.lastscore, {}, null);
+                      if (ret.lastscore >= Const.MAX_VALUE || ret.lastscore <= Const.MIN_VALUE) {
+                        score = ret.lastscore * -1;
                       } else {
                         if (limit > 0) {
                           if (this.pre_ahead === -1 && limit > 4) {
                             ret = oppo.prepare(board, this, limit - 1, oppo.turn === Const.FIRST ? Const.MAX_VALUE : Const.MIN_VALUE);
                           } else {
-                            ret = oppo.think(board, this, limit - 1, lastscore, {}, null);
+                            ret = oppo.think(board, this, limit - 1, bestMove.lastscore, {}, null);
                           }
-                          score = ret[2];
+                          score = ret.lastscore;
                         } else {
                           score = check_tumi.call(this, board);
                         }
@@ -57860,9 +57929,9 @@ Player = function () {
                         if (this.pre_ahead === -1 && limit > 4) {
                           ret = oppo.prepare(board, this, limit - 1, oppo.turn === Const.FIRST ? Const.MAX_VALUE : Const.MIN_VALUE);
                         } else {
-                          ret = oppo.think(board, this, limit - 1, lastscore, {}, null);
+                          ret = oppo.think(board, this, limit - 1, bestMove.lastscore, {}, null);
                         }
-                        score = ret[2];
+                        score = ret.lastscore;
                       } else {
                         score = check_tumi.call(this, board);
                       }
@@ -57871,7 +57940,7 @@ Player = function () {
                       this.preparation.push({
                         "id": koma.id,
                         "kind": koma.name,
-                        "s_posi": move_piece.posi,
+                        "s_posi": diff.s_posi,
                         "posi": [].concat(buf),
                         "status": koma.status,
                         "score": score,
@@ -57879,15 +57948,8 @@ Player = function () {
                       });
                     }
                     shortCut = false;
-                    if (score > lastscore && this.turn === Const.FIRST || score < lastscore && this.turn === Const.SECOND) {
-                      spare["koma"] = lastkoma;
-                      spare["posi"] = [].concat(lastposi);
-                      spare["score"] = lastscore;
-                      spare["status"] = laststatus;
-                      lastkoma = koma;
-                      lastscore = score;
-                      lastposi = [].concat(buf);
-                      laststatus = koma.status;
+                    if (score > bestMove.lastscore && this.turn === Const.FIRST || score < bestMove.lastscore && this.turn === Const.SECOND) {
+                      bestMove.update(koma, [].concat(buf), score, koma.status);
                       if (preValue < score && this.turn === Const.FIRST || preValue > score && this.turn === Const.SECOND) {
                         shortCut = true;
                       }
@@ -57900,20 +57962,15 @@ Player = function () {
                       break;
                     }
                   }
-                }
-                koma.turn = move_piece.turn;
-                koma.status = move_piece.status;
-                koma.posi = move_piece.posi;
-                if (dest != null) {
-                  dest.turn = dest_piece.turn;
-                  dest.status = dest_piece.status;
-                  dest.posi = dest_piece.posi;
+                  // console.log("revert_move: 164")
+                  board.revert_move(diff);
                 }
                 if (score >= Const.MAX_VALUE && this.turn === Const.FIRST || score <= Const.MIN_VALUE && this.turn === Const.SECOND) {
-                  return [lastkoma, lastposi, lastscore, laststatus, spare];
+                  // board.display()
+                  return bestMove;
                 }
                 if (shortCut) {
-                  return [lastkoma, lastposi, lastscore, laststatus, spare];
+                  return bestMove;
                 }
                 if (!(dest == null && v.series)) {
                   break;
@@ -57922,7 +57979,7 @@ Player = function () {
             }
           }
         }
-        return [lastkoma, lastposi, lastscore, laststatus, spare];
+        return bestMove;
       }
     }]);
   }();
@@ -57948,121 +58005,128 @@ Player = function () {
     });
   };
   is_utifuOute = function is_utifuOute(board, piece, d_posi) {
-    var buf, oppo, oppo_king, v;
+    var buf, oppo, oppo_king, posi, v;
     oppo = piece.turn === Const.FIRST ? Const.SECOND : Const.FIRST;
     oppo_king = function () {
       var i, len, ref, results;
-      ref = board.pieces;
+      ref = board.getPieces(oppo);
       results = [];
       for (i = 0, len = ref.length; i < len; i++) {
         v = ref[i];
-        if (v.turn === oppo && v.name === 'Ou') {
+        if (v.name === 'Ou') {
           results.push(v);
         }
       }
       return results;
     }()[0];
+    if (!oppo_king) {
+      return false;
+    }
+    posi = board.getPiecePosition(oppo_king);
+    if (!posi) {
+      return false;
+    }
     buf = [].concat(d_posi);
     buf[0] += Piece.Fu.getD(piece.turn, piece.status)[0].xd;
     buf[1] += Piece.Fu.getD(piece.turn, piece.status)[0].yd;
-    return oppo_king.posi[0] === buf[0] && oppo_king.posi[1] === buf[1];
+    return posi[0] === buf[0] && posi[1] === buf[1];
   };
   check_tumi = function check_tumi(board) {
-    var first, i, kings, len, ref, second, v;
+    var first, firstKing, i, j, koma, len, len1, ref, ref1, ref2, ref3, second, secondKing;
     first = 0;
     second = 0;
-    kings = function () {
-      var i, len, ref, results;
-      ref = board.pieces;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        v = ref[i];
-        if (v.name === 'Ou' && v.turn === Const.FIRST) {
-          results.push(v);
-        }
+    firstKing = (ref = board.motigoma[Const.FIRST].Ou) != null ? ref.length : void 0;
+    secondKing = (ref1 = board.motigoma[Const.SECOND].Ou) != null ? ref1.length : void 0;
+    if (firstKing > 0) {
+      return Const.MAX_VALUE;
+    } else if (secondKing > 0) {
+      return Const.MIN_VALUE;
+    } else {
+      ref2 = board.getPieces(Const.FIRST);
+      for (i = 0, len = ref2.length; i < len; i++) {
+        koma = ref2[i];
+        first += koma.omomi();
       }
-      return results;
-    }();
-    switch (kings.length) {
-      case 2:
-        return Const.MAX_VALUE;
-      case 0:
-        return Const.MIN_VALUE;
-      default:
-        ref = board.pieces;
-        for (i = 0, len = ref.length; i < len; i++) {
-          v = ref[i];
-          if (v.turn === Const.FIRST) {
-            first += v.omomi();
-          }
-          if (v.turn === Const.SECOND) {
-            second += v.omomi();
-          }
-        }
-        return first - second;
-    }
-  };
-  count_kiki = function count_kiki(piece, board) {
-    var buf, dest, i, len, o, ref, ref1, ref2, ref3, ref4, v;
-    ref = getClass(piece.name).getD(piece.turn, piece.status);
-    // console.log("piece = ")
-    // console.log(piece)
-    for (i = 0, len = ref.length; i < len; i++) {
-      v = ref[i];
-      buf = [].concat(piece.posi);
-      while (true) {
-        buf[0] += v.xd;
-        buf[1] += v.yd;
-        if (!((ref1 = buf[0], indexOf.call(function () {
-          var results = [];
-          for (var j = 1, ref2 = board.cols; 1 <= ref2 ? j <= ref2 : j >= ref2; 1 <= ref2 ? j++ : j--) {
-            results.push(j);
-          }
-          return results;
-        }.apply(this), ref1) >= 0) && (ref3 = buf[1], indexOf.call(function () {
-          var results = [];
-          for (var j = 1, ref4 = board.rows; 1 <= ref4 ? j <= ref4 : j >= ref4; 1 <= ref4 ? j++ : j--) {
-            results.push(j);
-          }
-          return results;
-        }.apply(this), ref3) >= 0))) {
-          break;
-        }
-        dest = function () {
-          var j, len1, ref5, results;
-          ref5 = board.pieces;
-          results = [];
-          for (j = 0, len1 = ref5.length; j < len1; j++) {
-            o = ref5[j];
-            if (o.posi != null && o.posi[0] === buf[0] && o.posi[1] === buf[1]) {
-              results.push(o);
-            }
-          }
-          return results;
-        }()[0];
-        // console.log("dest = #{dest}")
-        if (dest) {
-          if (dest.turn === piece.turn) {
-            break;
-          } else {
-            piece.coefficient += 1.0;
-            break;
-          }
-        } else {
-          piece.coefficient += 1.0;
-        }
-        if (!v.series) {
-          break;
-        }
+      ref3 = board.getPieces(Const.SECOND);
+      for (j = 0, len1 = ref3.length; j < len1; j++) {
+        koma = ref3[j];
+        second += koma.omomi();
       }
+      return first - second;
     }
   };
   return Player;
 }.call(this);
-
-// console.log("piece.coefficient = #{piece.coefficient}")
-// board.display()
 module.exports = Player;
+
+/***/ }),
+
+/***/ "./util.coffee":
+/*!*********************!*\
+  !*** ./util.coffee ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+var BestMove, Const, MoveDiff, Piece, Spare;
+Const = __webpack_require__(/*! ./const */ "./const.coffee");
+Piece = __webpack_require__(/*! ./piece */ "./piece.coffee");
+MoveDiff = /*#__PURE__*/_createClass(function MoveDiff(piece, s_posi, dest, d_posi, pieceStatus, destTurn, destStatus) {
+  _classCallCheck(this, MoveDiff);
+  this.piece = piece;
+  this.s_posi = s_posi;
+  this.dest = dest;
+  this.d_posi = d_posi;
+  this.pieceStatus = pieceStatus;
+  this.destTurn = destTurn;
+  this.destStatus = destStatus;
+});
+BestMove = /*#__PURE__*/function () {
+  function BestMove() {
+    var lastkoma1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var lastposi1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    var lastscore1 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var laststatus1 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+    var spare = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+    _classCallCheck(this, BestMove);
+    this.lastkoma = lastkoma1;
+    this.lastposi = lastposi1;
+    this.lastscore = lastscore1;
+    this.laststatus = laststatus1;
+    this.spare = spare;
+  }
+  return _createClass(BestMove, [{
+    key: "update",
+    value: function update(lastkoma, lastposi, lastscore, laststatus) {
+      this.spare = new BestMove.Spare(this.lastkoma, this.lastposi, this.lastscore, this.laststatus);
+      this.lastkoma = lastkoma;
+      this.lastposi = lastposi;
+      this.lastscore = lastscore;
+      return this.laststatus = laststatus;
+    }
+  }]);
+}();
+BestMove.Spare = Spare = /*#__PURE__*/_createClass(function Spare() {
+  var lastkoma1 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var lastposi1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var lastscore1 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+  var laststatus1 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  _classCallCheck(this, Spare);
+  this.lastkoma = lastkoma1;
+  this.lastposi = lastposi1;
+  this.lastscore = lastscore1;
+  this.laststatus = laststatus1;
+});
+module.exports = {
+  MoveDiff: MoveDiff,
+  BestMove: BestMove
+};
 
 /***/ }),
 

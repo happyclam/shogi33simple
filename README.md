@@ -1,5 +1,5 @@
 # ３三将棋アプリ
-※Boardクラスを配列にして駒の座標を管理するように変更したテストbranch
+※Boardクラスを配列にして駒の座標を管理するように変更したテストbranch、GUIは未対応
 
 ~~[３三将棋アプリ](https://happyclam.booth.pm/items/6323599)（Version1.1.8.0）のソースファイル一式です。~~  
 
@@ -91,15 +91,22 @@ Second Win
 
 ```
 
-# テストスクリプト（一部のテストしか対応してません）
+# テストスクリプト
 ```
-$ mocha test/boardTest.coffee
-$ mocha test/fu_tesuji.coffee -g "basic"
-$ mocha test/fu_tesuji.coffee -g "Fu Tesuji1"
-$ mocha test/kiki.coffee
-$ mocha test/movediff.coffee
-$ mocha test/playerTest.coffee
-$ mocha test/putCheckmate.coffee
+$ mocha test/tumeShogi.coffee
+```
 
+※「.mocharc.jsonファイル」参照
+
+# 全テスト実行時間計測
+
+```
+$ NODE_OPTIONS="--max-old-space-size=8192" mocha --require coffeescript/register --require test/setup.coffee "test/**/*.coffee"
+
+
+Total duration: 22.81 sec
+
+  182 passing (23s)
+  3 failing
 ```
 

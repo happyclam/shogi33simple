@@ -11,7 +11,7 @@ describe '--- leave alone', ->
     ff = null; fy = null; fk = null; fg = null; fx = null; fm = null; fh = null; fo = null;
     sf = null; sy = null; sk = null; sg = null; sx = null; sm = null; sh = null; so = null;
     first = null; second = null;
-    ret = []
+    ret = null
     before ->
         first = new Player(Const.FIRST, false)
         second = new Player(Const.SECOND, false)
@@ -73,10 +73,11 @@ describe '--- leave alone', ->
             expect(ret.lastscore).to.be.above(9999)
     afterEach ->
         console.log(ret)
-        if ret[0]?
-            if b.check_move(ret[0], ret[1])
-                b.move_capture(ret[0], ret[1])
-                ret[0].status = Const.Status.URA if ret[3]
+        if ret.lastkoma?
+            check = b.check_move(ret.lastkoma, ret.lastposi)
+            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false
+            if check[0]
+                b.move_capture(ret.lastkoma, ret.lastposi, nari)
         else
             console.log("AI resigned.")
         b.display()

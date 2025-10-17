@@ -93,14 +93,12 @@ describe '--- Board2', ->
 describe '--- Board3', ->
     b = null
     piece = null
-    pieces = []
     before ->
         b = new Board()
         b.set_standard()
         b.display()
     describe 'move_capture(fg, [2,2])', ->
         it 'expects true when motigoma Gi move_capture [2,2]', ->
-            # piece = v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST
             piece = b.getMotigoma(Const.FIRST, 'Gi')
             expect(b.move_capture(piece, [2,2]).s_posi).to.deep.equal([])
     describe 'move_capture(fg, [2,2])', ->
@@ -133,15 +131,13 @@ describe '--- Board3', ->
             expect(b.check_move(piece, [3,3])[0]).to.be.true
     describe 'check_move(sf, [3,3])', ->
         it 'expects status changed URA when check moved', ->
-#            expect(piece.status).to.equal(Const.Status.URA)          
-            expect(b.check_move(piece, [3,3])[1]).to.be.true          
+            expect(b.check_move(piece, [3,3])[1]).to.be.true
     describe 'move_capture(sf, [3,3])', ->
         it 'expects original position [3,2] when Fu move_capture [3,3]', ->
             piece = b.getPiece(3, 2)
             expect(b.move_capture(piece, [3,3]).s_posi).to.deep.equal([3,2])
     describe 'move_capture(sf, [3,3])', ->
         it 'expects captured pieces status changed when Fu moved', ->
-            # pieces = (v for v in b.pieces when v.name == "Ou" && v.turn == Const.SECOND)
             expect(b.getMotigoma(Const.SECOND, 'Ou').name).to.equal('Ou')
     after ->
         b.display()
@@ -168,7 +164,7 @@ describe '--- Board4', ->
             piece = b.getPiece(3, 2)
             expect(b.check_move(piece, [3,1])[1]).to.be.true
             # b.move_capture(piece, [3,1], true)
-            # expect(piece.status).to.equal(Const.Status.URA)            
+            # expect(piece.status).to.equal(Const.Status.URA)
             # b.display()
     describe 'FIRST move_capture(ff, [3,1])', ->
         it 'expects original position [3,2] when Fu move_capture [3,3]', ->
@@ -206,12 +202,6 @@ describe '--- Board5', ->
     beforeEach ->
         b = new Board()
         b.set_standard()
-        # ff = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.FIRST)[0]
-        # sf = (v for v in b.pieces when v.name == 'Fu' && v.turn == Const.SECOND)[0]
-        # fg = (v for v in b.pieces when v.name == 'Gi' && v.turn == Const.FIRST)[0]
-        # sg = (v for v in b.pieces when v.name == 'Gi' && v.turn == Const.SECOND)[0]
-        # fo = (v for v in b.pieces when v.name == 'Ou' && v.turn == Const.FIRST)[0]
-        # so = (v for v in b.pieces when v.name == 'Ou' && v.turn == Const.SECOND)[0]
     describe '二歩 check1', ->
         it 'expects false when nifu', ->
             sf2 = new Piece.Fu(Const.SECOND, Const.Status.OMOTE)

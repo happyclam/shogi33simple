@@ -11,7 +11,6 @@ Const = require('./const')
         when 'Ky' then gKy
         when 'Fu' then gFu
         else gPiece
-            
 class Course
     constructor: (series = false, xd = 0, yd = 0) ->
         @series = series
@@ -25,6 +24,12 @@ class Piece
     setTurn: (turn) ->
         if turn != @turn
             @turn = turn
+    # clone: ->
+    #     cloned = new @constructor(@turn, @status)
+    #     cloned.id = @id
+    #     cloned.coefficient = @coefficient
+    #     return cloned
+
     uniqueId = (length = 8) ->
         id = ""
         id += Math.random().toString(36).substr(2) while id.length < length

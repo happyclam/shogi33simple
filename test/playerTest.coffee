@@ -142,11 +142,11 @@ describe '--- Player2', ->
             expect(ret.lastkoma.name).to.equal('Gi')
     afterEach ->
         check = b.check_move(ret.lastkoma, ret.lastposi)
+        nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false
         if check[0]
-            b.move_capture(ret.lastkoma, ret.lastposi, check[1])
+            b.move_capture(ret.lastkoma, ret.lastposi, nari)
         b.display()
-    # after ->
-    #     b.display()
+
 describe '--- Player3', ->
     b = null
     ff = null; fg = null; fo = null; so = null; sg = null; sf = null; fh = null;
@@ -241,8 +241,9 @@ describe '--- Player3', ->
     afterEach ->
         console.log(ret)
         check = b.check_move(ret.lastkoma, ret.lastposi)
+        nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false
         if check[0]
-            b.move_capture(ret.lastkoma, ret.lastposi, check[1])
+            b.move_capture(ret.lastkoma, ret.lastposi, nari)
         b.display()
 
 describe '--- Player4', ->
@@ -334,8 +335,9 @@ describe '--- Player4', ->
         console.log(ret)
         if ret.lastkoma?
             check = b.check_move(ret.lastkoma, ret.lastposi)
+            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false
             if check[0]
-                b.move_capture(ret.lastkoma, ret.lastposi, check[1])
+                b.move_capture(ret.lastkoma, ret.lastposi, nari)
         else
             console.log("AI resigned.")
         b.display()

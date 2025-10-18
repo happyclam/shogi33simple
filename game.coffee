@@ -2962,15 +2962,15 @@ make_hash = (board) ->
 
 # 長手数の攻防
 # KaFu ---
-# b.pieces = []
-# b.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3,3]))
-# b.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1,1]))
-# b.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [3,1]))
-# b.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [1,3]))
-# b.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3,2]))
-# b.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1,2]))
-# first.depth = 10
-# second.depth = 10
+b.pieces = []
+b.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3,3]))
+b.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1,1]))
+b.pieces.push(new Piece.Ka(Const.FIRST, Const.Status.OMOTE, [3,1]))
+b.pieces.push(new Piece.Ka(Const.SECOND, Const.Status.OMOTE, [1,3]))
+b.pieces.push(new Piece.Fu(Const.FIRST, Const.Status.OMOTE, [3,2]))
+b.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [1,2]))
+first.depth = 10
+second.depth = 10
 
 # tumi test
 # b.pieces = []
@@ -2984,14 +2984,14 @@ make_hash = (board) ->
 # second.depth = 7
 
 # 後手７手読み（５手詰め）
-b.pieces = []
-b.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3,3]))
-b.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1,1]))
-b.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA))
-b.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA))
-b.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2,2]))
-first.depth = 7
-second.depth = 7
+# b.pieces = []
+# b.pieces.push(new Piece.Ou(Const.FIRST, Const.Status.OMOTE, [3,3]))
+# b.pieces.push(new Piece.Ou(Const.SECOND, Const.Status.OMOTE, [1,1]))
+# b.pieces.push(new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA))
+# b.pieces.push(new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA))
+# b.pieces.push(new Piece.Fu(Const.SECOND, Const.Status.OMOTE, [2,2]))
+# first.depth = 7
+# second.depth = 7
 
 b.display()
 ret = []

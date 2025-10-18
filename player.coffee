@@ -25,16 +25,12 @@ class Player
         selection["pieces"] = []
         selection["positions"] = []
         for v in @preparation[0..@pre_select]
-            # buf = (w for w in board.pieces when w.id == v.id)
             buf = (w for w in board.getPieces(@turn) when w.id == v.id)
             if buf.length > 0
                 if (x for x in selection.pieces when x.id == v.id).length == 0
                     selection.pieces.push(buf[0])
                     selection.positions.push({id: v.id, posi: board.getPiecePosition(v)})
-                v_posi = JSON.stringify(board.getPiecePosition(v))
-                # if (x for x in selection.positions when x.id == v.id && x.posi == v.posi).length == 0
-                if (x for x in selection.positions when x.id == v.id && x.posi == v_posi).length == 0
-                    # selection.positions.push({id: v.id, posi: v.posi})
+                if (x for x in selection.positions when x.id == v.id && x.posi == v.posi).length == 0
                     selection.positions.push({id: v.id, posi: v.posi})
             break if selection.positions.length > @pre_select
         # console.log("selection")

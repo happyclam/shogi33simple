@@ -32,7 +32,7 @@ class Player
                     selection.positions.push({id: v.id, posi: board.getPiecePosition(v)})
                 if (x for x in selection.positions when x.id == v.id && x.posi == v.posi).length == 0
                     selection.positions.push({id: v.id, posi: v.posi})
-            break if selection.positions.length > @pre_select
+            # break if selection.positions.length > @pre_select
         # console.log("selection")
         # console.log(selection)
         @pre_ahead = -1

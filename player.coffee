@@ -36,6 +36,7 @@ class Player
                 if (x for x in selection.positions when x.id == v.id && x.posi == v_posi).length == 0
                     # selection.positions.push({id: v.id, posi: v.posi})
                     selection.positions.push({id: v.id, posi: v.posi})
+            break if selection.positions.length > @pre_select
         # console.log("selection")
         # console.log(selection)
         @pre_ahead = -1

@@ -64,7 +64,8 @@ class Player
                 for col in [1..board.cols]
                     for row in [1..board.rows]
                         if Object.keys(priority).length != 0
-                            continue unless (w for w in choice when koma.id == w.id)[0]?
+                            # Piece.posiは廃止したけど候補手要素のposiは使っている
+                            continue unless (w for w in choice when koma.id == w.id && row == w.posi[0] && col == w.posi[1])[0]?
                         dest = board.getPiece(row, col)
                         continue if dest?
                         if koma.name == 'Fu' && is_utifuOute.call @, board, koma, [row, col]

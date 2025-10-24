@@ -79,7 +79,6 @@ class Player
 
                         check = board.check_move(koma, [row, col])
                         if check[0]
-                            # console.log("move_capture: 82")
                             diff = board.move_capture(koma, [row, col], check[1])
                             result = board.gameover()
                             if limit > 0 && !result
@@ -93,14 +92,10 @@ class Player
                             @preparation.push {"id": koma.id, "kind": koma.name,"s_posi": diff.s_posi, "posi": [row,col], "status": koma.status, "score": score, "weight": koma.omomi()} if limit == @pre_ahead
                             shortCut = false
                             if (score > bestMove.lastscore && @turn == Const.FIRST) || (score < bestMove.lastscore && @turn == Const.SECOND)
-                                # console.log("uti bestMove = #{JSON.stringify(bestMove)}")
                                 bestMove.update(koma, [].concat([row, col]), score, koma.status)
-                                # console.log("uti bestMove = #{JSON.stringify(bestMove)}")
                                 if ((preValue < score && @turn == Const.FIRST) || (preValue > score && @turn == Const.SECOND))
                                     shortCut = true
-                            # console.log("revert_move: 103")
                             board.revert_move(diff)
-                            # board.display()
                         return bestMove if (score >= Const.MAX_VALUE && @turn == Const.FIRST) || (score <= Const.MIN_VALUE && @turn == Const.SECOND)
                         return bestMove if shortCut
             else
@@ -117,7 +112,6 @@ class Player
                         check = board.check_move(koma, buf)
                         if check[0]
                             promotion = true if board.check_promotion(koma, buf)
-                            # console.log("move_capture: 119")
                             diff = board.move_capture(koma, buf, check[1])
                             loop
                                 result = board.gameover()
@@ -157,9 +151,7 @@ class Player
                                     koma.status = Const.Status.URA
                                 else
                                     break
-                            # console.log("revert_move: 164")
                             board.revert_move(diff)
-                            # board.display()
                         return bestMove if (score >= Const.MAX_VALUE && @turn == Const.FIRST) || (score <= Const.MIN_VALUE && @turn == Const.SECOND)
                         return bestMove if shortCut
                         break unless (!dest? && v.series)
@@ -178,8 +170,7 @@ class Player
                 if Math.random() < 0.5 then -1 else 1
 
     is_utifuOute = (board, piece, d_posi) ->
-        oppo = if piece.turn == Const.FIRST then Const.SECOND else Const.FIRST
-        oppo_king = (v for v in board.getPieces(oppo) when v.name=='Ou')[0]
+        oppo_king = (v for v in board.getPieces(@oppo) when v.name=='Ou')[0]
         return false unless oppo_king
         posi = board.getPiecePosition(oppo_king)
         return false unless posi

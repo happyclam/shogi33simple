@@ -339,7 +339,7 @@ class Board extends Array
 
     check_nifu = (piece, d_posi) ->
         for c in [0...@cols]
-            p = @[d_posi[0] - 1][c - 1]
+            p = @[d_posi[0] - 1][c]
             # console.log("p = #{JSON.stringify(p)}")
             return true if p? && p.name == 'Fu' && p.status == Const.Status.OMOTE && p.turn == piece.turn
         return false

@@ -317,7 +317,7 @@ describe 'Fu Tesuji1', ->
         console.log(ret)
         if ret.lastkoma?
             check = b.check_move(ret.lastkoma, ret.lastposi)
-            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false            
+            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false
             if check[0]
                 b.move_capture(ret.lastkoma, ret.lastposi, nari)
         else
@@ -376,7 +376,7 @@ describe 'Fu Tesuji1-2', ->
         console.log(ret)
         if ret.lastkoma?
             check = b.check_move(ret.lastkoma, ret.lastposi)
-            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false                        
+            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false
             if check[0]
                 b.move_capture(ret.lastkoma, ret.lastposi, nari)
         else
@@ -433,7 +433,7 @@ describe 'Fu Tesuji1-3', ->
         console.log(ret)
         if ret.lastkoma?
             check = b.check_move(ret.lastkoma, ret.lastposi)
-            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false                                    
+            nari = if (check[1] || ret.laststatus == Const.Status.URA) then true else false
             if check[0]
                 b.move_capture(ret.lastkoma, ret.lastposi, nari)
         else
@@ -557,7 +557,7 @@ describe 'tumi Tesuji', ->
             b.addMotigoma(fh, Const.FIRST);b.addMotigoma(sh, Const.SECOND)
             b.move_capture(fo, [3,3])
             b.move_capture(so, [3,1])
-            b.move_capture(fh, [2,2])            
+            b.move_capture(fh, [2,2])
             first.depth = 7; second.depth = 7
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
@@ -572,7 +572,7 @@ describe 'tumi Tesuji', ->
             b.move_capture(fo, [2,3])
             b.move_capture(so, [3,1])
             b.move_capture(fh, [2,2])
-            b.move_capture(sh, [1,1])                        
+            b.move_capture(sh, [1,1])
             first.depth = 4; second.depth = 4
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
@@ -614,7 +614,7 @@ describe 'tumi Tesuji', ->
             b.addMotigoma(fh, Const.FIRST);b.addMotigoma(sh, Const.SECOND)
             b.move_capture(fo, [1,3])
             b.move_capture(so, [1,1])
-            b.move_capture(sh, [2,2])            
+            b.move_capture(sh, [2,2])
             first.depth = 7; second.depth = 7
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
@@ -629,7 +629,7 @@ describe 'tumi Tesuji', ->
             b.move_capture(fo, [1,3])
             b.move_capture(so, [2,1])
             b.move_capture(sh, [2,2])
-            b.move_capture(fh, [3,3])                        
+            b.move_capture(fh, [3,3])
             first.depth = 4; second.depth = 4
             b.display()
             first.pre_ahead = 0; second.pre_ahead = 0
@@ -645,4 +645,45 @@ describe 'tumi Tesuji', ->
                 b.move_capture(ret.lastkoma, ret.lastposi, nari)
         else
             console.log("AI resigned.")
+        b.display()
+describe 'arrayBoard_added', ->
+    b = null
+    ff = null; fy = null; fk = null; fg = null; fx = null; fm = null; fh = null; fo = null;
+    sf = null; sy = null; sk = null; sg = null; sx = null; sm = null; sh = null; so = null;
+    first = null; second = null;
+    ret = null
+    before ->
+        first = new Player(Const.FIRST, false)
+        second = new Player(Const.SECOND, false)
+    beforeEach ->
+        b = new Board()
+        fo = new Piece.Ou(Const.FIRST, Const.Status.MOTIGOMA)
+        fh = new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA)
+        fm = new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA)
+        fx = new Piece.Ki(Const.FIRST, Const.Status.MOTIGOMA)
+        fg = new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA)
+        fk = new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA)
+        fy = new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA)
+        ff = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA)
+        so = new Piece.Ou(Const.SECOND, Const.Status.MOTIGOMA)
+        sh = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA)
+        sm = new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA)
+        sx = new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA)
+        sg = new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA)
+        sk = new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA)
+        sy = new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA)
+        sf = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA)
+
+    describe '打ち歩詰め', ->
+        it 'expects Fu move [1,2] is utifudume', ->
+            ff2 = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA)
+            b.addMotigoma(fo, Const.FIRST);b.addMotigoma(ff, Const.FIRST);b.addMotigoma(ff2, Const.FIRST)
+            b.addMotigoma(so, Const.SECOND)
+            b.move_capture(fo, [3,3])
+            b.move_capture(so, [2,1])
+            b.move_capture(ff, [1,3])
+            ret = b.check_move(ff2, [1,2])
+            expect(ret[0]).to.equal(false)
+    afterEach ->
+        console.log(ret)
         b.display()

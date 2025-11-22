@@ -87,7 +87,7 @@ X
 X
 Second Win
 8
-経過時間: 1338ミリ秒
+経過時間: 1674ミリ秒
 
 ```
 
@@ -104,9 +104,9 @@ $ mocha test/tumeShogi.coffee
 $ NODE_OPTIONS="--max-old-space-size=8192" mocha --require coffeescript/register --require test/setup.coffee "test/**/*.coffee"
 
 
-Total duration: 22.81 sec
+Total duration: 21.76 sec
 
-  182 passing (23s)
+  183 passing (22s)
   3 failing
 ```
 

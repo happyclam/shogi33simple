@@ -47,6 +47,7 @@ class Player
             bestMove = new Util.BestMove(null, [], Const.MIN_VALUE, Const.Status.OMOTE)
         else
             bestMove = new Util.BestMove(null, [], Const.MAX_VALUE, Const.Status.OMOTE)
+        diff = new Util.MoveDiff(null, [], null, [], Const.Status.OMOTE, Const.FIRST, Const.Status.OMOTE)
         score = 0
         kinds = []
         utifudume_flg = null

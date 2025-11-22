@@ -17,23 +17,23 @@ class Course
         @xd = xd
         @yd = yd
 
+uniqueId = (length = 8) ->
+    id = "id"
+    id += Math.random().toString(36).substr(2, length) while id.length < length
+    return id.substr(0, length)
+
 class Piece
     constructor: (@turn, @status) ->
-        @id = uniqueId.call @
+        @id = uniqueId()
         @coefficient = 0.0
     setTurn: (turn) ->
         if turn != @turn
             @turn = turn
-    # clone: ->
-    #     cloned = new @constructor(@turn, @status)
-    #     cloned.id = @id
-    #     cloned.coefficient = @coefficient
-    #     return cloned
-
-    uniqueId = (length = 8) ->
-        id = ""
-        id += Math.random().toString(36).substr(2) while id.length < length
-        return id.substr 0, length
+    clone: ->
+        cloned = new @constructor(@turn, @status)
+        cloned.id = @id
+        cloned.coefficient = @coefficient
+        return cloned
 
 class Ou extends Piece
     _direction = {}

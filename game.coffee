@@ -3014,7 +3014,7 @@ loop
         # console.log("first: i = #{i}: temp = #{JSON.stringify(temp)}")
         # console.log("board = #{JSON.stringify(b)}")
         if temp.lastkoma?
-            ret = temp
+            ret = temp.clone()
             break if temp.lastkoma? && (temp.lastscore >= Const.MAX_VALUE || temp.lastscore <= Const.MIN_VALUE)
         else
             break
@@ -3049,7 +3049,7 @@ loop
             temp = second.think(b, first, i, Const.MIN_VALUE)
         # console.log("second: i = #{i}: temp = #{JSON.stringify(temp)}")
         if temp.lastkoma?
-            ret = temp
+            ret = temp.clone()
             break if temp.lastkoma? && (temp.lastscore >= Const.MAX_VALUE || temp.lastscore <= Const.MIN_VALUE)
         else
             break

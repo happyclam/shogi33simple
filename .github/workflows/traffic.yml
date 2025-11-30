@@ -1,7 +1,6 @@
 permissions:
   contents: write
   actions: read
-  metadata: read
 name: Save Traffic Stats with Graphs
 
 on:

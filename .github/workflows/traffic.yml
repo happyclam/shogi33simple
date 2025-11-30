@@ -1,7 +1,3 @@
-permissions:
-  contents: write
-  actions: read
-
 name: Save Traffic Stats with Graphs
 
 on:
@@ -27,13 +23,13 @@ jobs:
         run: |
           # Clone stats
           curl -H "Accept: application/vnd.github+json" \
-               -H "Authorization: Bearer ${{ secrets.GH_PAT }}" \
+               -H "Authorization: Bearer ${{ secrets.MY_GITHUB_TOKEN }}" \
                "https://api.github.com/repos/${{ github.repository }}/traffic/clones" \
           > clones.json
 
           # View stats
           curl -H "Accept: application/vnd.github+json" \
-               -H "Authorization: Bearer ${{ secrets.GH_PAT }}" \
+               -H "Authorization: Bearer ${{ secrets.MY_GITHUB_TOKEN }}" \
                "https://api.github.com/repos/${{ github.repository }}/traffic/views" \
           > views.json
 

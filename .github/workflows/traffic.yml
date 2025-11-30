@@ -1,0 +1,98 @@
+name: Save Traffic Stats with Graphs
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # 毎日 00:00 UTC に実行
+  workflow_dispatch:      # 手動実行も可能
+
+jobs:
+  save-traffic:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq python3 python3-pip
+          pip install matplotlib
+
+      - name: Get traffic data (clone & views)
+        run: |
+          # Clone stats
+          curl -H "Accept: application/vnd.github+json" \
+               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+               "https://api.github.com/repos/${{ github.repository }}/traffic/clones" \
+          > clones.json
+
+          # View stats
+          curl -H "Accept: application/vnd.github+json" \
+               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+               "https://api.github.com/repos/${{ github.repository }}/traffic/views" \
+          > views.json
+
+      - name: Convert JSON to CSV
+        run: |
+          echo "timestamp,count,uniques" > clones.csv
+          jq -r '.clones[] | [.timestamp, .count, .uniques] | @csv' clones.json >> clones.csv
+
+          echo "timestamp,count,uniques" > views.csv
+          jq -r '.views[] | [.timestamp, .count, .uniques] | @csv' views.json >> views.csv
+
+      - name: Generate graphs (PNG)
+        run: |
+          python3 << 'EOF'
+          import csv
+          import matplotlib.pyplot as plt
+          from datetime import datetime
+
+          # --- clones ---
+          dates = []
+          counts = []
+          with open("clones.csv") as f:
+              reader = csv.DictReader(f)
+              for row in reader:
+                  dates.append(datetime.fromisoformat(row["timestamp"].replace("Z","")))
+                  counts.append(int(row["count"]))
+
+          plt.figure()
+          plt.plot(dates, counts)
+          plt.title("GitHub Clones (last 14 days)")
+          plt.xlabel("Date")
+          plt.ylabel("Clones")
+          plt.xticks(rotation=45)
+          plt.tight_layout()
+          plt.savefig("clones.png")
+          plt.close()
+
+          # --- views ---
+          dates = []
+          counts = []
+          with open("views.csv") as f:
+              reader = csv.DictReader(f)
+              for row in reader:
+                  dates.append(datetime.fromisoformat(row["timestamp"].replace("Z","")))
+                  counts.append(int(row["count"]))
+
+          plt.figure()
+          plt.plot(dates, counts)
+          plt.title("GitHub Views (last 14 days)")
+          plt.xlabel("Date")
+          plt.ylabel("Views")
+          plt.xticks(rotation=45)
+          plt.tight_layout()
+          plt.savefig("views.png")
+          plt.close()
+          EOF
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: traffic-stats
+          path: |
+            clones.csv
+            views.csv
+            clones.png
+            views.png

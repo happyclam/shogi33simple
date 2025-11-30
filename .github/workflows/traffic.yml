@@ -33,13 +33,13 @@ jobs:
                "https://api.github.com/repos/${{ github.repository }}/traffic/views" \
           > views.json
 
-      - name: Convert JSON to CSV
+      - name: Convert to CSV
         run: |
           echo "timestamp,count,uniques" > clones.csv
-          jq -r '.clones[] | [.timestamp, .count, .uniques] | @csv' clones.json >> clones.csv
+          jq -r '.clones // [] | .[] | [.timestamp, .count, .uniques] | @csv' clones.json >> clones.csv
 
           echo "timestamp,count,uniques" > views.csv
-          jq -r '.views[] | [.timestamp, .count, .uniques] | @csv' views.json >> views.csv
+          jq -r '.views // [] | .[] | [.timestamp, .count, .uniques] | @csv' views.json >> views.csv
 
       - name: Generate graphs (PNG)
         run: |
